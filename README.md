@@ -1,0 +1,4 @@
+bankaccount
+===========
+
+Bank deposit journal
