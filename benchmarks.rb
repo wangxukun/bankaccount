@@ -1,3 +1,0 @@
-learn git
-start
-end
