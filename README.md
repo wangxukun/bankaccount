@@ -1,4 +1,0 @@
-bankaccount
-===========
-
-Bank deposit journal
