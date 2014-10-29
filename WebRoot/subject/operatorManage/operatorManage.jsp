@@ -216,6 +216,12 @@ $(function(){
 	});
 	
 });
+function privilegeConfig(){
+	var nodes = $('#tt_account').tree('getChecked','checked');
+	for( var i in nodes){
+		alert(nodes[i].id);
+	}
+}
 </script>
 </head>
 
@@ -235,8 +241,8 @@ $(function(){
                 <ul id="tt_account"></ul>
             </div>
             <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
-                <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:alert('ok')" style="width:80px">Ok</a>
-                <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:alert('cancel')" style="width:80px">Cancel</a>
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:privilegeConfig()" style="width:80px">设置</a>
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:alert('cancel')" style="width:80px">取消</a>
             </div>
         </div>
 	
