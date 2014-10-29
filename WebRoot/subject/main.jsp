@@ -209,7 +209,6 @@ $(document).ready(function() {
 			        <div id="accordion-4">
 						<ul>
 							<li id="deleteOperator"><a href="/financing/subject/operatorManage/operatorManage.jsp" target="main">操作员管理</a>
-							<li id="privilegeconfig"><a href="/financing/subject/operatorManage/privilegeConfig.jsp" target="main">权限设置</a>
 						</ul>
 					</div>
 			    </div>
