@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<servlet>
+		<description>处理操作员登陆</description>
+		<display-name>operator login</display-name>
+		<servlet-name>OperatorLogin</servlet-name>
+		<servlet-class>xdl.wxk.financing.servlet.OperatorLogin</servlet-class>
+	</servlet>
+  <servlet>
+    <description>处理操作员退出</description>
+    <display-name>operator exit</display-name>
+    <servlet-name>OperatorExit</servlet-name>
+    <servlet-class>xdl.wxk.financing.servlet.OperatorExit</servlet-class>
+  </servlet>
+  <servlet>
+    <description>帐户管理</description>
+    <display-name>account manage</display-name>
+    <servlet-name>AccountManage</servlet-name>
+    <servlet-class>xdl.wxk.financing.servlet.AccountManage</servlet-class>
+  </servlet>
+  <servlet>
+    <description>操作员管理</description>
+    <display-name>operator manage</display-name>
+    <servlet-name>OperatorManage</servlet-name>
+    <servlet-class>xdl.wxk.financing.servlet.OperatorManage</servlet-class>
+  </servlet>
+  <servlet>
+    <description>生成帐户树JSON数据</description>
+    <display-name>operator manage</display-name>
+    <servlet-name>JsonDataAccountTree</servlet-name>
+    <servlet-class>xdl.wxk.financing.servlet.JsonDataAccountTree</servlet-class>
+  </servlet>
+  <servlet>
+    <description>生成操作员树JSON数据</description>
+    <display-name>operator manage</display-name>
+    <servlet-name>JsonDataOperatorTree</servlet-name>
+    <servlet-class>xdl.wxk.financing.servlet.JsonDataOperatorTree</servlet-class>
+  </servlet>
+
+
+
+
+
+
+	<filter>
+		<filter-name>encoding</filter-name>
+		<filter-class>xdl.wxk.financing.filter.EncodingFilter</filter-class>
+		<init-param>
+			<param-name>charSet</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
+		<filter-name>login</filter-name>
+		<filter-class>xdl.wxk.financing.filter.LoginFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>login</filter-name>
+		<url-pattern>/subject/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>encoding</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<servlet-mapping>
+		<servlet-name>OperatorLogin</servlet-name>
+		<url-pattern>/servlet/OperatorLogin</url-pattern>
+	</servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>OperatorExit</servlet-name>
+    <url-pattern>/servlet/OperatorExit</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>AccountManage</servlet-name>
+    <url-pattern>/servlet/AccountManage</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>OperatorManage</servlet-name>
+    <url-pattern>/servlet/OperatorManage</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>JsonDataAccountTree</servlet-name>
+    <url-pattern>/servlet/JsonDataAccountTree</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>JsonDataOperatorTree</servlet-name>
+    <url-pattern>/servlet/JsonDataOperatorTree</url-pattern>
+  </servlet-mapping>
+
+</web-app>
+
