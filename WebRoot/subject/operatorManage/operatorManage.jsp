@@ -224,7 +224,7 @@ function privilegeConfig(){
 }
 
 function cancelConfig(){
-	alert("取消授权");
+	alert("取消授权-turn-三岔河");
 }
 </script>
 </head>
