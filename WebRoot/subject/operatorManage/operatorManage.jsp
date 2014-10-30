@@ -222,6 +222,10 @@ function privilegeConfig(){
 		alert(nodes[i].id);
 	}
 }
+
+function cancelConfig(){
+	alert("取消授权");
+}
 </script>
 </head>
 
@@ -242,7 +246,7 @@ function privilegeConfig(){
             </div>
             <div data-options="region:'south',border:false" style="text-align:right;padding:5px 0 0;">
                 <a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:privilegeConfig()" style="width:80px">设置</a>
-                <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:alert('cancel')" style="width:80px">取消</a>
+                <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:cancelConfig()" style="width:80px">取消</a>
             </div>
         </div>
 	

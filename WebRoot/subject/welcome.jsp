@@ -33,7 +33,11 @@ html,body{
 
 <body>
 <div>
+<<<<<<< HEAD
 welcome to bank account!
+=======
+welcome!
+>>>>>>> 8c6f1e3bd368bf68f7e84468b60a642d71cf9df4
 </div>
 </body>
 </html>
