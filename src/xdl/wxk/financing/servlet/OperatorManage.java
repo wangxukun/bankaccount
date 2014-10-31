@@ -32,13 +32,7 @@ public class OperatorManage extends HttpServlet {
 			throws ServletException, IOException {
 		String action_flag = request.getParameter("action_flag");
 		if ("privilegeConfig".equals(action_flag)) {
-			response.setContentType("application/x-json");
-			response.setCharacterEncoding("utf-8");
-			request.setCharacterEncoding("utf-8");
-			PrintWriter out = response.getWriter();
-			out.println("{\"total\":13,\"page\":3,\"records\":61,\"rows\":[{\"cell\":[27,\"操作员5\"],\"id\":1},{\"cell\":[28,\"操作员6\"],\"id\":2},{\"cell\":[29,\"操作员7\"],\"id\":3},{\"cell\":[30,\"操作员8\"],\"id\":4},{\"cell\":[31,\"操作员9\"],\"id\":5}]}");
-			out.flush();
-			out.close();
+			privilegeConfig(request,response);
 		} else if ("operatorManage".equals(action_flag)) {
 			getJsonShowOperators(request, response);
 		}else if("editing".equals(action_flag)){
@@ -53,6 +47,14 @@ public class OperatorManage extends HttpServlet {
 				System.out.println("edit "+ "\n"+wxk);
 			}
 		}
+	}
+
+	private void privilegeConfig(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		int operatorid = Integer.parseInt(request.getParameter("operatorid"));
+		String accountids = request.getParameter("accountids");
+		System.out.println("Config---"+operatorid);
+		System.out.println("Privilege---"+accountids);
 	}
 
 	private void delOperator(HttpServletRequest request,

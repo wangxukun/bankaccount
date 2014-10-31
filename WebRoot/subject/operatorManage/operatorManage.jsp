@@ -197,7 +197,7 @@ $(function(){
 			$('#privilege').window('open');
 		}
 	}
-	
+	//显示所有帐户
 	$('#tt_account').tree({
 		url : 'servlet/JsonDataAccountTree',
 		checkbox:true,
@@ -216,15 +216,78 @@ $(function(){
 	});
 	
 });
+//点击权限设置窗口中【设置】按键的处理函数
 function privilegeConfig(){
+	//取得帐户树中所有被选中的帐户节点
 	var nodes = $('#tt_account').tree('getChecked','checked');
+	//保存帐户树中的所选节点对应的帐户id
+	var accountids = [];
 	for( var i in nodes){
-		alert(nodes[i].id);
+		accountids[i]=nodes[i].id;
 	}
+	
+	//保存所要设置权限的操作员id
+	var operatorid = currentRowInfo.data.operatorid;
+	$.ajax(
+		'servlet/OperatorManage',
+		{
+			//发送前调用
+			beforeSend:function(jqXHR,settings){
+			},
+			//发送完成后
+			complete:function(jqXHR,textStatus){
+				//全局刷新页面
+//				window.location.reload();
+			},
+			//应答状态提示
+			statusCode:{
+				201: function(){
+					//关闭权限设置窗口
+					$('#privilege').window('close');
+					$.messager.show({
+						title:'提示',
+						msg:'创建成功.',
+						timeout:3000,
+						showType:'slide'
+					});
+				},
+				403: function(){
+					//关闭权限设置窗口
+					$('#privilege').window('close');
+					$.messager.show({
+						title:'提示',
+						msg:'帐户已存在.',
+						timeout:3000,
+						showType:'slide'
+					});
+				},
+				405: function(){
+					//关闭权限设置窗口
+					$('#privilege').window('close');
+					$.messager.show({
+						title:'提示',
+						msg:'非法输入.',
+						timeout:3000,
+						showType:'slide'
+					});
+				}
+			},
+			dataType:'html',
+			//不设置type，中文会出现乱码
+			type:'POST',
+			//发送的数据
+			data:{
+				'action_flag':'privilegeConfig',
+				'accountids':accountids.toString(),
+				'operatorid':operatorid
+			}
+		}
+	);
 }
 
 function cancelConfig(){
-	alert("取消授权-turn-三岔河");
+	//关闭权限设置窗口
+	$('#privilege').window('close');
 }
 </script>
 </head>
@@ -237,7 +300,7 @@ function cancelConfig(){
 	</div>
 <!-- 权限设置窗口 -->	
 	<div id="privilege">
-	<div class="easyui-layout" data-options="fit:true">
+		<div class="easyui-layout" data-options="fit:true">
             <div data-options="region:'north',split:true" style="height:50px">
             	<p style="text-align:center">在这里设置此操作员所能操作的帐户</p>
             </div>
@@ -249,9 +312,6 @@ function cancelConfig(){
                 <a class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" href="javascript:void(0)" onclick="javascript:cancelConfig()" style="width:80px">取消</a>
             </div>
         </div>
-	
-	
-		
 	</div>
 </body>
 </html>
