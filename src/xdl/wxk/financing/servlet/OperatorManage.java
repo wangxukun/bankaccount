@@ -55,6 +55,12 @@ public class OperatorManage extends HttpServlet {
 		String accountids = request.getParameter("accountids");
 		System.out.println("Config---"+operatorid);
 		System.out.println("Privilege---"+accountids);
+		
+		String [] tempAccountids = accountids.split(",");
+		int len =  tempAccountids.length;
+		for(int i = 0 ;i<len;i++){
+			Integer.parseInt(tempAccountids[i]);
+		}
 	}
 
 	private void delOperator(HttpServletRequest request,

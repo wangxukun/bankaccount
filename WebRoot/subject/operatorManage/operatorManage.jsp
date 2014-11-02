@@ -33,14 +33,20 @@ html,body{
 <script type="text/javascript" src="/financing/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="/financing/js/util.js"></script>
 <script type="text/javascript">
-//初始化当前行信息
+//初始化当前行信息---------start-----------------------------------------------
 var currentRowInfo = {
 	"rowid":-1,
 	"status":false,
 	"e":null,
 	"data":""
 };
+//初始化当前行信息---------end-------------------------------------------------
+
+
+
+
 $(function(){
+	//操作员管理表格---------------start-----------------------------------------------
 	jQuery("#grid").jqGrid({
 	      url:"servlet/OperatorManage?action_flag=operatorManage",
 	      datatype: "json",
@@ -69,14 +75,11 @@ $(function(){
 	     },
 	      hidegrid: false,
 	      autowidth:true,
-//	      footerrow:true,
 	      height:"100%",
-//	      shrinkToFit:false,
 	      hoverrows:true,
 	      rownumbers:true,
 	      rownumWidth:25,
 	      toolbar:[true,"both"],
-//	      rowList:[10,20,30],
 	      checkOnSubmit: true,
 	      pager: "#gridpager",
 	      emptyrecords: "Nothing to display",
@@ -97,6 +100,8 @@ $(function(){
 	    	  currentRowInfo.e = e;
 	    	//返回当前行的数据
 			currentRowInfo.data = jQuery("#grid").getRowData(rowid);
+			//初始化帐户树
+			ShowAccounts();
 	      }
 	 }).navGrid("#gridpager",{
 			 refresh:false,
@@ -118,7 +123,6 @@ $(function(){
 							{
 								top:50,
 								left:50,
-						//		checkOnSubmit:true,
 								closeAfterEdit:true,
 								onclickSubmit:function(params,posdata){
 									params.closeAfterEdit;
@@ -138,7 +142,6 @@ $(function(){
 						{
 							top:50,
 							left:50,
-					//		checkOnSubmit:true,
 							closeAfterEdit:true,
 							onclickSubmit:function(params,postdata){
 								params.closeAfterEdit;
@@ -171,38 +174,81 @@ $(function(){
 				cursor: "pointer"
 			}
 		 );
+	//操作员管理表格---------------end-------------------------------------------------
+	
+	
+	
+	
+	//表格随窗口大小而改变------------start--------------------------------------------
 	$(window).resize(function(){
 	  	var div = document.getElementById("jqgrid");
 	  	var w = realStyleAttrValue(div,getStyleAttrValue(div,"width"));
 		jQuery("#grid").setGridWidth(w-2,true);
 	});
+	//表格随窗口大小而改变------------end----------------------------------------------
+	
+	
+	//设置表格中字体大小--------------start------------------------------------------
 	function myAttr(){
 		jQuery("#grid").css({fontSize: '12px'});
 	}
-	//权限按键调用函数
-	function privilege(){
-		if(currentRowInfo.rowid == -1){
-			$.messager.alert("错误","请选择要设置权限的操作员所在行.","error");
-			return;
-		}else{
-			//权限设置窗口
-			$('#privilege').window({
-				title:'权限设置--'+currentRowInfo.data.operatorname,
-				width:500,
-				height:400,
-				modal:true,
-				closed:true
-			});
-			//打开权限设置窗口
-			$('#privilege').window('open');
-		}
+	//设置表格中字体大小--------------end--------------------------------------------
+});
+
+
+//权限按键调用函数------start-----------------------------------------
+function privilege(){
+	if(currentRowInfo.rowid == -1){
+		$.messager.alert("错误","请选择要设置权限的操作员所在行.","error");
+		return;
+	}else{
+		
+		//权限设置窗口
+		$('#privilege').window({
+			title:'权限设置--'+currentRowInfo.data.operatorname,
+			width:500,
+			height:400,
+			modal:true,
+			closed:true
+		});
+		//打开权限设置窗口
+		$('#privilege').window('open');
 	}
-	//显示所有帐户
+}
+//权限按键调用函数------end-------------------------------------------
+
+
+
+
+//显示所有帐户----start------------------------------------------------------------
+//当执行ShowAccounts函数，显示所有帐户
+function ShowAccounts(){
 	$('#tt_account').tree({
 		url : 'servlet/JsonDataAccountTree',
 		checkbox:true,
 		method : 'POST',
 		animate : true,
+		onLoadSuccess:function(){
+			//绑定权限  
+            $.ajax(  
+            	{
+            		url: 'servlet/ExistingPermissions?oid='+currentRowInfo.data.operatorid+'&oname='+currentRowInfo.data.operatorname,
+	            	cache:false,  
+	                dataType:'text',
+	                contentType:'text/plain; charset=utf-8',
+	                type: 'GET',
+	                success:function(data){   
+	                	
+	                //	alert("YESSSSSSSS");
+	                  /*  var array = data.split(',');  
+	                   for(var i=0;i<array.length;i++)  
+	                   {  
+	                       var node = $('#tt_account').tree('find',array[i]);  
+	                      $('#tt_account').tree('check',node.target);  
+	                   } */  
+	                }  
+	           });
+		},
 		formatter:function(node){
 	        var s = node.text;
 	        if (node.children){
@@ -214,9 +260,11 @@ $(function(){
 			accountTree : '${accountTree}'
 		}
 	});
-	
-});
-//点击权限设置窗口中【设置】按键的处理函数
+}
+//显示所有帐户----end--------------------------------------------------------------
+
+
+//点击权限设置窗口中【设置】按键的处理函数---start-----------------------------------------------
 function privilegeConfig(){
 	//取得帐户树中所有被选中的帐户节点
 	var nodes = $('#tt_account').tree('getChecked','checked');
@@ -284,11 +332,15 @@ function privilegeConfig(){
 		}
 	);
 }
+//点击权限设置窗口中【设置】按键的处理函数---end-------------------------------------------------
 
+
+//关闭权限设置窗口---------------start--------------------------------------------------
 function cancelConfig(){
 	//关闭权限设置窗口
 	$('#privilege').window('close');
 }
+//关闭权限设置窗口---------------end----------------------------------------------------
 </script>
 </head>
 

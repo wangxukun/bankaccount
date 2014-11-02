@@ -111,7 +111,7 @@ public class OperatorManageDAOImpl implements OperatorManageDAO {
 		relation.setAccounts(accounts);
 		
 		
-		//查询并获取特点操作员的细节
+		//查询并获取特定操作员的细节
 		Operator tempOperator = new Operator();
 		String sqlOperator = "select operatorid,operatorname,registerdate,updatedate from operator where operatorid=?";
 		List<Object> paramsOperator = new ArrayList<Object>();

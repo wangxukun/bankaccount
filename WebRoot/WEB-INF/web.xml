@@ -38,6 +38,13 @@
     <servlet-name>JsonDataOperatorTree</servlet-name>
     <servlet-class>xdl.wxk.financing.servlet.JsonDataOperatorTree</servlet-class>
   </servlet>
+  <servlet>
+    <description>生成特定操作员已存在的权限</description>
+    <display-name>operator manage</display-name>
+    <servlet-name>ExistingPermissions</servlet-name>
+    <servlet-class>xdl.wxk.financing.servlet.ExistingPermissions</servlet-class>
+  </servlet>
+
 
 
 
@@ -91,6 +98,10 @@
   <servlet-mapping>
     <servlet-name>JsonDataOperatorTree</servlet-name>
     <url-pattern>/servlet/JsonDataOperatorTree</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ExistingPermissions</servlet-name>
+    <url-pattern>/servlet/ExistingPermissions</url-pattern>
   </servlet-mapping>
 
 </web-app>
