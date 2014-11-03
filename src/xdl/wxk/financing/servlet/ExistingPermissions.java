@@ -2,11 +2,19 @@ package xdl.wxk.financing.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import xdl.wxk.financing.abstraction.OperatorRelation;
+import xdl.wxk.financing.dao.factory.DAOFactory;
+import xdl.wxk.financing.vo.Account;
+import xdl.wxk.financing.vo.Operator;
 
 public class ExistingPermissions extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -19,19 +27,41 @@ public class ExistingPermissions extends HttpServlet {
 			throws ServletException, IOException {
 
 		response.setContentType("text/plain; charset=utf-8");
-		
 		response.setCharacterEncoding("utf-8");
 		request.setCharacterEncoding("utf-8");
-		PrintWriter out = response.getWriter();
-		out.println("");
-		out.flush();
-		out.close();
 		
 		
-		String operatorid = request.getParameter("oid");
+		int operatorid = Integer.valueOf(request.getParameter("oid"));
 		String operatorname = request.getParameter("oname");
-		System.out.println(operatorid);
-		System.out.println(operatorname);
+		OperatorRelation oRelation;
+		Operator ope = new Operator();
+		ope.setOperatorid(operatorid);
+		ope.setOperatorname(operatorname);
+		try {
+			oRelation = DAOFactory.getOperatorManageDAOInstance().Relation(ope);
+			List<Account> accounts = oRelation.getAccounts();
+			if(!accounts.isEmpty() && accounts!=null){
+				StringBuffer strBuf = new StringBuffer();
+				Iterator<Account> iter = accounts.iterator();
+				System.out.println(operatorname+":");
+				while(iter.hasNext()){
+					int tempid = iter.next().getAccountid();
+					strBuf.append(tempid);
+					strBuf.append(",");
+				}
+				strBuf.setLength(strBuf.length()-1);
+				System.out.println(strBuf.toString());
+				
+				PrintWriter out = response.getWriter();
+				out.println(strBuf.toString());
+				out.flush();
+				out.close();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }

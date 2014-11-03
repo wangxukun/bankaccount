@@ -238,14 +238,12 @@ function ShowAccounts(){
 	                contentType:'text/plain; charset=utf-8',
 	                type: 'GET',
 	                success:function(data){   
-	                	
-	                //	alert("YESSSSSSSS");
-	                  /*  var array = data.split(',');  
+	                   var array = data.split(',');  
 	                   for(var i=0;i<array.length;i++)  
 	                   {  
 	                       var node = $('#tt_account').tree('find',array[i]);  
 	                      $('#tt_account').tree('check',node.target);  
-	                   } */  
+	                   }  
 	                }  
 	           });
 		},
