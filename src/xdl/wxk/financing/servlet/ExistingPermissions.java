@@ -43,14 +43,12 @@ public class ExistingPermissions extends HttpServlet {
 			if(!accounts.isEmpty() && accounts!=null){
 				StringBuffer strBuf = new StringBuffer();
 				Iterator<Account> iter = accounts.iterator();
-				System.out.println(operatorname+":");
 				while(iter.hasNext()){
 					int tempid = iter.next().getAccountid();
 					strBuf.append(tempid);
 					strBuf.append(",");
 				}
 				strBuf.setLength(strBuf.length()-1);
-				System.out.println(strBuf.toString());
 				
 				PrintWriter out = response.getWriter();
 				out.println(strBuf.toString());

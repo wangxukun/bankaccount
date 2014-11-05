@@ -193,4 +193,33 @@ public class OperatorManageDAOImpl implements OperatorManageDAO {
 		flag = this.jdbc.updateByPreparedStatement(sql, params);
 		return flag;
 	}
+	@Override
+	public boolean isHasPrivilege(int operatorid) throws SQLException {
+		String sql = "select operatorid from privilege where operatorid=?";
+		List<Object> params = new ArrayList<Object>();
+		params.add(operatorid);
+		List<Map<String, Object>> priv = this.jdbc.findMoreByPreparedStatement(sql, params);
+		boolean flag = priv.isEmpty();
+		return !flag;
+	}
+	@Override
+	public boolean delPrivilegeById(int operatorid) throws SQLException {
+		boolean flag = false;
+		String sql="delete from privilege where operatorid=?";
+		List<Object> params = new ArrayList<Object>();
+		params.add(operatorid);
+		flag = this.jdbc.updateByPreparedStatement(sql, params);
+		return flag;
+	}
+	@Override
+	public boolean addPrivilege(int operatorid, int accountid)
+			throws SQLException {
+		boolean flag = false;
+		String sql = "insert into privilege(operatorid,accountid) values(?,?)";
+		List<Object> params = new ArrayList<Object>();
+		params.add(operatorid);
+		params.add(accountid);
+		flag = this.jdbc.updateByPreparedStatement(sql, params);
+		return flag;
+	}
 }

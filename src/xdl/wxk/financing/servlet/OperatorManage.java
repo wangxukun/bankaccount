@@ -48,19 +48,49 @@ public class OperatorManage extends HttpServlet {
 			}
 		}
 	}
-
+	//设置用户权限
 	private void privilegeConfig(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		int operatorid = Integer.parseInt(request.getParameter("operatorid"));
 		String accountids = request.getParameter("accountids");
-		System.out.println("Config---"+operatorid);
-		System.out.println("Privilege---"+accountids);
 		
-		String [] tempAccountids = accountids.split(",");
-		int len =  tempAccountids.length;
-		for(int i = 0 ;i<len;i++){
-			Integer.parseInt(tempAccountids[i]);
+		if("".equals(accountids)){
+			boolean flag = false;
+			try {
+				flag = DAOFactory.getOperatorManageDAOInstance().isHasPrivilege(operatorid);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(flag){
+				//删除此操作员所有的帐户权限
+				try {
+					DAOFactory.getOperatorManageDAOInstance().delPrivilegeById(operatorid);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else{
+				System.out.println("没有赋予任何权限");
+			}
+		}else{
+			try {
+				//删除此操作员原有的帐户权限
+				DAOFactory.getOperatorManageDAOInstance().delPrivilegeById(operatorid);
+				//取得所要授权的帐户ID字符数组
+				String [] tempAccountids = accountids.split(",");
+				int len =  tempAccountids.length;
+				//为操作员授权
+				for(int i = 0 ;i<len;i++){
+					int accountid = Integer.parseInt(tempAccountids[i]);
+					DAOFactory.getOperatorManageDAOInstance().addPrivilege(operatorid, accountid);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
 		}
+		
 	}
 
 	private void delOperator(HttpServletRequest request,
