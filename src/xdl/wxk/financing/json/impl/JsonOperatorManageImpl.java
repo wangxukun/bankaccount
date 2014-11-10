@@ -159,8 +159,9 @@ public class JsonOperatorManageImpl implements JsonOperatorManage {
 		Iterator<Map<String,Object>> iter = operators.iterator();
 		boolean hasManager = false;
 		boolean hasOperator = false;
-		
-		
+		//保存children中的对象
+		JSONArray arrayManager = new JSONArray();
+		JSONArray arrayOperator = new JSONArray();
 		while(iter.hasNext()){
 			Map<String,Object> temp = iter.next();
 			
@@ -181,17 +182,20 @@ public class JsonOperatorManageImpl implements JsonOperatorManage {
 			}
 			if(!isManager.isEmpty()){
 				hasManager = true;
-				manager.accumulate("children", isManager);
+				arrayManager.add(isManager);
+				
 			}
 			if(!isOperator.isEmpty()){
 				hasOperator = true;
-				operator.accumulate("children", isOperator);
+				arrayOperator.add(isOperator);
 			}
 		}
 		if(hasManager){
+			manager.accumulate("children", arrayManager);
 			array.add(manager);
 		}
 		if(hasOperator){
+			operator.accumulate("children", arrayOperator);
 			array.add(operator);
 		}
 		return array;
