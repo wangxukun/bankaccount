@@ -45,8 +45,11 @@ public class ExistingPermissions extends HttpServlet {
 				Iterator<Account> iter = accounts.iterator();
 				while(iter.hasNext()){
 					int tempid = iter.next().getAccountid();
-					strBuf.append(tempid);
-					strBuf.append(",");
+					int level = DAOFactory.getOperatorManageDAOInstance().findLevel(operatorid, tempid);
+					if(level != -1){
+						strBuf.append(tempid);
+						strBuf.append(",");
+					}
 				}
 				strBuf.setLength(strBuf.length()-1);
 				

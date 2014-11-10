@@ -177,17 +177,32 @@ public class OperatorManageDAOProxy implements OperatorManageDAO{
 		return flag;
 	}
 	@Override
-	public boolean addPrivilege(int operatorid, int accountid)
+	public boolean addPrivilege(int operatorid, int accountid,int level)
 			throws SQLException {
 		boolean flag = false;
 			try{
 				this.jdbc.getConnection();
-				flag = this.dao.addPrivilege(operatorid, accountid);
+				flag = this.dao.addPrivilege(operatorid, accountid,level);
 			}catch(Exception e){
 				throw e;
 			}finally{
 				this.jdbc.releaseConnection();
 			}
 		return flag;
+	}
+	@Override
+	public int findLevel(int operatorid, int accountid) throws SQLException {
+		int level = 0;
+		if(this.isHasPrivilege(operatorid)){
+			try{
+				this.jdbc.getConnection();
+				level = this.dao.findLevel(operatorid, accountid);
+			}catch(Exception e){
+				throw e;
+			}finally{
+				this.jdbc.releaseConnection();
+			}
+		}
+		return level;
 	}
 }

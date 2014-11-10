@@ -212,14 +212,28 @@ public class OperatorManageDAOImpl implements OperatorManageDAO {
 		return flag;
 	}
 	@Override
-	public boolean addPrivilege(int operatorid, int accountid)
+	public boolean addPrivilege(int operatorid, int accountid,int level)
 			throws SQLException {
 		boolean flag = false;
-		String sql = "insert into privilege(operatorid,accountid) values(?,?)";
+		String sql = "insert into privilege(operatorid,accountid,level) values(?,?,?)";
 		List<Object> params = new ArrayList<Object>();
 		params.add(operatorid);
 		params.add(accountid);
+		params.add(level);
 		flag = this.jdbc.updateByPreparedStatement(sql, params);
 		return flag;
+	}
+	@Override
+	public int findLevel(int operatorid, int accountid) throws SQLException {
+		int level = 0;
+		String sql = "select level from privilege where operatorid=? and accountid=?";
+		List<Object> params = new ArrayList<Object>();
+		params.add(operatorid);
+		params.add(accountid);
+		Map<String,Object> map = this.jdbc.findSingleByPreparedStatement(sql, params);
+		if(!map.isEmpty()){
+			level = Integer.parseInt(map.get("level").toString());
+		}
+		return level;
 	}
 }

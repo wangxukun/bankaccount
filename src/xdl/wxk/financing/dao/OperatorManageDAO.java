@@ -26,5 +26,7 @@ public interface OperatorManageDAO {
 	//删除指定操作员的所有权限
 	boolean delPrivilegeById(int operatorid) throws SQLException;
 	//操作员授权
-	boolean addPrivilege(int operatorid,int accountid) throws SQLException;
+	boolean addPrivilege(int operatorid,int accountid,int level) throws SQLException;
+	//查找特点操作员对应特点帐户的权限等级
+	int findLevel(int operatorid,int accountid) throws SQLException;
 }

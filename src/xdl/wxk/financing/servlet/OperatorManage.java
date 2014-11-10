@@ -53,6 +53,7 @@ public class OperatorManage extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		int operatorid = Integer.parseInt(request.getParameter("operatorid"));
 		String accountids = request.getParameter("accountids");
+		String superaccountids = request.getParameter("superaccountids");
 		
 		if("".equals(accountids)){
 			boolean flag = false;
@@ -77,13 +78,24 @@ public class OperatorManage extends HttpServlet {
 			try {
 				//删除此操作员原有的帐户权限
 				DAOFactory.getOperatorManageDAOInstance().delPrivilegeById(operatorid);
+				
+				//取得所要授权的帐户父ID字符数组
+				String [] tempuperaccountids = superaccountids.split(",");
+				int lenA =  tempuperaccountids.length;
+				//为操作员授权
+				for(int i = 0 ;i<lenA;i++){
+					int accountid = Integer.parseInt(tempuperaccountids[i]);
+					DAOFactory.getOperatorManageDAOInstance().addPrivilege(operatorid, accountid,-1);
+				}
+				
+				
 				//取得所要授权的帐户ID字符数组
 				String [] tempAccountids = accountids.split(",");
-				int len =  tempAccountids.length;
+				int lenB =  tempAccountids.length;
 				//为操作员授权
-				for(int i = 0 ;i<len;i++){
+				for(int i = 0 ;i<lenB;i++){
 					int accountid = Integer.parseInt(tempAccountids[i]);
-					DAOFactory.getOperatorManageDAOInstance().addPrivilege(operatorid, accountid);
+					DAOFactory.getOperatorManageDAOInstance().addPrivilege(operatorid, accountid,10);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();

@@ -157,13 +157,20 @@ public class JsonOperatorManageImpl implements JsonOperatorManage {
 		operator.accumulate("text", "操作员");
 		operator.accumulate("state", "closed");
 		Iterator<Map<String,Object>> iter = operators.iterator();
+		boolean hasManager = false;
+		boolean hasOperator = false;
+		
+		
 		while(iter.hasNext()){
 			Map<String,Object> temp = iter.next();
-			JSONObject isManager = new JSONObject();
-			JSONObject isOperator = new JSONObject();
+			
 			Operator ope = new Operator();
 			ope.setOperatorid((Integer)temp.get("operatorid"));
 			ope.setOperatorname(temp.get("operatorname").toString());
+			
+			JSONObject isManager = new JSONObject();
+			JSONObject isOperator = new JSONObject();
+			
 			//参数100表示是管理员
 			if(DAOFactory.getOperatorManageDAOInstance().checkOperatorLevel(ope, 100)){
 				isManager.accumulate("id", ope.getOperatorid());
@@ -173,14 +180,20 @@ public class JsonOperatorManageImpl implements JsonOperatorManage {
 				isOperator.accumulate("text", ope.getOperatorname());
 			}
 			if(!isManager.isEmpty()){
+				hasManager = true;
 				manager.accumulate("children", isManager);
 			}
 			if(!isOperator.isEmpty()){
+				hasOperator = true;
 				operator.accumulate("children", isOperator);
 			}
 		}
-		array.add(manager);
-		array.add(operator);
+		if(hasManager){
+			array.add(manager);
+		}
+		if(hasOperator){
+			array.add(operator);
+		}
 		return array;
 	}
 }

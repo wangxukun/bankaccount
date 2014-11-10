@@ -271,7 +271,13 @@ function privilegeConfig(){
 	for( var i in nodes){
 		accountids[i]=nodes[i].id;
 	}
-	
+	//取得有部分子节点被选中的所有父节点
+	var supernodes = $('#tt_account').tree('getChecked','indeterminate');
+	//保存帐户树中的所选节点的父节点对应的帐户ID
+	var superaccountids = [];
+	for(var i in supernodes){
+		superaccountids[i]=supernodes[i].id;
+	}
 	//保存所要设置权限的操作员id
 	var operatorid = currentRowInfo.data.operatorid;
 	$.ajax(
@@ -325,6 +331,7 @@ function privilegeConfig(){
 			data:{
 				'action_flag':'privilegeConfig',
 				'accountids':accountids.toString(),
+				'superaccountids':superaccountids.toString(),
 				'operatorid':operatorid
 			}
 		}
