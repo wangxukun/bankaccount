@@ -1,6 +1,3 @@
-bankaccount
-===========
-
+﻿bankaccount
 Bank deposit journal
-
-原始项目
+基础项目
