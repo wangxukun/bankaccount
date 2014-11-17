@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import xdl.wxk.financing.abstraction.OperatorRelation;
 import xdl.wxk.financing.dao.OperatorManageDAO;
 import xdl.wxk.financing.dao.impl.OperatorManageDAOImpl;
 import xdl.wxk.financing.jdbc.JdbcUtils;
@@ -95,43 +94,19 @@ public class OperatorManageDAOProxy implements OperatorManageDAO{
 		}
 		return flag;
 	}
+
 	@Override
-	public OperatorRelation Relation(Operator operator) throws SQLException {
-		OperatorRelation relation;
-		try {
-			relation = this.dao.Relation(operator);
-		} catch (Exception e) {
-			throw e;
-		}finally{
-			this.jdbc.releaseConnection();
-		}
-		return relation;
-	}
-	@Override
-	public LoginInfo getLoginInfo(OperatorRelation relation)
+	public LoginInfo getLoginInfo(Operator operator)
 			throws SQLException {
 		LoginInfo info;
 		try {
-			info = this.dao.getLoginInfo(relation);
+			info = this.dao.getLoginInfo(operator);
 		} catch (Exception e) {
 			throw e;
 		}finally{
 			this.jdbc.releaseConnection();
 		}
 		return info;
-	}
-	@Override
-	public boolean checkOperatorLevel(Operator operator, int level)
-			throws SQLException {
-		boolean flag = false;
-		try {
-			flag = this.dao.checkOperatorLevel(operator, level);
-		} catch (Exception e) {
-			throw e;
-		}finally{
-			this.jdbc.releaseConnection();
-		}
-		return flag;
 	}
 	@Override
 	public boolean delOperator(Operator operator) throws SQLException {

@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import xdl.wxk.financing.abstraction.OperatorRelation;
 import xdl.wxk.financing.vo.LoginInfo;
 import xdl.wxk.financing.vo.Operator;
 
@@ -17,10 +16,7 @@ public interface OperatorManageDAO {
 	//判断操作员是否存在
 	boolean isExist(Operator operator) throws SQLException;
 	boolean delOperator(Operator operator) throws SQLException;
-	OperatorRelation Relation(Operator operator) throws SQLException;
-	LoginInfo getLoginInfo(OperatorRelation relation) throws SQLException;
-	//判断操作员权限
-	boolean checkOperatorLevel(Operator operator,int level)  throws SQLException;
+	LoginInfo getLoginInfo(Operator operator) throws SQLException;
 	//判断操作员是不有一定的权限
 	boolean isHasPrivilege(int operatorid) throws SQLException;
 	//删除指定操作员的所有权限

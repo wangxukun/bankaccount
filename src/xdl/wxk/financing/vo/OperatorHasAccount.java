@@ -1,17 +1,9 @@
 package xdl.wxk.financing.vo;
 
-import java.util.Date;
-
-public class Lasttimestatus {
+public class OperatorHasAccount {
 	private int operatorid;
 	private int accountid;
-	private Date logintime;
-	public Date getLogintime() {
-		return logintime;
-	}
-	public void setLogintime(Date logintime) {
-		this.logintime = logintime;
-	}
+	private int level;
 	public int getOperatorid() {
 		return operatorid;
 	}
@@ -24,10 +16,15 @@ public class Lasttimestatus {
 	public void setAccountid(int accountid) {
 		this.accountid = accountid;
 	}
+	public int getLevel() {
+		return level;
+	}
+	public void setLevel(int level) {
+		this.level = level;
+	}
 	@Override
 	public String toString() {
-		return "Lasttimestatus [operatorid=" + operatorid + ", accountid="
-				+ accountid + ", logintime=" + logintime + "]";
+		return "OperatorHasAccount [operatorid=" + operatorid + ", accountid="
+				+ accountid + ", level=" + level + "]";
 	}
-	
 }

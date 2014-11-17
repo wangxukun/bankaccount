@@ -121,7 +121,7 @@ $(document).ready(function() {
 				<ul>
 					<li>操作员：${info.operatorname }
 					<li>帐户：${info.accountname }
-					<li>年月：${info.logintime }
+					<li>年月：${info.peroid }
 				</ul>
 			</c:if>
 		</div>
