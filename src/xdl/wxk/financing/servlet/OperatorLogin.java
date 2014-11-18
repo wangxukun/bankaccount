@@ -67,8 +67,9 @@ public class OperatorLogin extends HttpServlet {
 				System.out.println(info);
 				//判断操作员是否是管理员
 				JSONArray accountTree;
-				if(info.getLevel() == 100){
+				if(DAOFactory.getOperatorManageDAOInstance().isAdmin(operator)){
 					accountTree = JsonDAOFactory.getJsonAccountManageDAOInstance().getAccountsForEasyTree(DAOFactory.getAccountManageDAOInstance().findAllAccounts());
+					System.out.println("是管理员");
 				}else{
 					//需要改进
 					accountTree = JsonDAOFactory.getJsonAccountManageDAOInstance().getAccountsForEasyTree(DAOFactory.getAccountManageDAOInstance().findAllAccounts());

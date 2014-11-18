@@ -173,7 +173,7 @@ public class JsonOperatorManageImpl implements JsonOperatorManage {
 			JSONObject isOperator = new JSONObject();
 			
 			//参数100表示是管理员
-			if(DAOFactory.getOperatorManageDAOInstance().checkOperatorLevel(ope, 100)){
+			if(DAOFactory.getOperatorManageDAOInstance().isAdmin(ope)){
 				isManager.accumulate("id", ope.getOperatorid());
 				isManager.accumulate("text", ope.getOperatorname());
 			}else{

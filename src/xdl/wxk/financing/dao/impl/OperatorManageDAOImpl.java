@@ -5,7 +5,6 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -86,7 +85,7 @@ public class OperatorManageDAOImpl implements OperatorManageDAO {
 	@Override
 	public LoginInfo getLoginInfo(Operator operator) throws SQLException {
 		LoginInfo info = new LoginInfo();
-		String sql = "select operatorid,operatorname,accountid,accountname,level,period from logininfo where operatorname=?";
+		String sql = "select operatorid,operatorname,accountid,accountname,level,period from logininfo where operatorid=?";
 		List<Object> params = new ArrayList<Object>();
 		params.add(operator.getOperatorid());
 		Map<String,Object> map = this.jdbc.findSingleByPreparedStatement(sql, params);
@@ -95,7 +94,9 @@ public class OperatorManageDAOImpl implements OperatorManageDAO {
 			info.setOperatorname(map.get("operatorname").toString());
 			info.setAccountid(Integer.parseInt(map.get("accountid").toString()));
 			info.setAccountname(map.get("accountname").toString());
-			info.setLevel(Integer.parseInt(map.get("level").toString()));
+			System.out.println("----------->>>"+map.get("operatorid"));
+			System.out.println("----------->>>"+map.get("level"));
+//			info.setLevel(Integer.parseInt(map.get("level").toString()));
 			Date dateTemp = (Date)map.get("period");
 			
 			String dateString = DateFormat.getDateInstance(DateFormat.FULL,Locale.CHINA).format(dateTemp);
@@ -116,7 +117,7 @@ public class OperatorManageDAOImpl implements OperatorManageDAO {
 	}
 	@Override
 	public boolean isHasPrivilege(int operatorid) throws SQLException {
-		String sql = "select operatorid from privilege where operatorid=?";
+		String sql = "select operatorid from operator_has_account where operatorid=?";
 		List<Object> params = new ArrayList<Object>();
 		params.add(operatorid);
 		List<Map<String, Object>> priv = this.jdbc.findMoreByPreparedStatement(sql, params);
@@ -126,7 +127,7 @@ public class OperatorManageDAOImpl implements OperatorManageDAO {
 	@Override
 	public boolean delPrivilegeById(int operatorid) throws SQLException {
 		boolean flag = false;
-		String sql="delete from privilege where operatorid=?";
+		String sql="delete from operator_has_account where operatorid=?";
 		List<Object> params = new ArrayList<Object>();
 		params.add(operatorid);
 		flag = this.jdbc.updateByPreparedStatement(sql, params);
@@ -136,7 +137,7 @@ public class OperatorManageDAOImpl implements OperatorManageDAO {
 	public boolean addPrivilege(int operatorid, int accountid,int level)
 			throws SQLException {
 		boolean flag = false;
-		String sql = "insert into privilege(operatorid,accountid,level) values(?,?,?)";
+		String sql = "insert into operator_has_account(operatorid,accountid,level) values(?,?,?)";
 		List<Object> params = new ArrayList<Object>();
 		params.add(operatorid);
 		params.add(accountid);
@@ -145,16 +146,13 @@ public class OperatorManageDAOImpl implements OperatorManageDAO {
 		return flag;
 	}
 	@Override
-	public int findLevel(int operatorid, int accountid) throws SQLException {
-		int level = 0;
-		String sql = "select level from privilege where operatorid=? and accountid=?";
+	public boolean isAdmin(Operator operator) throws SQLException {
+		boolean flag = false;
+		String sql = "select b.operatorid,b.accountid from (select accountid from account where parentid=0) as a ,operator_has_account as b where a.accountid = b.accountid and b.operatorid=? and b.level=100";
 		List<Object> params = new ArrayList<Object>();
-		params.add(operatorid);
-		params.add(accountid);
-		Map<String,Object> map = this.jdbc.findSingleByPreparedStatement(sql, params);
-		if(!map.isEmpty()){
-			level = Integer.parseInt(map.get("level").toString());
-		}
-		return level;
+		params.add(operator.getOperatorid());
+		Map<String,Object> ope = this.jdbc.findSingleByPreparedStatement(sql, params);
+		flag = ope.isEmpty();
+		return !flag;
 	}
 }
