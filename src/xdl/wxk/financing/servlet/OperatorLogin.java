@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 
-import xdl.wxk.financing.abstraction.OperatorRelation;
 import xdl.wxk.financing.dao.factory.DAOFactory;
 import xdl.wxk.financing.json.factory.JsonDAOFactory;
 import xdl.wxk.financing.vo.LoginInfo;
@@ -63,16 +62,17 @@ public class OperatorLogin extends HttpServlet {
 			flag = DAOFactory.getOperatorManageDAOInstance()
 					.checkOperatorLogin(operator);
 			if (flag) {
-				OperatorRelation relation = DAOFactory.getOperatorManageDAOInstance().Relation(operator);
-				
-				LoginInfo info = DAOFactory.getOperatorManageDAOInstance().getLoginInfo(relation);
-				
+				System.out.println(operator);
+				LoginInfo info = DAOFactory.getOperatorManageDAOInstance().getLoginInfo(operator);
+				System.out.println(info);
 				//判断操作员是否是管理员
 				JSONArray accountTree;
-				if(DAOFactory.getOperatorManageDAOInstance().checkOperatorLevel(operator, 100)){
+				if(DAOFactory.getOperatorManageDAOInstance().isAdmin(operator)){
 					accountTree = JsonDAOFactory.getJsonAccountManageDAOInstance().getAccountsForEasyTree(DAOFactory.getAccountManageDAOInstance().findAllAccounts());
+					System.out.println("是管理员");
 				}else{
-					accountTree = JsonDAOFactory.getJsonAccountManageDAOInstance().getAccountsForEasyTree(relation.getAccounts());
+					//需要改进
+					accountTree = JsonDAOFactory.getJsonAccountManageDAOInstance().getAccountsForEasyTree(DAOFactory.getAccountManageDAOInstance().findAllAccounts());
 				}
 				List<Map<String, Object>> list = DAOFactory.getOperatorManageDAOInstance().findAllOperator();
 				JSONArray operatorTree = JsonDAOFactory.getJsonOperatorManageDAOInstance().getOperatorForEasyTree(list);

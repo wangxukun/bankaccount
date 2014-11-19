@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import xdl.wxk.financing.abstraction.OperatorRelation;
 import xdl.wxk.financing.dao.factory.DAOFactory;
 import xdl.wxk.financing.vo.Account;
 import xdl.wxk.financing.vo.Operator;
@@ -33,13 +32,12 @@ public class ExistingPermissions extends HttpServlet {
 		
 		int operatorid = Integer.valueOf(request.getParameter("oid"));
 		String operatorname = request.getParameter("oname");
-		OperatorRelation oRelation;
 		Operator ope = new Operator();
 		ope.setOperatorid(operatorid);
 		ope.setOperatorname(operatorname);
 		try {
-			oRelation = DAOFactory.getOperatorManageDAOInstance().Relation(ope);
-			List<Account> accounts = oRelation.getAccounts();
+			//需要改进
+			List<Account> accounts = DAOFactory.getAccountManageDAOInstance().findAllAccounts();
 			if(!accounts.isEmpty() && accounts!=null){
 				StringBuffer strBuf = new StringBuffer();
 				Iterator<Account> iter = accounts.iterator();

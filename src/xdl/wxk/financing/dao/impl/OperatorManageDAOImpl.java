@@ -5,17 +5,13 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import xdl.wxk.financing.abstraction.OperatorRelation;
 import xdl.wxk.financing.dao.OperatorManageDAO;
 import xdl.wxk.financing.jdbc.JdbcUtils;
 import xdl.wxk.financing.vo.LoginInfo;
-import xdl.wxk.financing.vo.Account;
-import xdl.wxk.financing.vo.Lasttimestatus;
 import xdl.wxk.financing.vo.Operator;
 
 public class OperatorManageDAOImpl implements OperatorManageDAO {
@@ -87,102 +83,28 @@ public class OperatorManageDAOImpl implements OperatorManageDAO {
 		return !flag;
 	}
 	@Override
-	public OperatorRelation Relation(Operator operator) throws SQLException {
-		OperatorRelation relation = new OperatorRelation();
-		//查询特定操作员有权操作的帐户ID集合，并获得每个帐户的细节
-		String sqlAccountids = "select accountid from privilege where operatorid=?";
+	public LoginInfo getLoginInfo(Operator operator) throws SQLException {
+		LoginInfo info = new LoginInfo();
+		String sql = "select operatorid,operatorname,accountid,accountname,level,period from logininfo where operatorid=?";
 		List<Object> params = new ArrayList<Object>();
 		params.add(operator.getOperatorid());
-		List<Map<String,Object>> list = this.jdbc.findMoreByPreparedStatement(sqlAccountids, params);
-		Iterator<Map<String,Object>> iter = list.iterator();
-		List<Account> accounts = new ArrayList<Account>();
-		while(iter.hasNext()){
-			Map<String,Object> map = iter.next();
-			String sqlAccounts = "select accountid,parentid,accountname from account where accountid=?";
-			List<Object> paramsTemp = new ArrayList<Object>();
-			paramsTemp.add(map.get("accountid"));
-			Map<String,Object> accountMap = this.jdbc.findSingleByPreparedStatement(sqlAccounts, paramsTemp);
-			Account accountTemp = new Account();
-			accountTemp.setAccountid(Integer.parseInt(accountMap.get("accountid").toString()));
-			accountTemp.setParentid(Integer.parseInt(accountMap.get("parentid").toString()));
-			accountTemp.setAccountname(accountMap.get("accountname").toString());
-			accounts.add(accountTemp);
-		}
-		relation.setAccounts(accounts);
-		
-		
-		//查询并获取特定操作员的细节
-		Operator tempOperator = new Operator();
-		String sqlOperator = "select operatorid,operatorname,registerdate,updatedate from operator where operatorid=?";
-		List<Object> paramsOperator = new ArrayList<Object>();
-		paramsOperator.add(operator.getOperatorid());
-		Map<String,Object> mapOperator = this.jdbc.findSingleByPreparedStatement(sqlOperator, paramsOperator);
-		if(!mapOperator.isEmpty()){
-			tempOperator.setOperatorid(Integer.parseInt(mapOperator.get("operatorid").toString()));
-			tempOperator.setOperatorname(mapOperator.get("operatorname").toString());
-			tempOperator.setRegisterdate((Date)mapOperator.get("registerdate"));
-			tempOperator.setUpdatedate((Date)mapOperator.get("updatedate"));
-		}
-		relation.setOperator(tempOperator);
-		
-		
-		//查询上次登陆信息
-		Lasttimestatus status = new Lasttimestatus();
-		String sqlLastTimeStatus= "select operatorid,accountid,logintime from lasttimestatus where operatorid=?";
-		List<Object> paramsStatus = new ArrayList<Object>();
-		paramsStatus.add(tempOperator.getOperatorid());
-		Map<String,Object> mapStatus = this.jdbc.findSingleByPreparedStatement(sqlLastTimeStatus, paramsStatus);
-		if(!mapStatus.isEmpty()){
-			status.setOperatorid(Integer.parseInt(mapStatus.get("operatorid").toString()));
-			status.setAccountid(Integer.parseInt(mapStatus.get("accountid").toString()));
-			status.setLogintime((Date)mapStatus.get("logintime"));
-		}
-		relation.setStatus(status);
-		
-		return relation;
-	}
-	@Override
-	public LoginInfo getLoginInfo(OperatorRelation relation) throws SQLException {
-		LoginInfo info = new LoginInfo();
-		String sql = "select operatorname,accountname,logintime from logininfo where operatorname=?";
-		List<Object> params = new ArrayList<Object>();
-		params.add(relation.getOperator().getOperatorname());
 		Map<String,Object> map = this.jdbc.findSingleByPreparedStatement(sql, params);
 		if(!map.isEmpty()){
+			info.setOperatorid(Integer.parseInt(map.get("operatorid").toString()));
 			info.setOperatorname(map.get("operatorname").toString());
+			info.setAccountid(Integer.parseInt(map.get("accountid").toString()));
 			info.setAccountname(map.get("accountname").toString());
-			Date dateTemp = (Date)map.get("logintime");
+			System.out.println("----------->>>"+map.get("operatorid"));
+			System.out.println("----------->>>"+map.get("level"));
+//			info.setLevel(Integer.parseInt(map.get("level").toString()));
+			Date dateTemp = (Date)map.get("period");
 			
 			String dateString = DateFormat.getDateInstance(DateFormat.FULL,Locale.CHINA).format(dateTemp);
 			String str = dateString.substring(0,dateString.indexOf("月")+1);
 			
-			info.setLogintime(str);
+			info.setPeroid(str);
 		}
-		boolean isManager = false;
-		isManager = this.checkOperatorLevel(relation.getOperator(), 100);
-		info.setIsManager(isManager);
 		return info;
-	}
-	@Override
-	public boolean checkOperatorLevel(Operator operator, int level)  throws SQLException{
-		boolean flag = false;
-		String sql="select distinct operatorid from privilege where level=?";
-		List<Object> params = new ArrayList<Object>();
-		params.add(level);
-		List<Map<String, Object>> list = this.jdbc.findMoreByPreparedStatement(sql, params);
-		if(list.isEmpty()){
-			flag = false;
-		}
-		else{
-			Iterator<Map<String, Object>> iter = list.iterator();
-			while(iter.hasNext()){
-				Map<String,Object> temp = iter.next();
-				if(operator.getOperatorid() == (Integer)temp.get("operatorid")){
-					flag = true;
-				}
-			}
-		}
-		return flag;
 	}
 	@Override
 	public boolean delOperator(Operator operator) throws SQLException {
@@ -195,7 +117,7 @@ public class OperatorManageDAOImpl implements OperatorManageDAO {
 	}
 	@Override
 	public boolean isHasPrivilege(int operatorid) throws SQLException {
-		String sql = "select operatorid from privilege where operatorid=?";
+		String sql = "select operatorid from operator_has_account where operatorid=?";
 		List<Object> params = new ArrayList<Object>();
 		params.add(operatorid);
 		List<Map<String, Object>> priv = this.jdbc.findMoreByPreparedStatement(sql, params);
@@ -205,7 +127,7 @@ public class OperatorManageDAOImpl implements OperatorManageDAO {
 	@Override
 	public boolean delPrivilegeById(int operatorid) throws SQLException {
 		boolean flag = false;
-		String sql="delete from privilege where operatorid=?";
+		String sql="delete from operator_has_account where operatorid=?";
 		List<Object> params = new ArrayList<Object>();
 		params.add(operatorid);
 		flag = this.jdbc.updateByPreparedStatement(sql, params);
@@ -215,7 +137,7 @@ public class OperatorManageDAOImpl implements OperatorManageDAO {
 	public boolean addPrivilege(int operatorid, int accountid,int level)
 			throws SQLException {
 		boolean flag = false;
-		String sql = "insert into privilege(operatorid,accountid,level) values(?,?,?)";
+		String sql = "insert into operator_has_account(operatorid,accountid,level) values(?,?,?)";
 		List<Object> params = new ArrayList<Object>();
 		params.add(operatorid);
 		params.add(accountid);
@@ -224,16 +146,13 @@ public class OperatorManageDAOImpl implements OperatorManageDAO {
 		return flag;
 	}
 	@Override
-	public int findLevel(int operatorid, int accountid) throws SQLException {
-		int level = 0;
-		String sql = "select level from privilege where operatorid=? and accountid=?";
+	public boolean isAdmin(Operator operator) throws SQLException {
+		boolean flag = false;
+		String sql = "select b.operatorid,b.accountid from (select accountid from account where parentid=0) as a ,operator_has_account as b where a.accountid = b.accountid and b.operatorid=? and b.level=100";
 		List<Object> params = new ArrayList<Object>();
-		params.add(operatorid);
-		params.add(accountid);
-		Map<String,Object> map = this.jdbc.findSingleByPreparedStatement(sql, params);
-		if(!map.isEmpty()){
-			level = Integer.parseInt(map.get("level").toString());
-		}
-		return level;
+		params.add(operator.getOperatorid());
+		Map<String,Object> ope = this.jdbc.findSingleByPreparedStatement(sql, params);
+		flag = ope.isEmpty();
+		return !flag;
 	}
 }

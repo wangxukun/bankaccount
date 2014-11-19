@@ -20,7 +20,7 @@ public class JdbcUtils {
 	// 数据库的驱动信息
 	private final String DRIVER = "com.mysql.jdbc.Driver";
 	// 访问数据库的地址
-	private final String URL = "jdbc:mysql://localhost:3306/bankAccount";
+	private final String URL = "jdbc:mysql://localhost:3306/bankAccounts";
 
 	// 数据库的链接
 	private Connection connection;

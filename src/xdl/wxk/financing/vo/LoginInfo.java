@@ -1,20 +1,21 @@
 package xdl.wxk.financing.vo;
 
+
 public class LoginInfo {
+	private int operatorid;
 	private String operatorname;
+	private int accountid;
 	private String accountname;
-	private String logintime;
-	private boolean isManager;
-	
+	private int level;
+	private String peroid;
 	public LoginInfo() {
+		
 	}
-	
-	public LoginInfo(String operatorname, String accountname, String logintime,boolean isManager) {
-		super();
-		this.operatorname = operatorname;
-		this.accountname = accountname;
-		this.logintime = logintime;
-		this.isManager = isManager;
+	public int getOperatorid() {
+		return operatorid;
+	}
+	public void setOperatorid(int operatorid) {
+		this.operatorid = operatorid;
 	}
 	public String getOperatorname() {
 		return operatorname;
@@ -22,32 +23,35 @@ public class LoginInfo {
 	public void setOperatorname(String operatorname) {
 		this.operatorname = operatorname;
 	}
+	public int getAccountid() {
+		return accountid;
+	}
+	public void setAccountid(int accountid) {
+		this.accountid = accountid;
+	}
 	public String getAccountname() {
 		return accountname;
 	}
 	public void setAccountname(String accountname) {
 		this.accountname = accountname;
 	}
-	public String getLogintime() {
-		return logintime;
+	public int getLevel() {
+		return level;
 	}
-	public void setLogintime(String logintime) {
-		this.logintime = logintime;
+	public void setLevel(int level) {
+		this.level = level;
 	}
-	
-	public boolean getIsManager() {
-		return isManager;
+	public String getPeroid() {
+		return peroid;
 	}
-
-	public void setIsManager(boolean isManager) {
-		this.isManager = isManager;
+	public void setPeroid(String peroid) {
+		this.peroid = peroid;
 	}
-
 	@Override
 	public String toString() {
-		return "LoginInfo [operatorname=" + operatorname + ", accountname="
-				+ accountname + ", logintime=" + logintime + ", isManager="
-				+ isManager + "]";
+		return "LoginInfo [operatorid=" + operatorid + ", operatorname="
+				+ operatorname + ", accountid=" + accountid + ", accountname="
+				+ accountname + ", level=" + level + ", peroid=" + peroid + "]";
 	}
 	
 }

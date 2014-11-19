@@ -121,7 +121,7 @@ $(document).ready(function() {
 				<ul>
 					<li>操作员：${info.operatorname }
 					<li>帐户：${info.accountname }
-					<li>年月：${info.logintime }
+					<li>年月：${info.peroid }
 				</ul>
 			</c:if>
 		</div>
@@ -180,7 +180,7 @@ $(document).ready(function() {
 				</div> 
 		    </div>
 		    
-		    <c:if test="${info.isManager == true }">
+		    <c:if test="${info.level == 100 }">
 			    <div title="账户管理" data-options="iconCls:'icon-man',selected:true" style="padding:10px;">
 			        <div id="accordionLeft-2">
 						<ul>
@@ -194,7 +194,7 @@ $(document).ready(function() {
 		    <div title="业务处理" data-options="iconCls:'icon-man',selected:true" style="padding:10px;">
 		        <div id="accordion-3">
 					<ul>
-						<c:if test="${info.isManager == true }">
+						<c:if test="${info.level == 100 }">
 							<li>数据录入
 							<li>数据修改
 						</c:if>
@@ -204,7 +204,7 @@ $(document).ready(function() {
 				</div>
 		    </div>
 		    
-		    <c:if test="${info.isManager == true }">
+		    <c:if test="${info.level == 100 }">
 			    <div title="用户管理" data-options="iconCls:'icon-man',selected:true" style="padding:10px;">
 			        <div id="accordion-4">
 						<ul>

@@ -1,3 +1,7 @@
+﻿
 ﻿bankaccount
+===========
+
 Bank deposit journal
-基础项目
+
+重构数据库
