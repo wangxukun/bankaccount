@@ -28,17 +28,4 @@ public class PageInfoDAOProxy implements PageInfoDAO {
 		}
 		return info;
 	}
-	@Override
-	public PageInfo getOperatorInfoPageInfo(int offset, int rowCount) throws SQLException {
-		PageInfo info;
-		try {
-			info = this.dao.getOperatorInfoPageInfo(offset, rowCount);
-		} catch (Exception e) {
-			throw e;
-		}finally{
-			this.jdbc.releaseConnection();
-		}
-		
-		return info;
-	}
 }

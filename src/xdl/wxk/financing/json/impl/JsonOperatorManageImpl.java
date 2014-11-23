@@ -34,6 +34,7 @@ public class JsonOperatorManageImpl implements JsonOperatorManage {
 			tempMap = iter.next();
 			jArray2.add((Integer) tempMap.get("operatorid"));
 			jArray2.add((String) tempMap.get("operatorname"));
+			jArray2.add((String) tempMap.get("operatorpassword"));
 			date1 = (Date) tempMap.get("registerdate");
 			jArray2.add(date1.toString());
 			date2 = (Date) tempMap.get("updatedate");
@@ -72,50 +73,11 @@ public class JsonOperatorManageImpl implements JsonOperatorManage {
 			tempMap = iter.next();
 			jArray2.add((Integer) tempMap.get("operatorid"));
 			jArray2.add((String) tempMap.get("operatorname"));
-			date1 = (Date) tempMap.get("registerdate");
-			jArray2.add(date1.toString());
-			date2 = (Date) tempMap.get("updatedate");
-			jArray2.add(date2.toString());
-			jObject.element("cell", JSONArray.toCollection(jArray2));
-			jArray.element(jObject);
-			p++;
-		}
-		JSONObject json = new JSONObject();
-		json.element("total", pageInfo.getTotalPage());
-		json.element("page", pageInfo.getCurrentPage());
-		json.element("records", pageInfo.getTotalRecord());
-		json.element("rows", JSONArray.toCollection(jArray));
-		return json;
-	}
-
-	@Override
-	public JSONObject getLimitOperatorInfo(List<Map<String, Object>> list,
-			PageInfo pageInfo) {
-		JSONArray jArray = new JSONArray();
-		Iterator<Map<String, Object>> iter = list.iterator();
-		int p = 1;
-		while (iter.hasNext()) {
-			JSONObject jObject = new JSONObject();
-			jObject.element("id", p);
-			JSONArray jArray2 = new JSONArray();
-			
-			Date date1 = new Date();
-			Date date2 = new Date();
-			Map<String, Object> tempMap = new HashMap<String, Object>();
-			tempMap = iter.next();
-			jArray2.add((Integer) tempMap.get("operatorid"));
-			jArray2.add((String) tempMap.get("operatorname"));
 			jArray2.add((String) tempMap.get("operatorpassword"));
 			date1 = (Date) tempMap.get("registerdate");
 			jArray2.add(date1.toString());
 			date2 = (Date) tempMap.get("updatedate");
 			jArray2.add(date2.toString());
-			if(!("".equals(tempMap.get("logintime")))){
-				jArray2.add(((Date) tempMap.get("logintime")).toString());
-			}else{
-				jArray2.add("未登录过");
-			}
-			jArray2.add(!"".equals((String) tempMap.get("accountname")) ? (String) tempMap.get("accountname") : "未登录过");
 			jObject.element("cell", JSONArray.toCollection(jArray2));
 			jArray.element(jObject);
 			p++;
@@ -149,11 +111,11 @@ public class JsonOperatorManageImpl implements JsonOperatorManage {
 	public JSONArray getOperatorForEasyTree(List<Map<String,Object>> operators) throws SQLException {
 		JSONArray array = new JSONArray(); //root
 		JSONObject manager = new JSONObject();
-		manager.accumulate("id", 1);
+		manager.accumulate("id", -1);
 		manager.accumulate("text", "管理员");
 		manager.accumulate("state", "closed");
 		JSONObject operator = new JSONObject();
-		operator.accumulate("id", 2);
+		operator.accumulate("id", -1);
 		operator.accumulate("text", "操作员");
 		operator.accumulate("state", "closed");
 		Iterator<Map<String,Object>> iter = operators.iterator();

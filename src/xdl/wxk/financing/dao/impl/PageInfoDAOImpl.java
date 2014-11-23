@@ -27,17 +27,4 @@ public class PageInfoDAOImpl implements PageInfoDAO {
 		info.setTotalPage(pages);
 		return info;
 	}
-	@Override
-	public PageInfo getOperatorInfoPageInfo(int offset, int rowCount) throws SQLException {
-		PageInfo info = new PageInfo();
-		String sql = "select count(*) as totalRecord from operatorinfo";
-		Map<String, Object> map = new HashMap<String,Object>();
-		map = jdbc.findSingleByPreparedStatement(sql, null);
-		info.setCurrentPage(offset+1);
-		int records =Integer.valueOf(map.get("totalRecord").toString()) ;
-		info.setTotalRecord(records);
-		int pages =new Double(Math.ceil(records*1.0/rowCount)).intValue();
-		info.setTotalPage(pages);
-		return info;
-	}
 }

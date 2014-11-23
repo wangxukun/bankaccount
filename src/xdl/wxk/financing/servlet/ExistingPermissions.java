@@ -37,8 +37,8 @@ public class ExistingPermissions extends HttpServlet {
 		ope.setOperatorname(operatorname);
 		try {
 			//需要改进
-			List<Account> accounts = DAOFactory.getAccountManageDAOInstance().findAllAccounts();
-			if(!accounts.isEmpty() && accounts!=null){
+			List<Account> accounts = DAOFactory.getOperatorManageDAOInstance().getAuthorizedAccounts(ope);
+			if(accounts!=null && !accounts.isEmpty()){
 				StringBuffer strBuf = new StringBuffer();
 				Iterator<Account> iter = accounts.iterator();
 				while(iter.hasNext()){

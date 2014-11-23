@@ -48,13 +48,13 @@ public class OperatorManage extends HttpServlet {
 			}
 		}
 	}
+
 	//设置用户权限
 	private void privilegeConfig(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		int operatorid = Integer.parseInt(request.getParameter("operatorid"));
 		String accountids = request.getParameter("accountids");
 		String superaccountids = request.getParameter("superaccountids");
-		
 		if("".equals(accountids)){
 			boolean flag = false;
 			try {
@@ -79,16 +79,19 @@ public class OperatorManage extends HttpServlet {
 				//删除此操作员原有的帐户权限
 				DAOFactory.getOperatorManageDAOInstance().delPrivilegeById(operatorid);
 				
-				//取得所要授权的帐户父ID字符数组
-				String [] tempuperaccountids = superaccountids.split(",");
-				int lenA =  tempuperaccountids.length;
-				//为操作员授权
-				for(int i = 0 ;i<lenA;i++){
-					int accountid = Integer.parseInt(tempuperaccountids[i]);
-					DAOFactory.getOperatorManageDAOInstance().addPrivilege(operatorid, accountid,-1);
+				//如果设置权限的帐户有父ID，设置父ID的权限为-1
+				if(superaccountids != null && !"".equals(superaccountids)){
+					//取得所要授权的帐户父ID字符数组
+					String [] tempuperaccountids = superaccountids.split(",");
+					int lenA =  tempuperaccountids.length;
+					
+					//为操作员授权
+					for(int i = 0 ;i<lenA;i++){
+						int accountid = Integer.parseInt(tempuperaccountids[i]);
+						DAOFactory.getOperatorManageDAOInstance().addPrivilege(operatorid, accountid,-1);
+					}
 				}
-				
-				
+
 				//取得所要授权的帐户ID字符数组
 				String [] tempAccountids = accountids.split(",");
 				int lenB =  tempAccountids.length;
@@ -97,6 +100,7 @@ public class OperatorManage extends HttpServlet {
 					int accountid = Integer.parseInt(tempAccountids[i]);
 					DAOFactory.getOperatorManageDAOInstance().addPrivilege(operatorid, accountid,10);
 				}
+				response.setStatus(HttpServletResponse.SC_CREATED);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -135,9 +139,9 @@ public class OperatorManage extends HttpServlet {
 		PageInfo pageInfo;
 		List<Map<String, Object>> list;
 		try {
-			pageInfo = DAOFactory.getOperatorPageInfoDAOInstance().getOperatorInfoPageInfo(page-1, 20);
-			list = DAOFactory.getOperatorManageDAOInstance().findLimitOperatorInfo(page-1, 20);
-			json = JsonDAOFactory.getJsonOperatorManageDAOInstance().getLimitOperatorInfo(list,pageInfo);
+			pageInfo = DAOFactory.getOperatorPageInfoDAOInstance().getOperatorPageInfo(page-1, 20);
+			list = DAOFactory.getOperatorManageDAOInstance().findLimitOperator(page-1, 20);
+			json = JsonDAOFactory.getJsonOperatorManageDAOInstance().getLimitOperator(list,pageInfo);
 			out.println(json);
 		} catch (Exception e) {
 			// TODO: handle exception

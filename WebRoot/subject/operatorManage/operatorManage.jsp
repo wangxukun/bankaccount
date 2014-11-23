@@ -51,15 +51,13 @@ $(function(){
 	      url:"servlet/OperatorManage?action_flag=operatorManage",
 	      datatype: "json",
 	      mtype: 'GET',
-	      colNames:['操作员ID', '操作员姓名','密码','注册时间', '更新时间','上次登录时间','上次登录账套','确认密码'],
+	      colNames:['操作员ID', '操作员姓名','密码','注册时间', '更新时间','确认密码'],
 	      colModel:[
 	                {name:'operatorid',cellattr:myAttr,index:'operatorid',align:'center', width:55, sortable:false, editable:false, editoptions:{readonly:true,size:10}},
 	                {name:'operatorname',index:'operatorname',align:'center', width:100,editable:true,edittype:'text',editoptions:{},editrules:{required:true},formoptions:{}},
 	                {name:'operatorpassword',index:'operatorpassword',align:'center',hidden:true, width:150,editable:true,edittype:'password',editrules:{edithidden:true,required:true}},
 	                {name:'registerdate',index:'registerdate',align:'center', hidden:true,width:150,editable:false,editrules:{edithidden:true}},
 	                {name:'updatedate',index:'updatedate',align:'center',hidden:true, width:150,editable:false,editrules:{edithidden:true}},
-	                {name:'lastlogindate',index:'lastlogin',align:'center',hidden:true, width:150,editable:false,editrules:{edithidden:true}},
-	                {name:'lastloginaccount',index:'lastlogin',align:'center',hidden:true, width:150,editable:false,editrules:{edithidden:true}},
 	                {name:'operatorrepassword',index:'operatorrepassword',align:'center',hidden:true,viewable:false, width:150,editable:true,edittype:'password',editrules:{edithidden:true,required:true}}
 	                
 	           ],
@@ -298,30 +296,12 @@ function privilegeConfig(){
 					$('#privilege').window('close');
 					$.messager.show({
 						title:'提示',
-						msg:'创建成功.',
+						msg:'设置成功.',
 						timeout:3000,
 						showType:'slide'
 					});
-				},
-				403: function(){
-					//关闭权限设置窗口
-					$('#privilege').window('close');
-					$.messager.show({
-						title:'提示',
-						msg:'帐户已存在.',
-						timeout:3000,
-						showType:'slide'
-					});
-				},
-				405: function(){
-					//关闭权限设置窗口
-					$('#privilege').window('close');
-					$.messager.show({
-						title:'提示',
-						msg:'非法输入.',
-						timeout:3000,
-						showType:'slide'
-					});
+					//刷新顶级页面
+					top.location.reload();
 				}
 			},
 			dataType:'html',

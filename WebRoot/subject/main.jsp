@@ -92,25 +92,65 @@ iframe{
 
 <script type="text/javascript">
 $(document).ready(function() {
+	//显示登录操作员有权限的帐户树
 	$('#tt_account').tree({
 		url:'servlet/JsonDataAccountTree',
 		method:'POST',
 		animate:true,
 		queryParams:{accountTree:'${accountTree}'}
 	});
-	
+	//显示管理员及操作员树
 	$('#tt_operator').tree({
 		url:'servlet/JsonDataOperatorTree',
 		method:'POST',
 		animate:true,
 		queryParams:{operatorTree:'${operatorTree}'}
 	});
+	
+	//切换操作员
+	$('#tt_operator').tree({
+		'onClick':function(node){
+			if('true' == '${isManager}'){
+				$.post(
+						'servlet/OperatorLogin',
+						{action_flag:'switch',isManager:'${isManager }',operatorid:node.id,operatorname:node.text},
+						function(data,textStatus,jqXHR){
+							parent.location.reload();
+						}
+				);
+			}else{
+				//打开切换操作员密码输入对话框
+				$('#switchOperator').dialog('open');	
+			}
+		}
+	});
+	
+	//切换操作员密码输入对话框（默认关闭）
+	$('#switchOperator').dialog({
+		title:'切换操作员',
+		width: 300,
+		height: 200,
+		cache: false,
+		closed: true,
+		buttons:[{
+			text:'确定',
+        	handler:function(){
+        		alert("OK");	
+        	}
+				},{
+			text:'取消',
+			handler:function(){
+				$('#switchOperator').dialog('close');	
+			}
+				}],
+		modal: true
+	});
 });
 </script>
 
 </head>
 
-<body class="easyui-layout">
+<body class="easyui-layout" id="layout">
 <!--+++++++++++++++++++++++++头面板+++++++++++++++++++++++++-->
     <div id="north" data-options="region:'north',title:null,split:false" style="height:100px;">
     	<div id="left">
@@ -141,7 +181,7 @@ $(document).ready(function() {
     
     
 <!--+++++++++++++++++++++++++右面板+++++++++++++++++++++++++-->    
-    <div data-options="region:'east',title:'切换操作',split:true" style="width:150px;">
+    <div id="o_has_a" data-options="region:'east',title:'切换操作',split:true" style="width:150px;">
     	<!-- O右面板->可折叠面板  -->
 	    <div id="bb" class="easyui-accordion" style="width:100%;height:auto;">
 	    	<div title="帐户切换" data-options="iconCls:'icon-man',selected:true" style="padding:10px;">
@@ -161,6 +201,13 @@ $(document).ready(function() {
 		    </div>
 		  </div>
 		  <!-- C右面板->可折叠面板 -->
+		  
+		  <!--+++++切换操作员密码输入对话框 +++++-->
+		  <div id="switchOperator">
+		  	<p>请输入密码</p>
+		  	<input type="password" id="password" name="password" />
+		  </div>
+		  <!-------切换操作员密码输入对话框----- -->
     </div>
 <!---------------------------右面板--------------------------->    
     
@@ -180,12 +227,11 @@ $(document).ready(function() {
 				</div> 
 		    </div>
 		    
-		    <c:if test="${info.level == 100 }">
-			    <div title="账户管理" data-options="iconCls:'icon-man',selected:true" style="padding:10px;">
+		    <c:if test="${isManager }">
+			    <div title="账户管理" data-options="iconCls:'icon-man'" style="padding:10px;">
 			        <div id="accordionLeft-2">
 						<ul>
 							<li id="addAccount"><a href="/financing/subject/accountManage/addDelAccount.jsp" target="main">增删帐户</a>
-							<li id="initAccount"><a href="javascript:onInitAccount();">初始化帐户</a>
 						</ul>
 					</div>
 			    </div>
@@ -194,7 +240,7 @@ $(document).ready(function() {
 		    <div title="业务处理" data-options="iconCls:'icon-man',selected:true" style="padding:10px;">
 		        <div id="accordion-3">
 					<ul>
-						<c:if test="${info.level == 100 }">
+						<c:if test="${isManager }">
 							<li>数据录入
 							<li>数据修改
 						</c:if>
@@ -204,8 +250,8 @@ $(document).ready(function() {
 				</div>
 		    </div>
 		    
-		    <c:if test="${info.level == 100 }">
-			    <div title="用户管理" data-options="iconCls:'icon-man',selected:true" style="padding:10px;">
+		    <c:if test="${isManager }">
+			    <div title="用户管理" data-options="iconCls:'icon-man'" style="padding:10px;">
 			        <div id="accordion-4">
 						<ul>
 							<li id="deleteOperator"><a href="/financing/subject/operatorManage/operatorManage.jsp" target="main">操作员管理</a>
