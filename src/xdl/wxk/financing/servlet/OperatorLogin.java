@@ -66,21 +66,39 @@ public class OperatorLogin extends HttpServlet {
 					Operator operator = DAOFactory.getOperatorManageDAOInstance().findOperatorById(operatorid);
 					LoginInfo info = DAOFactory.getOperatorManageDAOInstance().getLoginInfo(operator);
 					boolean isAdmin = DAOFactory.getOperatorManageDAOInstance().isAdmin(operator);
-					request.getSession().setAttribute("info", info);
+					if(info.getPeroid() != null){
+						System.out.println(info.toString());
+						request.getSession().setAttribute("info", info);
+					}else{
+						LoginInfo tempInfo = new LoginInfo();
+						tempInfo.setAccountid(-1);
+						tempInfo.setAccountname("未初始化");
+						tempInfo.setLevel(-1);
+						tempInfo.setOperatorid(operator.getOperatorid());
+						tempInfo.setOperatorname(operator.getOperatorname());
+						tempInfo.setPeroid("未初始化");
+						request.getSession().setAttribute("info", tempInfo);
+					}
+					//重新获取切换后的帐户树
+					JSONArray accountTree = JsonDAOFactory.getJsonAccountManageDAOInstance().getAccountsForEasyTree(DAOFactory.getOperatorManageDAOInstance().getAuthorizedAccounts(operator));
+					request.getSession().setAttribute("accountTree", accountTree);
 					request.getSession().setAttribute("isManager", isAdmin);
 					this.path = "../subject/main.jsp";
-					System.out.println(info);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}finally{
-					System.out.println(isManager);
 					this.path = "../subject/main.jsp";
 					request.getRequestDispatcher(this.path).forward(request, response);
 				}
 			}else{	//不是管理员
-				
+				Operator operator = new Operator();
+				this.name = request.getParameter("operatorname");
+				this.pswd = request.getParameter("operatorpassword");
+				operator.setOperatorname(this.name);
+				operator.setOperatorpassword(this.pswd);
+				login(operator,request,response);
 			}
-		}else{
+		}else{	//从登录界面登录
 			Operator operator = new Operator();
 			this.name = request.getParameter("operator");
 			this.pswd = request.getParameter("pswd");
@@ -113,23 +131,31 @@ public class OperatorLogin extends HttpServlet {
 			flag = DAOFactory.getOperatorManageDAOInstance()
 					.checkOperatorLogin(operator);
 			if (flag) {
-				System.out.println(operator);
 				LoginInfo info = DAOFactory.getOperatorManageDAOInstance().getLoginInfo(operator);
-				System.out.println(info);
 				//判断操作员是否是管理员
 				JSONArray accountTree;
 				boolean isManager = false;
 				isManager = DAOFactory.getOperatorManageDAOInstance().isAdmin(operator);
 				if(isManager){
 					accountTree = JsonDAOFactory.getJsonAccountManageDAOInstance().getAccountsForEasyTree(DAOFactory.getAccountManageDAOInstance().findAllAccounts());
-					System.out.println("是管理员");
 				}else{
-					
 					accountTree = JsonDAOFactory.getJsonAccountManageDAOInstance().getAccountsForEasyTree(DAOFactory.getOperatorManageDAOInstance().getAuthorizedAccounts(operator));
 				}
 				List<Map<String, Object>> list = DAOFactory.getOperatorManageDAOInstance().findAllOperator();
 				JSONArray operatorTree = JsonDAOFactory.getJsonOperatorManageDAOInstance().getOperatorForEasyTree(list);
-				request.getSession().setAttribute("info", info);
+				if(info.getPeroid() != null){
+					System.out.println(info.toString());
+					request.getSession().setAttribute("info", info);
+				}else{
+					LoginInfo tempInfo = new LoginInfo();
+					tempInfo.setAccountid(-1);
+					tempInfo.setAccountname("未初始化");
+					tempInfo.setLevel(-1);
+					tempInfo.setOperatorid(operator.getOperatorid());
+					tempInfo.setOperatorname(operator.getOperatorname());
+					tempInfo.setPeroid("未初始化");
+					request.getSession().setAttribute("info", tempInfo);
+				}
 				request.getSession().setAttribute("isManager", isManager);
 				request.getSession().setAttribute("accountTree", accountTree);
 				request.getSession().setAttribute("operatorTree", operatorTree);
@@ -154,6 +180,12 @@ public class OperatorLogin extends HttpServlet {
 				if (this.name != null) {
 					request.setAttribute("fail", "操作员名称或密码不正确");
 				}else if(request.getSession().getAttribute("info") != null){//已经登陆
+					{
+						//为了刷新时更新切换操作员下的操作员树
+						List<Map<String, Object>> list = DAOFactory.getOperatorManageDAOInstance().findAllOperator();
+						JSONArray operatorTree = JsonDAOFactory.getJsonOperatorManageDAOInstance().getOperatorForEasyTree(list);
+						request.getSession().setAttribute("operatorTree", operatorTree);
+					}
 					this.path = "../subject/main.jsp";
 				}
 			}

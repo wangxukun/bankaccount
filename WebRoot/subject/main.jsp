@@ -87,6 +87,17 @@ iframe{
 	border:0;
 	margin-bottom: -3px;
 }
+#switchOperator p{
+	height: 40px;
+	line-height:40px;
+	color: red;
+	text-indent: 20px;
+}
+#switchOperator input{
+	width: 180px;
+	height: 20px;
+	margin-left: 40px;
+}
 </style>
 
 
@@ -110,40 +121,67 @@ $(document).ready(function() {
 	//切换操作员
 	$('#tt_operator').tree({
 		'onClick':function(node){
+			//如果是点击了【管理员】或【操作员】这两个父节点，则不做任何处理
+			if(node.id == -1)
+				return false;
+			//如果是点击了当前操作员，则不做任何处理
+			if(node.id == '${info.operatorid}')
+				return false;
+			
 			if('true' == '${isManager}'){
 				$.post(
 						'servlet/OperatorLogin',
-						{action_flag:'switch',isManager:'${isManager }',operatorid:node.id,operatorname:node.text},
+						{
+							action_flag:'switch',
+							isManager:'${isManager }',
+							operatorid:node.id
+						},
 						function(data,textStatus,jqXHR){
 							parent.location.reload();
 						}
 				);
 			}else{
+				//切换操作员密码输入对话框（默认关闭）
+				$('#switchOperator').dialog({
+					title:'切换操作员--'+node.text,
+					width: 300,
+					height: 200,
+					cache: false,
+					closed: true,
+					buttons:[{
+						text:'确定',
+			        	handler:function(){
+			        		var pswd = $("#switchOperator input").val();
+			        		$.post(
+			        			'servlet/OperatorLogin',
+			        			{
+			        				action_flag:'switch',
+									isManager:'${isManager }',
+			        				operatorname : node.text,
+			        				operatorpassword:pswd
+			        			},
+			        			function(data,textStatus,jqXHR){
+			        				parent.location.reload();
+			        			}
+			        		);
+			        	}
+							},{
+						text:'取消',
+						handler:function(){
+							$('#switchOperator').dialog('close');	
+						}
+							}],
+					modal: true
+				});
 				//打开切换操作员密码输入对话框
 				$('#switchOperator').dialog('open');	
 			}
 		}
 	});
 	
-	//切换操作员密码输入对话框（默认关闭）
+	//初始化文档加载后#switchOperator为切换操作员密码输入对话框（默认关闭）
 	$('#switchOperator').dialog({
-		title:'切换操作员',
-		width: 300,
-		height: 200,
-		cache: false,
-		closed: true,
-		buttons:[{
-			text:'确定',
-        	handler:function(){
-        		alert("OK");	
-        	}
-				},{
-			text:'取消',
-			handler:function(){
-				$('#switchOperator').dialog('close');	
-			}
-				}],
-		modal: true
+		closed:true
 	});
 });
 </script>
@@ -245,7 +283,7 @@ $(document).ready(function() {
 							<li>数据修改
 						</c:if>
 						<li id="dataSearch"><a href="/financing/subject/dataManage/dataSearch.jsp" target="main">数据查询</a>
-						<li>结余汇总
+						<li>数据汇总
 					</ul>
 				</div>
 		    </div>
