@@ -24,7 +24,7 @@ public interface OperatorManageDAO {
 	//删除操作员
 	boolean delOperator(Operator operator) throws SQLException;
 	//取得操作员的登录信息
-	LoginInfo getLoginInfo(Operator operator) throws SQLException;
+	LoginInfo getLoginInfo(Operator operator,Account account) throws SQLException;
 	//判断操作员是不有一定的权限
 	boolean isHasPrivilege(int operatorid) throws SQLException;
 	//删除指定操作员的所有权限

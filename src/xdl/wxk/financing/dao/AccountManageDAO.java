@@ -14,4 +14,5 @@ public interface AccountManageDAO {
 	boolean isHasParent(Account account) throws SQLException;
 	public List<Account> findChildren(Account account) throws SQLException;
 	public List<Account> findAllAccounts() throws SQLException;
+	public Account findAccountById(int accountid) throws SQLException;
 }

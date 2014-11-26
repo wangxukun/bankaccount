@@ -117,7 +117,27 @@ $(document).ready(function() {
 		animate:true,
 		queryParams:{operatorTree:'${operatorTree}'}
 	});
-	
+	//切换帐户
+	$('#tt_account').tree({
+		'onClick':function(node){
+			//如果是点击了当前帐户，则不做任何处理
+			if(node.id == '${info.accountid}')
+				return false;
+			$.post(
+					'servlet/OperatorLogin',
+					{
+						action_flag:'switch_account',
+						isManager:'${isManager }',
+						operatorid:'${info.operatorid}',
+						accountid:node.id
+					},
+					function(data,textStatus,jqXHR){
+						alert("action_flag:"+'switch_account'+"\nisManager:"+'${isManager }'+"\noperatorid:"+'${info.operatorid}'+"\noperatorname:"+'${info.operatorname}'+"\naccountid:"+node.id+"\naccountname:"+node.text);
+						parent.location.reload();
+					}
+			);
+		}
+	});
 	//切换操作员
 	$('#tt_operator').tree({
 		'onClick':function(node){
@@ -127,12 +147,11 @@ $(document).ready(function() {
 			//如果是点击了当前操作员，则不做任何处理
 			if(node.id == '${info.operatorid}')
 				return false;
-			
 			if('true' == '${isManager}'){
 				$.post(
 						'servlet/OperatorLogin',
 						{
-							action_flag:'switch',
+							action_flag:'switch_operator',
 							isManager:'${isManager }',
 							operatorid:node.id
 						},
@@ -155,7 +174,7 @@ $(document).ready(function() {
 			        		$.post(
 			        			'servlet/OperatorLogin',
 			        			{
-			        				action_flag:'switch',
+			        				action_flag:'switch_operator',
 									isManager:'${isManager }',
 			        				operatorname : node.text,
 			        				operatorpassword:pswd

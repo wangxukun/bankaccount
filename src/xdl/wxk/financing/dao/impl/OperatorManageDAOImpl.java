@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -28,8 +27,7 @@ public class OperatorManageDAOImpl implements OperatorManageDAO {
 		List<Object> params = new ArrayList<Object>();
 		params.add(operator.getOperatorname());
 		params.add(operator.getOperatorpassword());
-		Map<String,Object> map = new HashMap<String,Object>();
-		map = this.jdbc.findSingleByPreparedStatement(sql, params);
+		Map<String,Object> map = this.jdbc.findSingleByPreparedStatement(sql, params);
 		if(!map.isEmpty()){
 			operator.setOperatorid(Integer.parseInt(map.get("operatorid").toString()));
 			flag = true;
@@ -75,23 +73,29 @@ public class OperatorManageDAOImpl implements OperatorManageDAO {
 		return !flag;
 	}
 	@Override
-	public LoginInfo getLoginInfo(Operator operator) throws SQLException {
+	public LoginInfo getLoginInfo(Operator operator,Account account) throws SQLException {
 		LoginInfo info = new LoginInfo();
-		String sql = "select operatorid,operatorname,accountid,accountname,level,period from logininfo where operatorid=?";
+		String sql = "select operatorid,operatorname,accountid,accountname,level,max(period) as period from operator_has_account_info where operatorid=? and accountid=?";
 		List<Object> params = new ArrayList<Object>();
 		params.add(operator.getOperatorid());
+		params.add(account.getAccountid());
 		Map<String,Object> map = this.jdbc.findSingleByPreparedStatement(sql, params);
-		if(!map.isEmpty()){
+		if(!map.isEmpty() && !"".equals(map.get("operatorname"))){
 			info.setOperatorid(Integer.parseInt(map.get("operatorid").toString()));
 			info.setOperatorname(map.get("operatorname").toString());
 			info.setAccountid(Integer.parseInt(map.get("accountid").toString()));
 			info.setAccountname(map.get("accountname").toString());
 			info.setLevel(Integer.parseInt(map.get("level").toString()));
-			Date dateTemp = (Date)map.get("period");
-			
-			String dateString = DateFormat.getDateInstance(DateFormat.FULL,Locale.CHINA).format(dateTemp);
-			String str = dateString.substring(0,dateString.indexOf("月")+1);
-			
+			String str;
+			if(!"".equals(map.get("period"))){
+				Date dateTemp = (Date)map.get("period");
+				String dateString = DateFormat.getDateInstance(DateFormat.FULL,Locale.CHINA).format(dateTemp);
+				str = dateString.substring(0,dateString.indexOf("月")+1);
+			}else{
+				Date date = new Date();
+				String dateString = DateFormat.getDateInstance(DateFormat.FULL,Locale.CHINA).format(date);
+				str = dateString.substring(0,dateString.indexOf("月")+1);
+			}
 			info.setPeroid(str);
 		}
 		return info;
