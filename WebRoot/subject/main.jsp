@@ -132,7 +132,6 @@ $(document).ready(function() {
 						accountid:node.id
 					},
 					function(data,textStatus,jqXHR){
-						alert("action_flag:"+'switch_account'+"\nisManager:"+'${isManager }'+"\noperatorid:"+'${info.operatorid}'+"\noperatorname:"+'${info.operatorname}'+"\naccountid:"+node.id+"\naccountname:"+node.text);
 						parent.location.reload();
 					}
 			);
@@ -298,7 +297,7 @@ $(document).ready(function() {
 		        <div id="accordion-3">
 					<ul>
 						<c:if test="${isManager }">
-							<li>数据录入
+							<li id="dataSearch"><a href="/financing/subject/dataManage/dataInput.jsp" target="main">数据录入</a>
 							<li>数据修改
 						</c:if>
 						<li id="dataSearch"><a href="/financing/subject/dataManage/dataSearch.jsp" target="main">数据查询</a>
