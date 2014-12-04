@@ -1,22 +1,18 @@
 package xdl.wxk.financing.test;
 
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
 
-import net.sf.json.JSONArray;
 
 import xdl.wxk.financing.dao.factory.DAOFactory;
-import xdl.wxk.financing.json.factory.JsonDAOFactory;
+import xdl.wxk.financing.vo.Account;
 
 
 public class TestOperatorManageDAO {
 
 	public static void main(String[] args) {
 		try {
-			List<Map<String, Object>> list = DAOFactory.getOperatorManageDAOInstance().findAllOperator();
-			JSONArray array = JsonDAOFactory.getJsonOperatorManageDAOInstance().getOperatorForEasyTree(list);
-			System.out.println(array);
+			Account account = DAOFactory.getAccountManageDAOInstance().findAccountById(2);
+			System.out.println(account);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

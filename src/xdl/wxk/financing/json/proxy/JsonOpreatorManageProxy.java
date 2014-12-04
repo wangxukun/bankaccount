@@ -32,13 +32,6 @@ public class JsonOpreatorManageProxy implements JsonOperatorManage {
 	}
 
 	@Override
-	public JSONObject getLimitOperatorInfo(List<Map<String, Object>> list,
-			PageInfo pageInfo) {
-		JsonOperatorManage jOperatorInfo = new JsonOperatorManageImpl(this.dao);
-		return jOperatorInfo.getLimitOperatorInfo(list, pageInfo);
-	}
-
-	@Override
 	public JSONArray getOperatorForEasyTree(List<Map<String, Object>> operators)
 			throws SQLException {
 		JsonOperatorManage jOperatorLevel = new JsonOperatorManageImpl(this.dao);

@@ -7,6 +7,7 @@ import java.util.Map;
 import xdl.wxk.financing.dao.OperatorManageDAO;
 import xdl.wxk.financing.dao.impl.OperatorManageDAOImpl;
 import xdl.wxk.financing.jdbc.JdbcUtils;
+import xdl.wxk.financing.vo.Account;
 import xdl.wxk.financing.vo.LoginInfo;
 import xdl.wxk.financing.vo.Operator;
 
@@ -15,13 +16,13 @@ public class OperatorManageDAOProxy implements OperatorManageDAO{
 	private OperatorManageDAO dao;
 	public OperatorManageDAOProxy() {
 		this.jdbc = new JdbcUtils();
-		this.jdbc.getConnection();
 		this.dao = new OperatorManageDAOImpl(this.jdbc);
 	}
 	@Override
 	public boolean checkOperatorLogin(Operator operator) throws SQLException {
 		boolean flag = false;
 		try {
+			this.jdbc.getConnection();
 			flag = this.dao.checkOperatorLogin(operator);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -35,6 +36,7 @@ public class OperatorManageDAOProxy implements OperatorManageDAO{
 	public boolean addOperator(Operator operator) throws SQLException {
 		boolean flag = false;
 		try {
+			this.jdbc.getConnection();
 			flag = this.dao.addOperator(operator);
 		} catch (Exception e) {
 			throw e;
@@ -47,6 +49,7 @@ public class OperatorManageDAOProxy implements OperatorManageDAO{
 	public List<Map<String, Object>> findAllOperator() throws SQLException {
 		List<Map<String, Object>> list;
 		try {
+			this.jdbc.getConnection();
 			list = this.dao.findAllOperator();
 		} catch (Exception e) {
 			throw e;
@@ -60,21 +63,8 @@ public class OperatorManageDAOProxy implements OperatorManageDAO{
 			throws SQLException {
 		List<Map<String, Object>> list;
 		try {
+			this.jdbc.getConnection();
 			list = this.dao.findLimitOperator(offset,rowCount);
-		} catch (Exception e) {
-			throw e;
-		}finally{
-			this.jdbc.releaseConnection();
-		}
-		return list;
-	}
-	@Override
-	public List<Map<String, Object>> findLimitOperatorInfo(int offset,
-			int rowCount) throws SQLException {
-		// TODO Auto-generated method stub
-		List<Map<String, Object>> list;
-		try {
-			list = this.dao.findLimitOperatorInfo(offset, rowCount);
 		} catch (Exception e) {
 			throw e;
 		}finally{
@@ -86,6 +76,7 @@ public class OperatorManageDAOProxy implements OperatorManageDAO{
 	public boolean isExist(Operator operator) throws SQLException {
 		boolean flag;
 		try {
+			this.jdbc.getConnection();
 			flag = this.dao.isExist(operator);
 		} catch (Exception e) {
 			throw e;
@@ -96,11 +87,12 @@ public class OperatorManageDAOProxy implements OperatorManageDAO{
 	}
 
 	@Override
-	public LoginInfo getLoginInfo(Operator operator)
+	public LoginInfo getLoginInfo(Operator operator,Account account)
 			throws SQLException {
 		LoginInfo info;
 		try {
-			info = this.dao.getLoginInfo(operator);
+			this.jdbc.getConnection();
+			info = this.dao.getLoginInfo(operator,account);
 		} catch (Exception e) {
 			throw e;
 		}finally{
@@ -128,6 +120,7 @@ public class OperatorManageDAOProxy implements OperatorManageDAO{
 	public boolean isHasPrivilege(int operatorid) throws SQLException {
 		boolean flag = false;
 		try {
+			this.jdbc.getConnection();
 			flag = this.dao.isHasPrivilege(operatorid);
 		} catch (Exception e) {
 			throw e;
@@ -166,9 +159,23 @@ public class OperatorManageDAOProxy implements OperatorManageDAO{
 		return flag;
 	}
 	@Override
+	public int findLevel(int operatorid, int accountid) throws SQLException {
+		int level = -1;
+		try {
+			this.jdbc.getConnection();
+			level = this.dao.findLevel(operatorid, accountid);
+		} catch (Exception e) {
+			throw e;
+		}finally{
+			this.jdbc.releaseConnection();
+		}
+		return level;
+	}
+	@Override
 	public boolean isAdmin(Operator operator) throws SQLException {
 		boolean flag = false;
 		try {
+			this.jdbc.getConnection();
 			flag = this.dao.isAdmin(operator);
 		} catch (Exception e) {
 			throw e;
@@ -176,5 +183,34 @@ public class OperatorManageDAOProxy implements OperatorManageDAO{
 			this.jdbc.releaseConnection();
 		}
 		return flag;
+	}
+	@Override
+	public List<Account> getAuthorizedAccounts(Operator operator)
+			throws SQLException {
+		List<Account> list = null;
+		if(this.isHasPrivilege(operator.getOperatorid())){
+			try {
+				this.jdbc.getConnection();
+				list = this.dao.getAuthorizedAccounts(operator);
+			} catch (Exception e) {
+				throw e;
+			}finally{
+				this.jdbc.releaseConnection();
+			}
+		}
+		return list;
+	}
+	@Override
+	public Operator findOperatorById(int operatorid) throws SQLException {
+		Operator operator = null;
+		try {
+			this.jdbc.getConnection();
+			operator = this.dao.findOperatorById(operatorid);
+		} catch (Exception e) {
+			throw e;
+		}finally{
+			this.jdbc.releaseConnection();
+		}
+		return operator;
 	}
 }
