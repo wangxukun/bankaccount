@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+
 <form method="post">
 	<table class="dv-table" style="width:800px;border:1px solid #ccc;padding:5px;margin-top:5px;">
 		<tr>
@@ -22,3 +23,11 @@
 		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="cancelItem()">取消</a>
 	</div>
 </form>
+
+<script type="text/javascript">
+$(function(){
+	//日期
+	$("#dd").datebox("setValue", "2012-01-01"); 
+});
+
+</script>

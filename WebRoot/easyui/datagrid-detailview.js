@@ -2,6 +2,7 @@ var detailview = $.extend({}, $.fn.datagrid.defaults.view, {
 	render: function(target, container, frozen){
 		var state = $.data(target, 'datagrid');
 		var opts = state.options;
+		
 		if (frozen){
 			if (!(opts.rownumbers || (opts.frozenColumns && opts.frozenColumns.length))){
 				return;
@@ -432,7 +433,7 @@ $.extend($.fn.datagrid.methods, {
 						}
 					},
 					onResize: function(){
-						var dg = $(this).children('div.datagrid-view').children('table')
+						var dg = $(this).children('div.datagrid-view').children('table');
 						setParentHeight(this);
 					},
 					onResizeColumn: function(field, width){
