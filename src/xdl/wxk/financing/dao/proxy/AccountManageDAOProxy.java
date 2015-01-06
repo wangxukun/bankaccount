@@ -7,6 +7,7 @@ import xdl.wxk.financing.dao.AccountManageDAO;
 import xdl.wxk.financing.dao.impl.AccountManageDAOImpl;
 import xdl.wxk.financing.jdbc.JdbcUtils;
 import xdl.wxk.financing.vo.Account;
+import xdl.wxk.financing.vo.AccountDetail;
 
 public class AccountManageDAOProxy implements AccountManageDAO {
 	private JdbcUtils jdbc;
@@ -129,4 +130,32 @@ public class AccountManageDAOProxy implements AccountManageDAO {
 		return account;
 	}
 
+	@Override
+	public List<AccountDetail> findAccountDetailsByAccountid(int accountid)
+			throws SQLException {
+		List<AccountDetail> list = null;
+		try {
+			this.jdbc.getConnection();
+			list = this.dao.findAccountDetailsByAccountid(accountid);
+		} catch (Exception e) {
+			throw e;
+		}finally{
+			this.jdbc.releaseConnection();
+		}
+		return list;
+	}
+	
+	@Override
+	public boolean addAccountDetail(AccountDetail accountDetail) throws SQLException {
+		boolean flag = false;
+		try{
+			this.jdbc.getConnection();
+			flag = this.dao.addAccountDetail(accountDetail);
+		} catch(Exception e){
+			throw e;
+		}finally{
+			this.jdbc.releaseConnection();
+		}
+		return flag;
+	}
 }

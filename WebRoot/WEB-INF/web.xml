@@ -44,6 +44,13 @@
     <servlet-name>ExistingPermissions</servlet-name>
     <servlet-class>xdl.wxk.financing.servlet.ExistingPermissions</servlet-class>
   </servlet>
+  <servlet>
+    <description>生成特定帐户发生额详情Json对象</description>
+    <display-name>operator manage</display-name>
+    <servlet-name>JsonDataAccountDetail</servlet-name>
+    <servlet-class>xdl.wxk.financing.servlet.JsonDataAccountDetail</servlet-class>
+  </servlet>
+
 
 
 
@@ -102,6 +109,10 @@
   <servlet-mapping>
     <servlet-name>ExistingPermissions</servlet-name>
     <url-pattern>/servlet/ExistingPermissions</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>JsonDataAccountDetail</servlet-name>
+    <url-pattern>/servlet/JsonDataAccountDetail</url-pattern>
   </servlet-mapping>
 
 </web-app>
