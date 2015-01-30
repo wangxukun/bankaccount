@@ -27,7 +27,7 @@ public class JsonDataAccountTree extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		
 		
-	
+		
 		out.println(request.getParameter("accountTree"));
 		
 		out.flush();

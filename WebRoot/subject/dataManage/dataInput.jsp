@@ -14,8 +14,7 @@
 <script type="text/javascript" src="/financing/js/jquery-ui.js"></script>
 <script type="text/javascript"
 	src="/financing/easyui/jquery.easyui.min.js"></script>
-<script type="text/javascript"
-	src="/financing/easyui/datagrid-detailview.js"></script>
+
 <script type="text/javascript"
 	src="/financing/easyui/locale/easyui-lang-zh_CN.js"></script>
 <link rel="stylesheet" type="text/css"
@@ -26,151 +25,136 @@
 	href="/financing/easyui/themes/metro/easyui.css">
 <link rel="stylesheet" type="text/css"
 	href="/financing/easyui/themes/icon.css">
-<link rel="stylesheet" type="text/css"
-	href="/financing/easyui/themes/metro/datagrid.css">
+
+<script type="text/javascript">
+	$(function() {
+		//----------日期处理------------
+		var date = new Date();
+		var y = date.getFullYear();
+		var m = date.getMonth()+1;
+		var d = date.getDate();
+		var today = m+'/'+d+'/'+y;
+		$('#dateBox').datebox({
+			required:true,
+			currentText:'Today'
+		}).datebox('setValue',today);
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
+		//-----------所属单位组合框树--------------------------
+		$('#comboTree').combotree({
+			url:'/financing/servlet/JsonDataAccountTree',
+			method:'post',
+			animate:true,
+			lines:true,
+			queryParams:{accountTree:'${accountTree}'},
+			required:true
+		}); 
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
+		//-------------记账方向-----------------------------------------
+		$('#direction').combo({
+			required : true,
+			editable : false,
+			panelHeight: 100
+		});
+		$('#sp').appendTo($('#direction').combo('panel'));
+		$('#sp input').click(
+				function() {
+					var v = $(this).val();
+					var s = $(this).next('span').text();
+					$('#direction').combo('setValue', v).combo('setText', s)
+							.combo('hidePanel');
+				});
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
+		//---------------金额输入框------------------------------
+		$('#amount').numberbox({
+			 required:true,
+			 min:0,
+			 precision:2,
+			 groupSeparator:','
+		});
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	});
+	//-----------------提交表单---------------------------------
+	function submitForm(){
+		$.ajax({
+			type:'POST',
+			url:'/financing/servlet/InsertAccountDetail',
+			data:{
+				number:$('#number').numberbox('getValue'),
+				occurdate:$('#dateBox').datebox('getValue'),
+				summary:$('#smy').val(),
+				direction:$('#direction').combo('getValue'),
+				amount:$('#amount').numberbox('getValue'),
+				accountid:'处理中...',
+				groupid:$('#comboTree').combo('getValue')
+			}
+		});
+	}
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+</script>
 <style type="text/css">
-form {
-	margin: 0;
-	padding: 0;
+table{
+	margin:0 auto;
+	width:500px;
+	height:400px;
 }
-
-.dv-table td {
-	border: 0;
+.trCenter{
+	text-align: center;
 }
-
-.dv-table input {
-	border: 1px solid #ccc;
+input#smy{
+	width:300px;
+	height:20px;
 }
-
-#input_data table tr td {
-	padding: 0 auto;
-	margin: 0 auto;
+input#dctn{
+	width:150px;
+	height:20px;
 }
 </style>
-<script type="text/javascript">
-$(function(){
-	$('#dg').datagrid({
-        view: detailview,
-        detailFormatter:function(index,row){
-            return '<div class="ddv"></div>';
-        },
-        onExpandRow: function(index,row){
-        	if(row.voucherNum == ""){
-        		return ;
-        	}
-            var ddv = $(this).datagrid('getRowDetail',index).find('div.ddv');
-            ddv.panel({
-                border:false,
- //               href:'show_form.jsp?index='+index,
-		 		content:'<form method="post"><table class="dv-table" style="width:800px;border:1px solid #ccc;padding:5px;margin-top:5px;"><tr><td>摘要</td><td><input name="summary" class="easyui-validatebox" required="true" style="width:250px;height:18px"></input></td><td>金额</td><td><input name="amount" class="easyui-validatebox" required="true" style="width:150px;height:18px"></input></td><td>方向</td><td><select id="cc" class="easyui-combobox" name="direction"style="width:50px;"><option value="aa">借</option><option>贷</option></select></td><td>日期</td><td><input id="dd" type="text" class="easyui-datebox"></td></tr></table><div style="padding:5px 0;text-align:right;padding-right:30px;width:760px"><a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="saveItem('+index+')">保存</a><a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" plain="true" onclick="cancelItem('+index+')">取消</a></div></form>'
-            });
-             
-            
-        	$('#dg').datagrid('fixDetailRowHeight',index);
-            $('#dg').datagrid('selectRow',index);
-            //加载内容到表单
-            var data = {
-            		summary:row.summary,
-            		//如果借方为空字符，金额输入框中填贷方，否则填借方
-            		amount:row.debit==""?row.credit:row.debit
-            };
-        	$('#dg').datagrid('getRowDetail',index).find('form').form('load',data);
-        	
-            $('#dg').datagrid('fixDetailRowHeight',index);
-            
-          	//日期
-        	$("#dd").datebox("setValue", "2012-01-01");
-		}
-    });
-	
-	
-});
-function saveItem(index){
-    var row = $('#dg').datagrid('getRows')[index];
-    var url = row.isNewRecord ? 'dataInput.jsp' : 'update_user.jsp?id='+row.id;
-    $('#dg').datagrid('getRowDetail',index).find('form').form('submit',{
-        url: url,
-        onSubmit: function(){
-            return $(this).form('validate');
-        },
-        success: function(data){
-        	alert(data);
-            data = eval('('+data+')');
-            data.isNewRecord = false;
-            $('#dg').datagrid('collapseRow',index);
-            $('#dg').datagrid('updateRow',{
-                index: index,
-                row: data
-            });
-        }
-    });
-}
-function cancelItem(index){
-    var row = $('#dg').datagrid('getRows')[index];
-    if (row.isNewRecord){
-        $('#dg').datagrid('deleteRow',index);
-    } else {
-        $('#dg').datagrid('collapseRow',index);
-    }
-}
-function destroyItem(){
-    var row = $('#dg').datagrid('getSelected');
-    if (row){
-        $.messager.confirm('Confirm','Are you sure you want to remove this user?',function(r){
-            if (r){
-                var index = $('#dg').datagrid('getRowIndex',row);
-                $.post('destroy_user.php',{id:row.id},function(){
-                    $('#dg').datagrid('deleteRow',index);
-                });
-            }
-        });
-    }
-}
-function newItem(){
-    $('#dg').datagrid('appendRow',{isNewRecord:true});
-    var index = $('#dg').datagrid('getRows').length - 1;
-    $('#dg').datagrid('expandRow', index);
-    $('#dg').datagrid('selectRow', index);
-}
-
-
-</script>
-
 </head>
 
 <body>
-	<table id="dg" title="业务处理-数据录入" style="width:100%;height:600px"
-		url="/financing/servlet/JsonDataAccountDetail?accountid=${info.accountid }"
-		toolbar="#toolbar" pagination="true" fitColumns="true"
-		singleSelect="true">
-		<thead>
-			<tr>
-				<th field="detailId" width="50" rowspan="2" fixed="true"
-					halign="center" hidden="hidden">ID</th>
-				<th field="year" width="50" colspan="2" fixed="true" align="center">2014年</th>
-				<th field="voucherNum" width="50" rowspan="2" fixed="true"
-					align="center">编号</th>
-				<th field="summary" width="120" rowspan="2" halign="center">摘要</th>
-				<th field="debit" width="120" rowspan="2" fixed="true"
-					halign="center">借方</th>
-				<th field="credit" width="120" rowspan="2" fixed="true"
-					halign="center">贷方</th>
-				<th field="direction" width="40" rowspan="2" fixed="true"
-					halign="center" align="center">方向</th>
-				<th field="balance" width="120" rowspan="2" fixed="true"
-					halign="center">余额</th>
-			</tr>
-			<tr>
-				<th field="month" width="25" fixed="true" align="center">月</th>
-				<th field="day" width="25" fixed="true" align="center">日</th>
-			</tr>
-		</thead>
-	</table>
-	<div id="toolbar">
-		<a href="javascript:void(0)" class="easyui-linkbutton"
-			iconCls="icon-add" plain="true" onclick="newItem()">录入</a> <a
-			href="javascript:void(0)" class="easyui-linkbutton"
-			iconCls="icon-remove" plain="true" onclick="destroyItem()">删除</a>
+	<div class="easyui-panel" title="发生额数据录入" style="width:600px;padding:10px 60px 20px 60px">
+		<form id="fAccountData" method="post">
+			<table border="0">
+				<tr>
+					<td>日期：</td>
+					<td><input id="dateBox"></input></td>
+				</tr>
+				<tr>
+					<td>所属单位：</td>
+					<td><input id="comboTree" style="width:200px;"></td>
+				</tr>
+				<tr>
+					<td>摘要：</td>
+					<td><input id="smy" class="easyui-validatebox textbox" data-options="required:true,validType:'length[3,10]'"></td>
+				</tr>
+				<tr>
+					<td>方向：</td>
+					<td>
+						<select id="direction" style="width:150px"></select>
+						<div id="sp">
+							<div style="color:#99BBE8;background:#fafafa;padding:5px;">请选择记账方向</div>
+							<div style="padding:10px;height:50px;">
+								<input type="radio" name="direc" value="0" id="debit"><span>借</span><br />
+								<input type="radio" name="direc" value="1" id="lender"><span>贷</span><br />
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>金额：</td>
+					<td><input id="amount"></td>
+				</tr>
+				<tr class="trCenter">
+					<td  colspan="2"><a href="javascript:void(0)" class="easyui-linkbutton"
+						onclick="submitForm()">提交</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton"
+						onclick="clearForm()">清除</a></td>
+				</tr>
+			</table>
+		</form>
 	</div>
 </body>
 </html>

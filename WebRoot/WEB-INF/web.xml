@@ -50,6 +50,13 @@
     <servlet-name>JsonDataAccountDetail</servlet-name>
     <servlet-class>xdl.wxk.financing.servlet.JsonDataAccountDetail</servlet-class>
   </servlet>
+  <servlet>
+    <description>添加或插入银行业务记录</description>
+    <display-name>InsertAccountDetail</display-name>
+    <servlet-name>InsertAccountDetail</servlet-name>
+    <servlet-class>xdl.wxk.financing.servlet.BusinessProcess.InsertAccountDetail</servlet-class>
+  </servlet>
+
 
 
 
@@ -113,6 +120,10 @@
   <servlet-mapping>
     <servlet-name>JsonDataAccountDetail</servlet-name>
     <url-pattern>/servlet/JsonDataAccountDetail</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>InsertAccountDetail</servlet-name>
+    <url-pattern>/servlet/InsertAccountDetail</url-pattern>
   </servlet-mapping>
 
 </web-app>
