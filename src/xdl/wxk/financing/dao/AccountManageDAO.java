@@ -13,6 +13,7 @@ public interface AccountManageDAO {
 	public Account getParent(Account account) throws SQLException;
 	boolean isLeaf(Account account) throws SQLException;
 	boolean isHasParent(Account account) throws SQLException;
+	boolean isRootAccount(int accountid) throws SQLException;
 	public List<Account> findChildren(Account account) throws SQLException;
 	public List<Account> findAllAccounts() throws SQLException;
 	public Account findAccountById(int accountid) throws SQLException;

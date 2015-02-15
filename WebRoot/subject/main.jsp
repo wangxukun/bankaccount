@@ -297,8 +297,9 @@ $(document).ready(function() {
 		        <div id="accordion-3">
 					<ul>
 						<c:if test="${isManager }">
-							<li id="dataSearch"><a href="/financing/subject/dataManage/dataInput.jsp" target="main">数据录入</a>
-							<li>数据修改
+							<li id="dataInit"><a href="/financing/subject/dataManage/dataInit.jsp" target="main">数据初始化</a>
+							<li id="dataInput"><a href="/financing/subject/dataManage/dataInput.jsp" target="main">数据录入</a>
+							<li id="dataModify">数据修改
 						</c:if>
 						<li id="dataSearch"><a href="/financing/subject/dataManage/dataSearch.jsp" target="main">数据查询</a>
 						<li>数据汇总

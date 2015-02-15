@@ -56,6 +56,20 @@
     <servlet-name>InsertAccountDetail</servlet-name>
     <servlet-class>xdl.wxk.financing.servlet.BusinessProcess.InsertAccountDetail</servlet-class>
   </servlet>
+  <servlet>
+    <description>初始化帐户数据</description>
+    <display-name>InitAccount</display-name>
+    <servlet-name>InitAccount</servlet-name>
+    <servlet-class>xdl.wxk.financing.servlet.BusinessProcess.InitAccount</servlet-class>
+  </servlet>
+  <servlet>
+    <description>查询初始化帐户数据</description>
+    <display-name>SearchInitAccount</display-name>
+    <servlet-name>SearchInitAccount</servlet-name>
+    <servlet-class>xdl.wxk.financing.servlet.BusinessProcess.SearchInitAccount</servlet-class>
+  </servlet>
+
+
 
 
 
@@ -124,6 +138,14 @@
   <servlet-mapping>
     <servlet-name>InsertAccountDetail</servlet-name>
     <url-pattern>/servlet/InsertAccountDetail</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>InitAccount</servlet-name>
+    <url-pattern>/servlet/InitAccount</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SearchInitAccount</servlet-name>
+    <url-pattern>/servlet/SearchInitAccount</url-pattern>
   </servlet-mapping>
 
 </web-app>

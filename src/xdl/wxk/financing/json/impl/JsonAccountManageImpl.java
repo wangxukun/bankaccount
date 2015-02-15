@@ -1,16 +1,21 @@
 package xdl.wxk.financing.json.impl;
 
+import java.sql.SQLException;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import xdl.wxk.financing.dao.factory.DAOFactory;
 import xdl.wxk.financing.json.JsonAccountManage;
 import xdl.wxk.financing.vo.Account;
 import xdl.wxk.financing.vo.AccountDetail;
+import xdl.wxk.financing.vo.InitAccount;
 
 public class JsonAccountManageImpl implements JsonAccountManage {
 	private int initMonth ;//记录初始化后账户的初始月份
@@ -198,5 +203,51 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 		this.creditTotal = 0.0;
 		this.debitTotal = 0.0;
 		this.number = 0;
+	}
+	@Override
+	public JSONArray getJsonOfInitdata(List<InitAccount> init) {
+		String rootSummary = "汇总各单位数据";
+		double rootAmount = 0.0;
+		String rootDirection = null;
+		JSONArray jArray = new JSONArray();
+		Iterator<InitAccount> iter = init.iterator();
+		while(iter.hasNext()){
+			JSONObject jObject = new JSONObject();
+			InitAccount tempInit = iter.next();
+			boolean isRoot = false;
+			try {
+				isRoot = DAOFactory.getAccountManageDAOInstance().isRootAccount(tempInit.getAccountid());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			if(!isRoot){
+				int flag = tempInit.getDirection();
+				if(flag == -1){
+					jObject.accumulate("unit",tempInit.getAccountname());
+					jObject.accumulate("initDate", "-");
+					jObject.accumulate("summary", "-");
+					jObject.accumulate("direction","-");
+					jObject.accumulate("amount","-");
+				}else{
+					Calendar calendar = Calendar.getInstance();
+					Date date = calendar.getTime();
+					DateFormat d = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.CHINA);
+					String initdate = d.format(date);
+					calendar.setTime(tempInit.getInitdate());
+					jObject.accumulate("unit",tempInit.getAccountname());
+					jObject.accumulate("initDate", initdate);
+					jObject.accumulate("summary", tempInit.getSummary());
+					if(tempInit.getDirection()==0){
+						jObject.accumulate("direction","借");
+					}else{
+						jObject.accumulate("direction","贷");
+					}
+					
+					jObject.accumulate("amount",tempInit.getAmount());
+				}
+				jArray.add(jObject);
+			}
+		}
+		return jArray;
 	}
 }

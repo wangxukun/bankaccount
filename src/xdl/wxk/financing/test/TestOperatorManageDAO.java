@@ -2,11 +2,13 @@ package xdl.wxk.financing.test;
 
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 
 import xdl.wxk.financing.dao.factory.DAOFactory;
 import xdl.wxk.financing.vo.AccountDetail;
+import xdl.wxk.financing.vo.InitAccount;
 
 
 public class TestOperatorManageDAO {
@@ -24,7 +26,7 @@ public class TestOperatorManageDAO {
 			System.out.println("----------------------------------");
 			JSONArray array = JsonDAOFactory.getJsonAccountManageDAOInstance().getAccountDetail(detail);
 			System.out.println(array);*/
-			AccountDetail accountDetail = new AccountDetail();
+			/*AccountDetail accountDetail = new AccountDetail();
 			accountDetail.setAccountid(3);
 			accountDetail.setAmount(9527);
 			accountDetail.setDirection(0);
@@ -32,8 +34,11 @@ public class TestOperatorManageDAO {
 			accountDetail.setSummary("看电影");
 			Calendar calendar = Calendar.getInstance(Locale.CHINA);
 			accountDetail.setOccurdate(calendar.getTime());
-			DAOFactory.getAccountManageDAOInstance().addAccountDetail(accountDetail);
+			DAOFactory.getAccountManageDAOInstance().addAccountDetail(accountDetail);*/
 			
+			List<InitAccount> initaccounts = DAOFactory.getBusinessProcessDAOInstance().getAllInitaccount();
+			List<InitAccount> list = DAOFactory.getBusinessProcessDAOInstance().getAllInitaccount(initaccounts, 1);
+			System.out.println(list);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

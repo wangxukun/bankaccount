@@ -158,4 +158,16 @@ public class AccountManageDAOProxy implements AccountManageDAO {
 		}
 		return flag;
 	}
+
+	@Override
+	public boolean isRootAccount(int accountid) throws SQLException {
+		boolean flag = false;
+		try {
+			this.jdbc.getConnection();
+			flag = this.dao.isRootAccount(accountid);
+		} catch (Exception e) {
+			throw e;
+		}
+		return flag;
+	}
 }
