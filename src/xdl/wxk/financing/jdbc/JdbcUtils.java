@@ -53,10 +53,9 @@ public class JdbcUtils {
 	/**
 	 * 完成对数据库的表的添加、删除和修改的操作
 	 * 
-	 * @param sql
-	 * @param params
-	 *            填充占位符
-	 * @return
+	 * @param sql SQL语句
+	 * @param params 填充占位符
+	 * @return 操作成功返回true，失败返回false
 	 * @throws SQLException
 	 */
 	public boolean updateByPreparedStatement(String sql, List<Object> params)

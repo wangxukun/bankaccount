@@ -7,7 +7,9 @@ import xdl.wxk.financing.dao.BusinessProcessDAO;
 import xdl.wxk.financing.dao.impl.BusinessProcessDAOImpl;
 import xdl.wxk.financing.jdbc.JdbcUtils;
 import xdl.wxk.financing.vo.AccountDetail;
+import xdl.wxk.financing.vo.DataInfo;
 import xdl.wxk.financing.vo.InitAccount;
+import xdl.wxk.financing.web.formbean.DataSearchForm;
 
 public class BusinessProcessDAOProxy implements BusinessProcessDAO {
 	private BusinessProcessDAO dao;
@@ -78,4 +80,29 @@ public class BusinessProcessDAOProxy implements BusinessProcessDAO {
 		 return this.dao.getAllInitaccount(initaccounts,accountid);
 	}
 
+	@Override
+	public InitAccount getRootInitaccount(List<InitAccount> initAccounts) {
+		return this.dao.getRootInitaccount(initAccounts);
+	}
+	@Override
+	public boolean updateInitAccount(InitAccount initAccount)
+			throws SQLException {
+		boolean flag = false;
+		try {
+			this.jdbc.getConnection();
+			flag = this.dao.updateInitAccount(initAccount);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			this.jdbc.releaseConnection();
+		}
+		return flag;
+	}
+
+	@Override
+	public List<DataInfo> getAccountDetails(DataSearchForm formDate)
+			throws SQLException {
+		
+		return this.dao.getAccountDetails(formDate);
+	}
 }

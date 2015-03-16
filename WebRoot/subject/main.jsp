@@ -1,33 +1,25 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="/WEB-INF/c.tld"%>
 
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
-			+ request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-%>
-
 <!DOCTYPE HTML>
 <html>
 <head>
-<base href="<%=basePath%>">
-
+<base href="${pageContext.request.scheme }://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/">
 <title>银行存款日记帐</title>
-<script type="text/javascript" src="/financing/js/jquery-2.1.1.js"></script>
-<script type="text/javascript" src="/financing/js/jquery-ui.js"></script>
-<script type="text/javascript" src="/financing/easyui/jquery.easyui.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/financing/css/smoothness/jquery-ui.min.css">
-<link rel="stylesheet" type="text/css" href="/financing/css/smoothness/theme.css">
-<link rel="stylesheet" type="text/css" href="/financing/easyui/themes/icon.css">
-<link rel="stylesheet" type="text/css" href="/financing/easyui/themes/metro/easyui.css">
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-ui.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/easyui/jquery.easyui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/smoothness/jquery-ui.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/smoothness/theme.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/easyui/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/easyui/themes/metro/easyui.css">
 
 
 <style type="text/css">
 html,body {
-	background-color: white;
-	padding: 0;
-	margin: 0;
+	font-family: "微软雅黑",Arial,Helvetica,sans-serif;
+	padding: 0 auto;
+	margin: 0 auto;
 }
 #north{
 	background-color:white;
@@ -77,6 +69,10 @@ html,body {
 	text-decoration: none;
 	color: #000000;
 }
+#aa ul li span:HOVER {
+	color: orange;
+	cursor:pointer;
+}
 #aa ul li a:HOVER {
 	color: orange;
 }
@@ -85,7 +81,7 @@ iframe{
 	width: 100%;
 	height: 100%;
 	border:0;
-	margin-bottom: -3px;
+	margin-bottom: -5px;
 }
 #switchOperator p{
 	height: 40px;
@@ -97,6 +93,132 @@ iframe{
 	width: 180px;
 	height: 20px;
 	margin-left: 40px;
+}
+
+/*
+	主体面板中内容
+*/
+.box{
+	width: 1000px;
+	height: 280px;
+	margin: 50px auto;
+}
+
+.box .link{
+	width: 205px;
+	height: 280px;
+	background: none;
+	margin: 0 20px;
+	float: left;
+}
+.link .icon{
+	display: inline-block;
+	width: 100%;
+	height: 190px;
+	transition: 0.2s linear;
+	-webkit-transition: 0.2s linear;
+}
+.link-one .icon{
+	background:url("image/one.png") no-repeat center center;
+}
+.link-two .icon{
+	background:url("image/two.png") no-repeat center center;
+}
+.link-three .icon{
+	background:url("image/three.png") no-repeat center center;
+}
+.link-four .icon{
+	background:url("image/four.png") no-repeat center center;
+}
+.link .icon:hover{
+	transform: rotate(360deg) scale(1.2);
+	-ms-transform: rotate(360deg) scale(1.2);
+	-webkit-transform: rotate(360deg) scale(1.2);
+	-o-transform: rotate(360deg) scale(1.2);
+	-moz-transform: rotate(360deg) scale(1.2);
+}
+.button{
+	display: block;
+	width: 180px;
+	height: 50px;
+	text-decoration: none;
+	line-height: 50px;
+	color: #2DCB70;
+	font-family: "微软雅黑",Arial,Helvetica,sans-serif;
+	font-weight: bolder;
+	border: 2px solid rgba(0,0,0,0.5);
+	padding-left: 20px;
+	margin: 0 auto;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	background: url("image/allow.png") no-repeat 110px center;
+	position: relative;
+	transition: 0.4s ease;
+	-webkit-transition: 0.4s ease;
+}
+.button:hover{
+	border: 2px solid rgba(0,0,0,1);
+	background-position: 120px center;
+}
+.button:hover .line{
+	background: #000;
+}
+.button .line{
+	display: block;
+	position: absolute;
+	background: none;
+	transition: 0.4s ease;
+	-webkit-transition: 0.4s ease;
+}
+/*
+ top:
+  1.高度不变
+  2.宽度变（0-盒子的宽度）
+  3.位置：左-右
+*/
+.button .line-top{
+	height: 2px;
+	width: 0px;
+	left: -110%;
+	top: -2px;
+}
+.button:hover .line-top{
+	height: 2px;
+	width: 180px;
+	left: -2px;
+}
+.button .line-bottom{
+	height: 2px;
+	width: 0px;
+	right: -110%;
+	bottom: -2px;
+}
+.button:hover .line-bottom{
+	width: 100%;
+	right: -2px;
+}
+.button .line-left{
+	height: 0px;
+	width: 2px;
+	left: -2px;
+	bottom: -110%;
+}
+.button:hover .line-left{
+	height: 50px;
+	width: 2px;
+	bottom: -2px;
+}
+.button .line-right{
+	height: 0px;
+	width: 2px;
+	right: -2px;
+	top: -110%;
+}
+.button:hover .line-right{
+	height: 50px;
+	width: 2px;
+	top: -2px;
 }
 </style>
 
@@ -201,7 +323,88 @@ $(document).ready(function() {
 	$('#switchOperator').dialog({
 		closed:true
 	});
+	
+	//数据管理器对象
+	var DataManager = new function(){
+		//数据初始化
+		this.dataInitialization = function(){
+			if($("#myTab").tabs('getTab','数据初始化') == null){
+				$("#myTab").tabs('add',{
+					id:'two',
+					title:'数据初始化',
+					closable:true,
+					content:'<iframe id=\"main\" name=\"main\" src=\"subject/dataManage/dataInit.jsp\" ></iframe>'
+				});
+			}else{
+				$("#myTab").tabs('select','数据初始化');
+			}
+		};
+		//数据录入
+		this.dataInput = function(){
+			if($("#myTab").tabs('getTab','数据录入') == null){
+				$("#myTab").tabs('add',{
+					id:'three',
+					title:'数据录入',
+					closable:true,
+					content:'<iframe id=\"main\" name=\"main\" src=\"subject/dataManage/dataInput.jsp\" ></iframe>'
+				});
+			}else{
+				$("#myTab").tabs('select','数据录入');
+			}
+		};
+		
+		//数据查询
+		this.dataQuery = function(){
+			if($("#myTab").tabs('getTab','数据查询') == null){
+				$("#myTab").tabs('add',{
+					id:'three',
+					title:'数据查询',
+					closable:true,
+					content:'<iframe id=\"main\" name=\"main\" src=\"subject/dataManage/dataQuery.jsp\" ></iframe>'
+				});
+			}else{
+				$("#myTab").tabs('select','数据查询');
+			}
+		};
+	};	
+	
+	
+	//easyui-tab
+	$("#myTab").tabs({
+		border:false,
+		cache:true,
+		tabPosition:'top',
+		fit:true
+	});
+
+	//数据初始化
+	$("#dataInit").click(function(){
+		DataManager.dataInitialization();
+	});
+	$(".link-one a").click(function(event){
+		event.preventDefault();	//禁止超链接的默认事件
+		DataManager.dataInitialization();
+	});
+	
+	//数据录入
+	$("#dataInput").click(function(){
+		DataManager.dataInput();
+	});
+	$(".link-two a").click(function(event){
+		event.preventDefault();	//禁止超链接的默认事件
+		DataManager.dataInput();
+	});
+	
+	//数据查询
+	$("#dataQuery").click(function(){
+		DataManager.dataQuery();
+	});
+	$(".link-four a").click(function(event){
+		event.preventDefault();	//禁止超链接的默认事件
+		DataManager.dataQuery();
+	});
 });
+
 </script>
 
 </head>
@@ -287,7 +490,7 @@ $(document).ready(function() {
 			    <div title="账户管理" data-options="iconCls:'icon-man'" style="padding:10px;">
 			        <div id="accordionLeft-2">
 						<ul>
-							<li id="addAccount"><a href="/financing/subject/accountManage/addDelAccount.jsp" target="main">增删帐户</a>
+							<li id="addAccount"><a href="${pageContext.request.contextPath }/subject/accountManage/addDelAccount.jsp" target="main">增删帐户</a>
 						</ul>
 					</div>
 			    </div>
@@ -297,11 +500,11 @@ $(document).ready(function() {
 		        <div id="accordion-3">
 					<ul>
 						<c:if test="${isManager }">
-							<li id="dataInit"><a href="/financing/subject/dataManage/dataInit.jsp" target="main">数据初始化</a>
-							<li id="dataInput"><a href="/financing/subject/dataManage/dataInput.jsp" target="main">数据录入</a>
+							<li id="dataInit"><span>数据初始化</span></li>
+							<li id="dataInput"><span>数据录入</span></li>
 							<li id="dataModify">数据修改
 						</c:if>
-						<li id="dataSearch"><a href="/financing/subject/dataManage/dataSearch.jsp" target="main">数据查询</a>
+						<li id="dataQuery"><span>数据查询</span></li>
 						<li>数据汇总
 					</ul>
 				</div>
@@ -311,7 +514,7 @@ $(document).ready(function() {
 			    <div title="用户管理" data-options="iconCls:'icon-man'" style="padding:10px;">
 			        <div id="accordion-4">
 						<ul>
-							<li id="deleteOperator"><a href="/financing/subject/operatorManage/operatorManage.jsp" target="main">操作员管理</a>
+							<li id="deleteOperator"><a href="${pageContext.request.contextPath }/subject/operatorManage/operatorManage.jsp" target="main">操作员管理</a>
 						</ul>
 					</div>
 			    </div>
@@ -328,8 +531,53 @@ $(document).ready(function() {
     
     
 <!--+++++++++++++++++++++++++主体面板+++++++++++++++++++++++++-->    
-    <div data-options="region:'center',title:'业务操作区'" style="padding:5px;background:#eee;">
-    	<iframe id="main" name="main" src="subject/welcome.jsp" ></iframe>
+    <div data-options="region:'center'" style="padding:5px;">
+<!-- <iframe id="main" name="main" src="subject/dataInit.jsp" ></iframe> -->		
+    	<div id="myTab" class="easyui-tabs">
+    		<div class="box" title="首页">
+				<div class="link link-one" id="one">
+					<span class="icon"></span>
+					<a href="javasrcipt:void(0)" class="button">
+						<span class="line line-top"></span>
+						<span class="line line-left"></span>
+						<span class="line line-right"></span>
+						<span class="line line-bottom"></span>
+						数据初始化
+					</a>
+				</div>
+				<div class="link link-two">
+					<span class="icon"></span>
+					<a href="javasrcipt:void(0)" class="button">
+						<span class="line line-top"></span>
+						<span class="line line-left"></span>
+						<span class="line line-right"></span>
+						<span class="line line-bottom"></span>
+						数据录入
+					</a>
+				</div>
+				<div class="link link-three">
+					<span class="icon"></span>
+					<a href="javasrcipt:void(0)" class="button">
+						<span class="line line-top"></span>
+						<span class="line line-left"></span>
+						<span class="line line-right"></span>
+						<span class="line line-bottom"></span>
+						数据修改
+					</a>
+				</div>
+				<div class="link link-four">
+					<span class="icon"></span>
+					<a href="javasrcipt:void(0)" class="button">
+						<span class="line line-top"></span>
+						<span class="line line-left"></span>
+						<span class="line line-right"></span>
+						<span class="line line-bottom"></span>
+						数据查询
+					</a>
+				</div>
+			</div>
+
+    	</div>	
     </div>
 <!---------------------------主体面板--------------------------->
 </body>

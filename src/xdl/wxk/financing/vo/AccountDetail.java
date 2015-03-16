@@ -2,17 +2,22 @@ package xdl.wxk.financing.vo;
 
 import java.util.Date;
 
+
 public class AccountDetail {
-	int accountdetailid;	//帐户祥情ID
-	int accountid;	//帐户ID
-	int number;	//凭证编号
-	int direction;	//借贷方向
-	double amount;	//金额
-	Date occurdate;	//发生日期
-	String summary;	//摘要
-	double balance;	//余额，数据库中没有这个字段
-	int groupid;	//分类账户ID
-	int freeze;	//是否已冻结(0表示未冻结，1表示冻结)
+	private int accountdetailid;	//帐户祥情ID
+	private int accountid;	//帐户ID
+	private int number;	//凭证编号
+	private int direction;	//借贷方向
+	private double amount;	//金额
+	private Date occurdate;	//发生日期
+	private String summary;	//摘要
+	private double balance;	//余额，数据库中没有这个字段
+	private int groupid;	//分类账户ID
+	private int freeze;	//是否已冻结(0表示未冻结，1表示冻结)
+	
+	public AccountDetail() {
+		
+	}
 	public int getGroupid() {
 		return groupid;
 	}
@@ -24,9 +29,6 @@ public class AccountDetail {
 	}
 	public void setFreeze(int freeze) {
 		this.freeze = freeze;
-	}
-	public AccountDetail() {
-		
 	}
 	public int getAccountdetailid() {
 		return accountdetailid;

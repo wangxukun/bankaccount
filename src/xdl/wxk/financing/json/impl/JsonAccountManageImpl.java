@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -228,13 +227,12 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 					jObject.accumulate("summary", "-");
 					jObject.accumulate("direction","-");
 					jObject.accumulate("amount","-");
+					jObject.accumulate("modify","-");
+					jObject.accumulate("delete","-");
 				}else{
-					Calendar calendar = Calendar.getInstance();
-					Date date = calendar.getTime();
-					DateFormat d = DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.CHINA);
-					String initdate = d.format(date);
-					calendar.setTime(tempInit.getInitdate());
 					jObject.accumulate("unit",tempInit.getAccountname());
+					DateFormat df = DateFormat.getDateInstance();
+					String initdate = df.format(tempInit.getInitdate());
 					jObject.accumulate("initDate", initdate);
 					jObject.accumulate("summary", tempInit.getSummary());
 					if(tempInit.getDirection()==0){
@@ -242,8 +240,15 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 					}else{
 						jObject.accumulate("direction","贷");
 					}
-					
 					jObject.accumulate("amount",tempInit.getAmount());
+					jObject.accumulate("modify","<a href='servlet/ModifyInitDataUI?accountid="+tempInit.getAccountid()+
+																					"&parentid="+tempInit.getParentid()+
+																					"&accountname="+tempInit.getAccountname()+
+																					"&initdate="+tempInit.getInitdate()+
+																					"&direction="+tempInit.getDirection()+
+																					"&amount="+tempInit.getAmount()+
+																					"&summary="+tempInit.getSummary()+"'>修改</a>");
+					jObject.accumulate("delete","<a href='"+tempInit.getAccountid()+"'>删除</a>");
 				}
 				jArray.add(jObject);
 			}

@@ -41,7 +41,7 @@ public class InitAccount extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		xdl.wxk.financing.vo.InitAccount initAccount = new xdl.wxk.financing.vo.InitAccount(Integer.parseInt(accountid),myDate,Integer.parseInt(direction),Float.parseFloat(amount),summary);
+		xdl.wxk.financing.vo.InitAccount initAccount = new xdl.wxk.financing.vo.InitAccount(Integer.parseInt(accountid),myDate,Integer.parseInt(direction),amount,summary);
 		BusinessProcessDAO dao = DAOFactory.getBusinessProcessDAOInstance();
 		try {
 			if(!dao.isInit(initAccount.getAccountid())){

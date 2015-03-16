@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="/WEB-INF/c.tld"%>
 <%
 	String path = request.getContextPath();
@@ -16,24 +16,46 @@
 <link rel="stylesheet" type="text/css" href="/financing/easyui/themes/icon.css">
 <link rel="stylesheet" type="text/css" href="/financing/easyui/themes/metro/easyui.css">
 <style type="text/css">
-html,body {
+html,body{
+	font-family: "微软雅黑",Arial,Helvetica,sans-serif;
 	padding: 0;
 	margin: 0;
-	font-size: 12px;
-}
-h6{
-	text-align: center;
-	color: #777;
 }
 div#left{
 	width: 30%;
 	height: 100%;
 	float:left;
 }
+div#left #tip{
+	border-bottom: 1px solid #999;
+	margin-bottom: 10px;
+}
 div#right{
 	width: 70%;
 	height: 100%;
 	float:left;
+}
+.btnInGrid{
+	/*
+		用于关联datagrid中链接
+	*/
+}
+.btnInGrid a{
+	display: inline-block;
+	text-decoration: none;
+	width: 40px;
+	height: 20px;
+	line-height: 20px;
+	border-radius:5px;
+	background-color: #dc143c;
+	color: #FFF;
+	font-style: italic;
+	font-size-adjust: inherit;
+}
+.btnInGrid a:HOVER{
+	color: #FFFF00;
+	font-style:normal;
+	font-weight: bolder;
 }
 p a#dd{
 	text-decoration: underline;
@@ -117,51 +139,45 @@ div#dlg input#amount{
 					console.log("init div created");
 					$('#init').datagrid({
 						url:"servlet/SearchInitAccount?accountid="+node.id,
-	//					data:data,
+						fit:true,
+						rownumbers:true,
 						cache: false,
 						title:'账户初始化信息-'+node.text,
-						width:510,
+						width:660,
 						height:500,
 						singleSelect:true,
 						columns:[[
 									 {field:'unit',title:'单位',halign:'center',rowspan:2,width:140},
-									 {field:'initInfo',title:'初始化信息',halign:'center',colspan:4,width:350}
+									 {field:'initInfo',title:'初始化信息',halign:'center',colspan:4,width:350},
+									 {field:'operate',title:'操作',halign:'center',colspan:2,width:100}
 						         ],
 						         [
-									 {field:'initDate',title:'初始化日期',halign:'center',align:'center',width:90},
-									 {field:'summary',title:'摘要',halign:'center',width:120},
+									 {field:'initDate',title:'初始化日期',halign:'center',align:'center',align:'center',width:90},
+									 {field:'summary',title:'摘要',halign:'center',width:170},
 									 {field:'direction',title:'方向',halign:'center',align:'center',width:50},
-									 {field:'amount',title:'金额',halign:'center',width:100}
+									 {field:'amount',title:'金额',halign:'center',width:100},
+									 {field:'modify',title:'修改',halign:'center',align:'center',width:70,styler:function(value,row,index){
+										 if(value != '-'){
+											 return {class:'btnInGrid'};
+										 }
+									 }},
+									 {field:'delete',title:'删除',halign:'center',align:'center',width:70,styler:function(value,row,index){
+										 if(value != '-'){
+											 return {class:'btnInGrid'};
+										 }
+									 }}
 						         ]],
 						rowStyler: function(index,row){
 							if (row.direction=="-"){
-								return 'background-color:#6293BB;color:#fff;';
+								return 'color:#f00;';
 							}
 						}
 						
 					});
-					console.log("datagrid created");
-					
-	//				element.prependTo('#right');
-					console.log("element add");
-				
 			}
+			
 		});
-		
-		//操作提示
-		$('#dd').tooltip({
-		    position: 'right',
-		    content: '<span style="color:#fff">1、选择左边需要操作的帐户节点.</span><br /><br /><span style="color:#fff">2、在选择的节点上点击鼠标右键.</span>',
-		    onShow: function(){
-		        $(this).tooltip('tip').css({
-		            backgroundColor: '#666',
-		            borderColor: '#666'
-		        });
-		    }
-		});
-		
-		
-		
+
 		//----------日期处理------------
 		var date = new Date();
 		var y = date.getFullYear();
@@ -205,7 +221,7 @@ div#dlg input#amount{
 		$('#amount').numberbox({
 			 required:true,
 			 min:0,
-			 precision:2,
+			 precision:4,
 			 groupSeparator:','
 		});
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -329,19 +345,25 @@ div#dlg input#amount{
 <body>
 	
 	
-	<div class="easyui-layout" data-options="fit:true">
-		<div data-options="region:'north',split:true" style="height:120px;">
-			<h6>数据初始化</h6>
-			<p><a id="dd" href="javascript:void(0)">操作提示</a></p>
+	<div id="top" class="easyui-layout" data-options="fit:true">
+		
+		<div data-options="region:'north',split:true,border:false" style="height:2px;">
 		</div>
-		<div id="left" data-options="region:'west',title:'单位',split:true" style="width:200px;">
+		<div id="left" data-options="region:'west',title:'单位',split:true" style="width:220px;">
+			<div id="tip">
+				<h4>初始化数据录入操作提示：</h4>
+				<p>1、选择下边需要操作的帐户节点.</p>
+				<p>2、在选择的节点上点击鼠标右键.</p>
+			</div>
 			<ul id="tt_account">
 			</ul>
 		</div>
-		<div id="right" data-options="region:'center',split:true">
+		<div id="right" data-options="region:'center',split:true,border:false">
 			<div id='init'></div>
 		</div>
 	</div>
+	
+	<!-- 新增账户对话框 -->
 	<div id="dlg" class="easyui-dialog" title="帐户初始化 " style="width:400px;height:400px;padding:10px" 
 		data-options="iconCls:'icon-add',
 						closed:'true',
@@ -355,6 +377,7 @@ div#dlg input#amount{
 												}
 									}
 								]">
+		
 		<table>
 			<tr>
 					<td>日期：</td>
@@ -362,7 +385,7 @@ div#dlg input#amount{
 				</tr>
 				<tr>
 					<td>摘要：</td>
-					<td><input id="smy" class="easyui-validatebox textbox" data-options="required:true,validType:'length[3,10]'"></td>
+					<td><input id="smy" class="easyui-validatebox textbox" data-options="required:true,validType:'length[3,20]'"></td>
 				</tr>
 				<tr>
 					<td>方向：</td>
@@ -386,7 +409,7 @@ div#dlg input#amount{
     
 	<div id="mm" class="easyui-menu" style="width:120px;">
 		<div onclick="addAccountBox()" data-options="iconCls:'icon-tip'">初始化设置</div>
-		<div onclick="delAccount()" data-options="iconCls:'icon-tip'">初始化修改</div>
+		<!-- <div onclick="modifyAccount()" data-options="iconCls:'icon-tip'">初始化修改</div> -->
 	</div>
 </body>
 </html>

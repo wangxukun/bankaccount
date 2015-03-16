@@ -16,11 +16,10 @@
 <link rel="stylesheet" type="text/css" href="/financing/easyui/themes/icon.css">
 <link rel="stylesheet" type="text/css" href="/financing/easyui/themes/metro/easyui.css">
 <style type="text/css">
-html,body {
+html,body{
+	font-family: "微软雅黑",Arial,Helvetica,sans-serif;
 	padding: 0;
 	margin: 0;
-	
-	font-size: 12px;
 }
 h6{
 	text-align: center;

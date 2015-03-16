@@ -68,6 +68,20 @@
     <servlet-name>SearchInitAccount</servlet-name>
     <servlet-class>xdl.wxk.financing.servlet.BusinessProcess.SearchInitAccount</servlet-class>
   </servlet>
+  <servlet>
+    <description>显示修改初始化数据UI</description>
+    <display-name>ModifyInitDataUI</display-name>
+    <servlet-name>ModifyInitDataUI</servlet-name>
+    <servlet-class>xdl.wxk.financing.servlet.BusinessProcess.ModifyInitDataUI</servlet-class>
+  </servlet>
+  <servlet>
+    <description>修改初始化数据</description>
+    <display-name>ModifyInitDataUI</display-name>
+    <servlet-name>ModifyInitData</servlet-name>
+    <servlet-class>xdl.wxk.financing.servlet.BusinessProcess.ModifyInitData</servlet-class>
+  </servlet>
+
+
 
 
 
@@ -146,6 +160,14 @@
   <servlet-mapping>
     <servlet-name>SearchInitAccount</servlet-name>
     <url-pattern>/servlet/SearchInitAccount</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ModifyInitDataUI</servlet-name>
+    <url-pattern>/servlet/ModifyInitDataUI</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ModifyInitData</servlet-name>
+    <url-pattern>/servlet/ModifyInitData</url-pattern>
   </servlet-mapping>
 
 </web-app>

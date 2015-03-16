@@ -203,6 +203,7 @@ public class OperatorLogin extends HttpServlet {
 				}
 				List<Map<String, Object>> list = DAOFactory.getOperatorManageDAOInstance().findAllOperator();
 				JSONArray operatorTree = JsonDAOFactory.getJsonOperatorManageDAOInstance().getOperatorForEasyTree(list);
+				
 				if(info.getAccountname() != null){
 					System.out.println("【9】");
 					request.getSession().setAttribute("info", info);

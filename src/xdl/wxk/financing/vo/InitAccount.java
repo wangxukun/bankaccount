@@ -1,14 +1,18 @@
 package xdl.wxk.financing.vo;
 
 import java.util.Date;
-
+/**
+ * 账户初始化数据实体类
+ * @author 王旭昆
+ * @version 1.0
+ */
 public class InitAccount {
 	int accountid;
 	int parentid;
 	String accountname;
 	Date initdate;
 	int direction;
-	double amount;
+	String amount;
 	String summary;
 
 	public InitAccount() {
@@ -16,7 +20,7 @@ public class InitAccount {
 	}
 
 	public InitAccount(int accountid, Date initdate, int direction,
-			double amount, String summary) {
+			String amount, String summary) {
 		super();
 		this.accountid = accountid;
 		this.initdate = initdate;
@@ -65,11 +69,11 @@ public class InitAccount {
 		this.direction = direction;
 	}
 
-	public double getAmount() {
+	public String getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Double amount) {
+	public void setAmount(String amount) {
 		this.amount = amount;
 	}
 
@@ -88,7 +92,7 @@ public class InitAccount {
 				+ this.accountname.hashCode()
 				+ this.initdate.hashCode()
 				+ new Integer(this.direction).hashCode()
-				+ new Double(this.amount).hashCode()
+				+ this.amount.hashCode()
 				+ this.summary.hashCode();
 	}
 
