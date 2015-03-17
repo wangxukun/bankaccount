@@ -80,7 +80,10 @@ html,body {
 #aa ul li a:HOVER {
 	color: orange;
 }
-
+#aa #accordion-3 #datamodify span:HOVER{
+	color: orange;
+	cursor:pointer;
+}
 iframe{
 	width: 100%;
 	height: 100%;
@@ -97,6 +100,9 @@ iframe{
 	width: 180px;
 	height: 20px;
 	margin-left: 40px;
+}
+#workspace{
+	background:blue;
 }
 </style>
 
@@ -123,18 +129,21 @@ $(document).ready(function() {
 			//如果是点击了当前帐户，则不做任何处理
 			if(node.id == '${info.accountid}')
 				return false;
-			$.post(
-					'servlet/OperatorLogin',
-					{
+			var xmlRequestAccount = $.ajax({
+					url:'servlet/OperatorLogin',
+					type:'POST',
+					data:{
 						action_flag:'switch_account',
 						isManager:'${isManager }',
 						operatorid:'${info.operatorid}',
 						accountid:node.id
-					},
-					function(data,textStatus,jqXHR){
-						parent.location.reload();
 					}
-			);
+			});
+			xmlRequestAccount.done(function(data, textStatus, jqXHR){
+				document.getElementById("right").innerHTML = jqXHR.responseText;
+				alert('${info.accountname}');
+				alert(data);
+			});
 		}
 	});
 	//切换操作员
@@ -200,6 +209,21 @@ $(document).ready(function() {
 	//初始化文档加载后#switchOperator为切换操作员密码输入对话框（默认关闭）
 	$('#switchOperator').dialog({
 		closed:true
+	});
+	
+	//tabs
+	$('#workspace').tabs({
+		border:false,
+		fit:true
+	});
+	$('#datamodify').click(function(){
+		$('#workspace').tabs('add',{
+			title:'数据修改',
+			selected: true,
+			closable:true,
+			href:"subject/dataManage/test.jsp"
+		});
+	//	$('#workspace').load("subject/dataManage/test.jsp");
 	});
 });
 </script>
@@ -298,7 +322,7 @@ $(document).ready(function() {
 					<ul>
 						<c:if test="${isManager }">
 							<li id="dataSearch"><a href="/financing/subject/dataManage/dataInput.jsp" target="main">数据录入</a>
-							<li>数据修改
+							<li id="datamodify"><span>数据修改</span>
 						</c:if>
 						<li id="dataSearch"><a href="/financing/subject/dataManage/dataSearch.jsp" target="main">数据查询</a>
 						<li>数据汇总
@@ -328,7 +352,20 @@ $(document).ready(function() {
     
 <!--+++++++++++++++++++++++++主体面板+++++++++++++++++++++++++-->    
     <div data-options="region:'center',title:'业务操作区'" style="padding:5px;background:#eee;">
+    <!-- 	
     	<iframe id="main" name="main" src="subject/welcome.jsp" ></iframe>
+     -->
+      <div id="tt" class="easyui-tabs" style="width:500px;height:250px;">
+	    <div title="Tab1" style="padding:20px;display:none;">
+	        tab1
+	    </div>
+	    <div title="Tab2" data-options="closable:true" style="overflow:auto;padding:20px;display:none;">
+	        tab2
+	    </div>
+	    <div title="Tab3" data-options="iconCls:'icon-reload',closable:true" style="display:none;">
+	        tab3
+	   </div>
+	  </div>	
     </div>
 <!---------------------------主体面板--------------------------->
 </body>
