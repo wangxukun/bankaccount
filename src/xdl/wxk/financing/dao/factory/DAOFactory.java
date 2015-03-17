@@ -1,9 +1,11 @@
 package xdl.wxk.financing.dao.factory;
 
 import xdl.wxk.financing.dao.AccountManageDAO;
+import xdl.wxk.financing.dao.BusinessProcessDAO;
 import xdl.wxk.financing.dao.OperatorManageDAO;
 import xdl.wxk.financing.dao.PageInfoDAO;
 import xdl.wxk.financing.dao.proxy.AccountManageDAOProxy;
+import xdl.wxk.financing.dao.proxy.BusinessProcessDAOProxy;
 import xdl.wxk.financing.dao.proxy.OperatorManageDAOProxy;
 import xdl.wxk.financing.dao.proxy.PageInfoDAOProxy;
 
@@ -16,5 +18,8 @@ public class DAOFactory {
 	}
 	static public PageInfoDAO getOperatorPageInfoDAOInstance(){
 		return new PageInfoDAOProxy();
+	}
+	static public BusinessProcessDAO getBusinessProcessDAOInstance(){
+		return new BusinessProcessDAOProxy();
 	}
 }

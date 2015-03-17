@@ -236,12 +236,19 @@ public class OperatorLogin extends HttpServlet {
 						info.setPeroid(null);
 					}
 				}
+<<<<<<< HEAD
 				List<Map<String, Object>> list = DAOFactory
 						.getOperatorManageDAOInstance().findAllOperator();
 				JSONArray operatorTree = JsonDAOFactory
 						.getJsonOperatorManageDAOInstance()
 						.getOperatorForEasyTree(list);
 				if (info.getAccountname() != null) {
+=======
+				List<Map<String, Object>> list = DAOFactory.getOperatorManageDAOInstance().findAllOperator();
+				JSONArray operatorTree = JsonDAOFactory.getJsonOperatorManageDAOInstance().getOperatorForEasyTree(list);
+				
+				if(info.getAccountname() != null){
+>>>>>>> a9a7daa43d122a6be51646bd6304dc01693ebec2
 					System.out.println("【9】");
 					request.getSession().setAttribute("info", info);
 				} else {

@@ -200,4 +200,17 @@ public class AccountManageDAOImpl implements AccountManageDAO {
 		flag = this.jdbc.updateByPreparedStatement(sql, params);
 		return flag;
 	}
+
+	@Override
+	public boolean isRootAccount(int accountid) throws SQLException {
+		boolean flag = false;
+		String sql = "select parentid from account where accountid=?";
+		List<Object> params = new ArrayList<Object>();
+		params.add(accountid);
+		Map<String,Object> map = this.jdbc.findSingleByPreparedStatement(sql, params);
+		if(!map.isEmpty()){
+			flag = (Integer.parseInt(map.get("parentid").toString()) == 0);
+		}
+		return flag;
+	}
 }
