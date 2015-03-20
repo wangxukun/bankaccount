@@ -1,5 +1,6 @@
 package xdl.wxk.financing.dao.impl;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,12 +15,12 @@ import xdl.wxk.financing.vo.AccountDetail;
 
 public class AccountManageDAOImpl implements AccountManageDAO {
 	private JdbcUtils jdbc;
-	private double balance;	//帐户余额
+	private String balance;	//帐户余额
 
 	public AccountManageDAOImpl(JdbcUtils jdbc) {
 		// TODO Auto-generated constructor stub
 		this.jdbc = jdbc;
-		this.balance = 0.00;
+		this.balance = "0.0000";
 	}
 
 	@Override
@@ -170,15 +171,23 @@ public class AccountManageDAOImpl implements AccountManageDAO {
 			AccountDetail detail = new AccountDetail();
 			detail.setAccountdetailid(Integer.valueOf(m.get("accountdetailid").toString()));
 			detail.setAccountid(Integer.valueOf(m.get("accountid").toString()));
-			detail.setAmount(Double.valueOf(m.get("amount").toString()));
+			detail.setAmount(m.get("amount").toString());
 			detail.setNumber(Integer.valueOf(m.get("number").toString()));
 			detail.setDirection(Integer.parseInt(m.get("direction").toString()));
 			detail.setSummary(m.get("summary").toString());
 			detail.setOccurdate((Date)m.get("occurdate"));
 			if(detail.getDirection()==0){
-				this.balance += detail.getAmount();
+				BigDecimal a = new BigDecimal(this.balance);
+				BigDecimal b = new BigDecimal(detail.getAmount());
+				a = a.add(b);
+				this.balance = a.toString();
+			//	this.balance += detail.getAmount();
 			}else{
-				this.balance -= detail.getAmount();
+				BigDecimal a = new BigDecimal(this.balance);
+				BigDecimal b = new BigDecimal(detail.getAmount());
+				a = a.subtract(b);
+				this.balance = a.toString();
+			//	this.balance -= detail.getAmount();
 			}
 			detail.setBalance(this.balance);
 			list.add(detail);

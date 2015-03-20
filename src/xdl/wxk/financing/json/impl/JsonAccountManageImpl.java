@@ -18,20 +18,20 @@ import xdl.wxk.financing.vo.InitAccount;
 
 public class JsonAccountManageImpl implements JsonAccountManage {
 	private int initMonth ;//记录初始化后账户的初始月份
-	private double debitTotal ;//初始化借方本月合计
-	private double debitAccumulative ;//初始化借方累计
-	private double creditTotal ;//初始化贷方本月合计
-	private double creditAccumulative ;//初始化贷方累计
-	private double balance;//初始化结余
+	private String debitTotal ;//初始化借方本月合计
+	private String debitAccumulative ;//初始化借方累计
+	private String creditTotal ;//初始化贷方本月合计
+	private String creditAccumulative ;//初始化贷方累计
+	private String balance;//初始化结余
 	private int number ;//初始化每月的凭证编号
 	
 	public JsonAccountManageImpl() {
 		this.initMonth = -1;//记录初始化后账户的初始月份
-		this.debitTotal = 0.0 ;//初始化借方本月合计
-		this.debitAccumulative = 0.0 ;//初始化借方累计
-		this.creditTotal = 0.0;//初始化贷方本月合计
-		this.creditAccumulative = 0.0 ;//初始化贷方累计
-		this.balance = 0.0;//初始化结余
+		this.debitTotal = "0.0000";//初始化借方本月合计
+		this.debitAccumulative = "0.0000" ;//初始化借方累计
+		this.creditTotal = "0.0000";//初始化贷方本月合计
+		this.creditAccumulative = "0.0000" ;//初始化贷方累计
+		this.balance = "0.0000";//初始化结余
 		this.number = 0;//初始化每月的凭证编号
 	}
 	@Override
@@ -135,7 +135,7 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 			jObject.accumulate("day", calendar.get(Calendar.DATE));
 			jObject.accumulate("voucherNum",++this.number);
 			jObject.accumulate("summary",detail.getSummary());
-			double amount;
+			String amount;
 			if(detail.getDirection()==0){
 				amount = detail.getAmount();
 				jObject.accumulate("debit",amount);
@@ -149,7 +149,7 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 				this.creditTotal += amount;
 			}
 			this.balance = detail.getBalance();
-			if(this.balance >= 0){
+			if(Double.valueOf(this.balance) >= 0){
 				jObject.accumulate("direction", "借");
 			}else{
 				jObject.accumulate("direction", "贷");
@@ -169,10 +169,10 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 		jObject1.accumulate("day", "");
 		jObject1.accumulate("voucherNum","");
 		jObject1.accumulate("summary","本月合计");
-		jObject1.accumulate("debit",this.debitTotal==0.0?"":this.debitTotal);
-		jObject1.accumulate("credit",this.creditTotal==0.0?"":this.creditTotal);
+		jObject1.accumulate("debit",this.debitTotal.equals("0.0000")?"":this.debitTotal);
+		jObject1.accumulate("credit",this.creditTotal.equals("0.0000")?"":this.creditTotal);
 		jObject1.accumulate("balance",this.balance);
-		if(this.balance >= 0){
+		if(Double.valueOf(this.balance) >= 0){
 			jObject1.accumulate("direction", "借");
 		}else{
 			jObject1.accumulate("direction", "贷");
@@ -189,18 +189,18 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 		this.debitAccumulative += this.debitTotal;
 		this.creditAccumulative += this.creditTotal;
 		
-		jObject2.accumulate("debit",this.debitAccumulative==0.0?"":this.debitAccumulative);
-		jObject2.accumulate("credit",this.creditAccumulative==0.0?"":this.creditAccumulative);
+		jObject2.accumulate("debit",this.debitAccumulative.equals("0.0000")?"":this.debitAccumulative);
+		jObject2.accumulate("credit",this.creditAccumulative.equals("0.0000")?"":this.creditAccumulative);
 		jObject2.accumulate("balance",this.balance);
-		if(this.balance >= 0){
+		if(Double.valueOf(this.balance) >= 0){
 			jObject2.accumulate("direction", "借");
 		}else{
 			jObject2.accumulate("direction", "贷");
 		}
 		jArray.add(jObject2);
 		this.initMonth = month;
-		this.creditTotal = 0.0;
-		this.debitTotal = 0.0;
+		this.creditTotal = "0.0000";
+		this.debitTotal = "0.0000";
 		this.number = 0;
 	}
 	@Override

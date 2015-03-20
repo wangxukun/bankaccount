@@ -8,10 +8,10 @@ public class AccountDetail {
 	private int accountid;	//帐户ID
 	private int number;	//凭证编号
 	private int direction;	//借贷方向
-	private double amount;	//金额
+	private String amount;	//金额
 	private Date occurdate;	//发生日期
 	private String summary;	//摘要
-	private double balance;	//余额，数据库中没有这个字段
+	private String balance;	//余额，数据库中没有这个字段
 	private int groupid;	//分类账户ID
 	private int freeze;	//是否已冻结(0表示未冻结，1表示冻结)
 	
@@ -54,10 +54,10 @@ public class AccountDetail {
 	public void setDirection(int direction) {
 		this.direction = direction;
 	}
-	public double getAmount() {
+	public String getAmount() {
 		return amount;
 	}
-	public void setAmount(double amount) {
+	public void setAmount(String amount) {
 		this.amount = amount;
 	}
 	public Date getOccurdate() {
@@ -72,10 +72,10 @@ public class AccountDetail {
 	public void setSummary(String summary) {
 		this.summary = summary;
 	}
-	public double getBalance() {
+	public String getBalance() {
 		return balance;
 	}
-	public void setBalance(double balance) {
+	public void setBalance(String balance) {
 		this.balance = balance;
 	}
 	@Override

@@ -102,7 +102,15 @@ public class BusinessProcessDAOProxy implements BusinessProcessDAO {
 	@Override
 	public List<DataInfo> getAccountDetails(DataSearchForm formDate)
 			throws SQLException {
-		
-		return this.dao.getAccountDetails(formDate);
+		List<DataInfo> list = null;
+		try {
+			this.jdbc.getConnection();
+			list = this.dao.getAccountDetails(formDate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			this.jdbc.releaseConnection();
+		}
+		return list;
 	}
 }

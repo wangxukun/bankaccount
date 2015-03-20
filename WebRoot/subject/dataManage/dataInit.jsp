@@ -42,18 +42,19 @@ div#right{
 }
 .btnInGrid a{
 	display: inline-block;
+	border: 1px solid #999;
 	text-decoration: none;
 	width: 40px;
 	height: 20px;
 	line-height: 20px;
 	border-radius:5px;
-	background-color: #dc143c;
-	color: #FFF;
+	background-color: none;
+	color: #000;
 	font-style: italic;
 	font-size-adjust: inherit;
 }
 .btnInGrid a:HOVER{
-	color: #FFFF00;
+	color: #f00;
 	font-style:normal;
 	font-weight: bolder;
 }

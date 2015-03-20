@@ -6,9 +6,19 @@ import java.util.Date;
 import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.beanutils.BeanUtils;
-
+/**
+ * Web层实用工具。
+ * 1、表单数据映射到JavaBean中
+ * @author Administrator
+ *
+ */
 public class WebUtils {
-	//利用反射机制
+	/**
+	 * 利用反射机制,表单数据映射到JavaBean中
+	 * @param request
+	 * @param beanClass
+	 * @return
+	 */
 	public static <T> T requestToBean(HttpServletRequest request,Class<T> beanClass){
 		try {
 			//1.创建要封装数据的bean
