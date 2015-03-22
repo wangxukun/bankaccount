@@ -35,13 +35,7 @@ table#dg{
 <script type="text/javascript">
 $(function(){
 	$('#dg').datagrid({
-//		url:'easyui.json',
-		data:[
-		  	{month:10,day:5,voucherNum:1,summary:'收到补助金',debit:50000.00,credit:null,balance:50000.00},
-			{month:10,day:5,voucherNum:2,summary:'支付工程款',debit:null,credit:10000.00,balance:40000.00},
-			{month:10,day:5,voucherNum:3,summary:'收到补助金',debit:50000.00,credit:null,balance:90000.00},
-			{month:10,day:6,voucherNum:4,summary:'支付工程款',debit:null,credit:25000.00,balance:65000.00}
-		],
+		url:'${pageContext.request.contextPath }/servlet/JsonDataAccountDetail',
 		fit: false,
 		fitColumns: false,
 		title:'<center>单位：水阁村委会</center>',
@@ -50,16 +44,18 @@ $(function(){
 		toolbar:'#tb',
 		footer:'#ft',
 		columns:[[
-			         {field:'year',title:'2014年',halign:'center',colspan:2,width:100},
-			         {field:'voucherNum',title:'凭证',halign:'center',rowspan:2,width:100},
+			         {field:'year',title:'2014年',halign:'center',colspan:2,width:60,align:'center'},
+			         {field:'voucherNum',title:'凭证',halign:'center',rowspan:2,width:50,align:'center'},
+			         {field:'village',title:'单位名称',halign:'center',rowspan:2,width:140},
 			         {field:'summary',title:'摘要',halign:'center',rowspan:2,width:300},
-			         {field:'debit',title:'借方',halign:'center',rowspan:2,width:150},
-			         {field:'credit',title:'贷方',halign:'center',rowspan:2,width:150},
-			         {field:'balance',title:'余额',halign:'center',rowspan:2,width:150}
+			         {field:'debit',title:'借方',halign:'center',rowspan:2,width:130},
+			         {field:'credit',title:'贷方',halign:'center',rowspan:2,width:130},
+			         {field:'balanceCredit',title:'借\\贷',halign:'center',rowspan:2,width:50,align:'center'},
+			         {field:'balance',title:'余额',halign:'center',rowspan:2,width:130}
 		         ],
 		         [
-					 {field:'month',title:'月',halign:'center',width:50},
-					 {field:'day',title:'日',halign:'center',width:50}
+					 {field:'month',title:'月',halign:'center',width:30,align:'center'},
+					 {field:'day',title:'日',halign:'center',width:30,align:'center'}
 		         ]]
 		
 	});

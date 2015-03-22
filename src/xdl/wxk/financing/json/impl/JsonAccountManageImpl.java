@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -12,8 +13,10 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import xdl.wxk.financing.dao.factory.DAOFactory;
 import xdl.wxk.financing.json.JsonAccountManage;
+import xdl.wxk.financing.tools.Calculator;
 import xdl.wxk.financing.vo.Account;
 import xdl.wxk.financing.vo.AccountDetail;
+import xdl.wxk.financing.vo.DataInfo;
 import xdl.wxk.financing.vo.InitAccount;
 
 public class JsonAccountManageImpl implements JsonAccountManage {
@@ -22,7 +25,7 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 	private String debitAccumulative ;//初始化借方累计
 	private String creditTotal ;//初始化贷方本月合计
 	private String creditAccumulative ;//初始化贷方累计
-	private String balance;//初始化结余
+//	private String balance;//初始化结余
 	private int number ;//初始化每月的凭证编号
 	
 	public JsonAccountManageImpl() {
@@ -31,7 +34,7 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 		this.debitAccumulative = "0.0000" ;//初始化借方累计
 		this.creditTotal = "0.0000";//初始化贷方本月合计
 		this.creditAccumulative = "0.0000" ;//初始化贷方累计
-		this.balance = "0.0000";//初始化结余
+//		this.balance = "0.0000";//初始化结余
 		this.number = 0;//初始化每月的凭证编号
 	}
 	@Override
@@ -113,7 +116,7 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 		{"month":"10","day":"15","voucherNum":"2","summary":"支出","debit":"","credit":"5000.00","balance":"210.50"}
 	   ]
 	 */
-	@Override
+/*	@Override
 	public JSONArray getAccountDetail(List<AccountDetail> accountDetail) {
 		Calendar calendarTemp = Calendar.getInstance(Locale.CHINA);
 		calendarTemp.setTime(accountDetail.get(0).getOccurdate());
@@ -140,13 +143,12 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 				amount = detail.getAmount();
 				jObject.accumulate("debit",amount);
 				jObject.accumulate("credit","");
-				this.debitTotal += amount;
+				this.debitTotal =  Calculator.add(this.debitTotal, amount).toString();
 			}else{
 				amount = detail.getAmount();
 				jObject.accumulate("credit",amount);
 				jObject.accumulate("debit","");
-				
-				this.creditTotal += amount;
+				this.creditTotal =  Calculator.add(this.creditTotal, amount).toString();
 			}
 			this.balance = detail.getBalance();
 			if(Double.valueOf(this.balance) >= 0){
@@ -159,50 +161,8 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 		}
 		summarizing(jArray,this.initMonth);
 		return jArray;
-	}
-	
-	//汇总本月合计、累计
-	private void summarizing(JSONArray jArray,int month){
-		JSONObject jObject1 = new JSONObject();
-		jObject1.accumulate("detailId",-1);
-		jObject1.accumulate("month", "");
-		jObject1.accumulate("day", "");
-		jObject1.accumulate("voucherNum","");
-		jObject1.accumulate("summary","本月合计");
-		jObject1.accumulate("debit",this.debitTotal.equals("0.0000")?"":this.debitTotal);
-		jObject1.accumulate("credit",this.creditTotal.equals("0.0000")?"":this.creditTotal);
-		jObject1.accumulate("balance",this.balance);
-		if(Double.valueOf(this.balance) >= 0){
-			jObject1.accumulate("direction", "借");
-		}else{
-			jObject1.accumulate("direction", "贷");
-		}
-		jArray.add(jObject1);
-		
-		JSONObject jObject2 = new JSONObject();
-		jObject2.accumulate("detailId",-1);
-		jObject2.accumulate("month", "");
-		jObject2.accumulate("day", "");
-		jObject2.accumulate("voucherNum","");
-		jObject2.accumulate("summary","累计");
-		
-		this.debitAccumulative += this.debitTotal;
-		this.creditAccumulative += this.creditTotal;
-		
-		jObject2.accumulate("debit",this.debitAccumulative.equals("0.0000")?"":this.debitAccumulative);
-		jObject2.accumulate("credit",this.creditAccumulative.equals("0.0000")?"":this.creditAccumulative);
-		jObject2.accumulate("balance",this.balance);
-		if(Double.valueOf(this.balance) >= 0){
-			jObject2.accumulate("direction", "借");
-		}else{
-			jObject2.accumulate("direction", "贷");
-		}
-		jArray.add(jObject2);
-		this.initMonth = month;
-		this.creditTotal = "0.0000";
-		this.debitTotal = "0.0000";
-		this.number = 0;
-	}
+	}*/
+
 	@Override
 	public JSONArray getJsonOfInitdata(List<InitAccount> init) {
 		String rootSummary = "汇总各单位数据";
@@ -254,5 +214,104 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 			}
 		}
 		return jArray;
+	}
+	/*
+	 * [
+		  	{month:10,day:5,voucherNum:1,village:'黄家圩村委会第十二组',summary:'收到补助金',debit:50000.00,credit:null,balanceCredit:'借',balance:50000.00},
+			{month:10,day:5,voucherNum:2,village:'水阁村委会',summary:'支付工程款',debit:null,credit:10000.00,balanceCredit:'借',balance:40000.00},
+			{month:10,day:5,voucherNum:3,village:'水阁村委会',summary:'收到补助金',debit:50000.00,credit:null,balanceCredit:'借',balance:90000.00},
+			{month:10,day:6,voucherNum:4,village:'水阁村委会',summary:'支付工程款',debit:null,credit:25000.00,balanceCredit:'借',balance:65000.00}
+		]
+	 */
+	@Override
+	public JSONArray getFullDataForEasyGrid(List<DataInfo> data) {
+		JSONArray jArray = new JSONArray();
+		Iterator<DataInfo> iter = data.iterator();
+		while(iter.hasNext()){
+			JSONObject jObject = new JSONObject();
+			DataInfo detail = iter.next();
+			Calendar calendar = Calendar.getInstance(Locale.CHINA);
+			Date date = detail.getOccurdate();
+			if(date!=null){
+				calendar.setTime(detail.getOccurdate());
+				int month = calendar.get(Calendar.MONTH);
+				if(this.initMonth != month && !"".equals(month)){
+					summarizing(jArray,month);
+				}
+				jObject.accumulate("month",month+1);
+				jObject.accumulate("day", calendar.get(Calendar.DATE));
+			}else{
+				jObject.accumulate("month","");
+				jObject.accumulate("day", "");
+			}
+			jObject.accumulate("voucherNum",++this.number);
+			jObject.accumulate("village", detail.getAccountname());
+			jObject.accumulate("summary",detail.getSummary());
+			String amount;
+			if(detail.getDirection()==0){
+				amount = detail.getAmount();
+				jObject.accumulate("debit",amount);
+				jObject.accumulate("credit","");
+				this.debitTotal =  Calculator.add(this.debitTotal, amount).toString();
+			}else{
+				amount = detail.getAmount();
+				jObject.accumulate("credit",amount);
+				jObject.accumulate("debit","");
+				this.creditTotal =  Calculator.add(this.creditTotal, amount).toString();
+			}
+			if(detail.getNumber() == 0){
+				jObject.accumulate("balanceCredit", "借");
+			}else{
+				jObject.accumulate("balanceCredit", "贷");
+			}
+			jObject.accumulate("balance",detail.getBalance());
+			jArray.add(jObject);
+		}
+		summarizing(jArray,this.initMonth);
+		return jArray;
+	}
+	
+	/*
+	 * [
+		  	{month:10,day:5,voucherNum:1,village:'黄家圩村委会第十二组',summary:'收到补助金',debit:50000.00,credit:null,balanceCredit:'借',balance:50000.00},
+			{month:10,day:5,voucherNum:2,village:'水阁村委会',summary:'支付工程款',debit:null,credit:10000.00,balanceCredit:'借',balance:40000.00},
+			{month:10,day:5,voucherNum:3,village:'水阁村委会',summary:'收到补助金',debit:50000.00,credit:null,balanceCredit:'借',balance:90000.00},
+			{month:10,day:6,voucherNum:4,village:'水阁村委会',summary:'支付工程款',debit:null,credit:25000.00,balanceCredit:'借',balance:65000.00}
+		]
+	 */
+	//汇总本月合计、累计
+	private void summarizing(JSONArray jArray,int month){
+		JSONObject jObject1 = new JSONObject();
+		
+		jObject1.accumulate("month", "");
+		jObject1.accumulate("day", "");
+		jObject1.accumulate("voucherNum","");
+		jObject1.accumulate("village","");
+		jObject1.accumulate("summary","本月合计");
+		jObject1.accumulate("debit",this.debitTotal.equals("0.0000")?"":this.debitTotal);
+		jObject1.accumulate("credit",this.creditTotal.equals("0.0000")?"":this.creditTotal);
+		jObject1.accumulate("balanceCredit","");
+		jObject1.accumulate("balance","");
+		jArray.add(jObject1);
+		
+		JSONObject jObject2 = new JSONObject();
+		jObject2.accumulate("month", "");
+		jObject2.accumulate("day", "");
+		jObject2.accumulate("voucherNum","");
+		jObject2.accumulate("village","");
+		jObject2.accumulate("summary","累计");
+		
+		this.debitAccumulative = Calculator.add(this.debitAccumulative, this.debitTotal).toString();
+		this.creditAccumulative = Calculator.add(this.creditAccumulative, this.creditTotal).toString();
+		
+		jObject2.accumulate("debit",this.debitAccumulative.equals("0.0000")?"":this.debitAccumulative);
+		jObject2.accumulate("credit",this.creditAccumulative.equals("0.0000")?"":this.creditAccumulative);
+		jObject2.accumulate("balanceCredit","");
+		jObject2.accumulate("balance","");
+		jArray.add(jObject2);
+		this.initMonth = month;
+		this.creditTotal = "0.0000";
+		this.debitTotal = "0.0000";
+		this.number = 0;
 	}
 }

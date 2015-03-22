@@ -1,6 +1,7 @@
 package xdl.wxk.financing.dao;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import xdl.wxk.financing.vo.AccountDetail;
@@ -67,9 +68,10 @@ public interface BusinessProcessDAO {
 	/**
 	 * 根据各子账户合并为一条Root账户初始余额，root在这里指子账户和子账户所属的父账户的合并
 	 * @param initAccounts 初始化数据列表，不一定是所有的账户，参数数据使用{@link #getAllInitaccount(List, int)}函数获得
+	 * @date 截止日期
 	 * @return 合并的Root账户初始化数据
 	 */
-	public InitAccount getRootInitaccount(List<InitAccount> initAccounts);
+	public InitAccount getRootInitaccount(List<InitAccount> initAccounts,Date date);
 	
 	/**
 	 * 根据提交的表单数据，查询账户详细数据

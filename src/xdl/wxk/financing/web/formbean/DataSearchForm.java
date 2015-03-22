@@ -142,17 +142,17 @@ public class DataSearchForm {
 				return flag;
 			}
 		}
-		if((this.startDate==null||"".equals(this.startDate))&&(this.endDate==null||"".equals(this.endDate))&&(this.groupid==this.accountid)||this.groupid==null||"".equals(this.groupid)){
+		if((this.startDate==null||"".equals(this.startDate))&&(this.endDate==null||"".equals(this.endDate))&&((this.groupid==this.accountid)||this.groupid==null||"".equals(this.groupid))){
 			flag = 6;
-			this.error = "没有错误，这种情况是查询当前月份整个账户";
+			this.error = "没有错误，这种情况是查询当前月份所属年度整个账户";
 			return flag;
 		}
 		if((this.startDate==null||"".equals(this.startDate))&&(this.endDate==null||"".equals(this.endDate))&&(this.groupid!=this.accountid)){
 			flag = 7;
-			this.error = "没有错误，这种情况是查询当前月份特定账户明细";
+			this.error = "没有错误，这种情况是查询当前月份所属年度特定账户明细";
 			return flag;
 		}
-		if((this.startDate!=null||!"".equals(this.startDate))&&(this.endDate!=null||!"".equals(this.endDate))&&(this.groupid==this.accountid)){
+		if((this.startDate!=null||!"".equals(this.startDate))&&(this.endDate!=null||!"".equals(this.endDate))&&((this.groupid==this.accountid)||this.groupid==null||"".equals(this.groupid))){
 			flag = 8;
 			this.error = "没有错误，这种情况是查询指定月份整个账户";
 			return flag;
