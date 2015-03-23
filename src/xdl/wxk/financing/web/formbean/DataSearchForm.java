@@ -14,7 +14,7 @@ import org.apache.commons.beanutils.locale.converters.DateLocaleConverter;
  * 3、日期格式不对，不能查询
  * 4、开始日期后于结束日期不能查询
  * 5、开始日期与结束日期跨年度不能查询
- * 6、开始日期、结束日期、所属单位全为空或所属单位ID等于账户ID：显示当前月份整个账户明细
+ * 6、开始日期、结束日期、所属单位全为空或所属单位ID等于账户ID或所属单位ID为空：显示当前月份所对应年度整个账户明细
  * 7、开始日期、结束日期为空，所属单位ID不等于账户ID：显示当前月份特定账户明细
  * 8、开始日期、结束日期不为空，所属单位全为空或所属单位ID等于账户ID：显示指定月份整个账户明细
  * 9、完整查询
@@ -89,8 +89,8 @@ public class DataSearchForm {
 	 * 3、日期格式不对，不能查询
 	 * 4、开始日期后于结束日期不能查询
 	 * 5、开始日期与结束日期跨年度不能查询
-	 * 6、开始日期、结束日期、所属单位全为空或所属单位ID等于账户ID：显示当前月份整个账户明细
-	 * 7、开始日期、结束日期为空，所属单位ID不等于账户ID：显示当前月份特定账户明细
+	 * 6、开始日期、结束日期、所属单位全为空或所属单位ID等于账户ID或所属单位ID为空：显示当前月份所对应年度整个账户明细
+	 * 7、开始日期、结束日期为空，所属单位ID不等于账户ID并且所属单位ID不为空：显示当前月份特定账户明细
 	 * 8、开始日期、结束日期不为空，所属单位全为空或所属单位ID等于账户ID：显示指定月份整个账户明细
 	 * 9、完整查询
 	 */
@@ -142,17 +142,17 @@ public class DataSearchForm {
 				return flag;
 			}
 		}
-		if((this.startDate==null||"".equals(this.startDate))&&(this.endDate==null||"".equals(this.endDate))&&(this.groupid==this.accountid)){
+		if((this.startDate==null||"".equals(this.startDate))&&(this.endDate==null||"".equals(this.endDate))&&((this.groupid==this.accountid)||this.groupid==null||"".equals(this.groupid))){
 			flag = 6;
-			this.error = "没有错误，这种情况是查询当前月份整个账户";
+			this.error = "没有错误，这种情况是查询当前月份所属年度整个账户";
 			return flag;
 		}
 		if((this.startDate==null||"".equals(this.startDate))&&(this.endDate==null||"".equals(this.endDate))&&(this.groupid!=this.accountid)){
 			flag = 7;
-			this.error = "没有错误，这种情况是查询当前月份特定账户明细";
+			this.error = "没有错误，这种情况是查询当前月份所属年度特定账户明细";
 			return flag;
 		}
-		if((this.startDate!=null||!"".equals(this.startDate))&&(this.endDate!=null||!"".equals(this.endDate))&&(this.groupid==this.accountid)){
+		if((this.startDate!=null||!"".equals(this.startDate))&&(this.endDate!=null||!"".equals(this.endDate))&&((this.groupid==this.accountid)||this.groupid==null||"".equals(this.groupid))){
 			flag = 8;
 			this.error = "没有错误，这种情况是查询指定月份整个账户";
 			return flag;

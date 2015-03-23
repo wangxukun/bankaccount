@@ -1,6 +1,7 @@
 package xdl.wxk.financing.dao.proxy;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import xdl.wxk.financing.dao.BusinessProcessDAO;
@@ -81,8 +82,8 @@ public class BusinessProcessDAOProxy implements BusinessProcessDAO {
 	}
 
 	@Override
-	public InitAccount getRootInitaccount(List<InitAccount> initAccounts) {
-		return this.dao.getRootInitaccount(initAccounts);
+	public InitAccount getRootInitaccount(List<InitAccount> initAccounts,Date date) {
+		return this.dao.getRootInitaccount(initAccounts,date);
 	}
 	@Override
 	public boolean updateInitAccount(InitAccount initAccount)
@@ -102,7 +103,15 @@ public class BusinessProcessDAOProxy implements BusinessProcessDAO {
 	@Override
 	public List<DataInfo> getAccountDetails(DataSearchForm formDate)
 			throws SQLException {
-		
-		return this.dao.getAccountDetails(formDate);
+		List<DataInfo> list = null;
+		try {
+			this.jdbc.getConnection();
+			list = this.dao.getAccountDetails(formDate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			this.jdbc.releaseConnection();
+		}
+		return list;
 	}
 }

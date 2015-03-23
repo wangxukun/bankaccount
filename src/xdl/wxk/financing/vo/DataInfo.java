@@ -10,4 +10,11 @@ public class DataInfo extends AccountDetail {
 	public void setAccountname(String accountname) {
 		this.accountname = accountname;
 	}
+
+	@Override
+	public String toString() {
+		return "DataInfo [accountname=" + accountname + ", 基类="
+				+ super.toString() + "]\n";
+	}
+	
 }
