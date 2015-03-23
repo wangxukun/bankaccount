@@ -30,7 +30,6 @@ html,body {
 	width: 60%;
 	float: left;
 }
-
 #north div#left h1 {
 	margin: 0;
 	width: 100%;
@@ -39,29 +38,24 @@ html,body {
 	text-indent: 20px;
 	font-size: 30px;
 }
-
 #north div#right {
 	margin: 0;
 	width: 40%;
 	height: 100%;
 	float: right;
 }
-
 #north div#right ul {
 	margin: 0 10px 0 0;
 	width: 250px;
 	height: 100%;
 	float: right;
 }
-
 #north div#right ul li {
 	width: 240px;
 	height: 20px;
 	line-height: 20px;
 	padding-top: 8px;
 }
-
-
 #aa ul li{
 	margin-bottom: 20px;
 }
@@ -75,10 +69,6 @@ html,body {
 }
 #aa ul li a:HOVER {
 	color: orange;
-}
-#aa #accordion-3 #datamodify span:HOVER{
-	color: orange;
-	cursor:pointer;
 }
 iframe{
 	width: 100%;
@@ -97,11 +87,6 @@ iframe{
 	height: 20px;
 	margin-left: 40px;
 }
-<<<<<<< HEAD
-#workspace{
-	background:blue;
-=======
-
 /*
 	主体面板中内容
 */
@@ -110,7 +95,6 @@ iframe{
 	height: 280px;
 	margin: 50px auto;
 }
-
 .box .link{
 	width: 205px;
 	height: 280px;
@@ -226,7 +210,6 @@ iframe{
 	height: 50px;
 	width: 2px;
 	top: -2px;
->>>>>>> a9a7daa43d122a6be51646bd6304dc01693ebec2
 }
 </style>
 
@@ -253,21 +236,18 @@ $(document).ready(function() {
 			//如果是点击了当前帐户，则不做任何处理
 			if(node.id == '${info.accountid}')
 				return false;
-			var xmlRequestAccount = $.ajax({
-					url:'servlet/OperatorLogin',
-					type:'POST',
-					data:{
+			$.post(
+					'servlet/OperatorLogin',
+					{
 						action_flag:'switch_account',
 						isManager:'${isManager }',
 						operatorid:'${info.operatorid}',
 						accountid:node.id
+					},
+					function(data,textStatus,jqXHR){
+						parent.location.reload();
 					}
-			});
-			xmlRequestAccount.done(function(data, textStatus, jqXHR){
-				document.getElementById("right").innerHTML = jqXHR.responseText;
-				alert('${info.accountname}');
-				alert(data);
-			});
+			);
 		}
 	});
 	//切换操作员
@@ -335,21 +315,6 @@ $(document).ready(function() {
 		closed:true
 	});
 	
-<<<<<<< HEAD
-	//tabs
-	$('#workspace').tabs({
-		border:false,
-		fit:true
-	});
-	$('#datamodify').click(function(){
-		$('#workspace').tabs('add',{
-			title:'数据修改',
-			selected: true,
-			closable:true,
-			href:"subject/dataManage/test.jsp"
-		});
-	//	$('#workspace').load("subject/dataManage/test.jsp");
-=======
 	//数据管理器对象
 	var DataManager = new function(){
 		//数据初始化
@@ -402,7 +367,6 @@ $(document).ready(function() {
 		tabPosition:'top',
 		fit:true
 	});
-
 	//数据初始化
 	$("#dataInit").click(function(){
 		DataManager.dataInitialization();
@@ -428,10 +392,8 @@ $(document).ready(function() {
 	$(".link-four a").click(function(event){
 		event.preventDefault();	//禁止超链接的默认事件
 		DataManager.dataQuery();
->>>>>>> a9a7daa43d122a6be51646bd6304dc01693ebec2
 	});
 });
-
 </script>
 
 </head>
@@ -527,14 +489,9 @@ $(document).ready(function() {
 		        <div id="accordion-3">
 					<ul>
 						<c:if test="${isManager }">
-<<<<<<< HEAD
-							<li id="dataSearch"><a href="/financing/subject/dataManage/dataInput.jsp" target="main">数据录入</a>
-							<li id="datamodify"><span>数据修改</span>
-=======
 							<li id="dataInit"><span>数据初始化</span></li>
 							<li id="dataInput"><span>数据录入</span></li>
 							<li id="dataModify">数据修改
->>>>>>> a9a7daa43d122a6be51646bd6304dc01693ebec2
 						</c:if>
 						<li id="dataQuery"><span>数据查询</span></li>
 						<li>数据汇总
@@ -555,31 +512,9 @@ $(document).ready(function() {
 	<!-- C左面板->可折叠面板 -->
     </div>
 <!---------------------------左面板--------------------------->    
-
-
-
-
-
     
     
 <!--+++++++++++++++++++++++++主体面板+++++++++++++++++++++++++-->    
-<<<<<<< HEAD
-    <div data-options="region:'center',title:'业务操作区'" style="padding:5px;background:#eee;">
-    <!-- 	
-    	<iframe id="main" name="main" src="subject/welcome.jsp" ></iframe>
-     -->
-      <div id="tt" class="easyui-tabs" style="width:500px;height:250px;">
-	    <div title="Tab1" style="padding:20px;display:none;">
-	        tab1
-	    </div>
-	    <div title="Tab2" data-options="closable:true" style="overflow:auto;padding:20px;display:none;">
-	        tab2
-	    </div>
-	    <div title="Tab3" data-options="iconCls:'icon-reload',closable:true" style="display:none;">
-	        tab3
-	   </div>
-	  </div>	
-=======
     <div data-options="region:'center'" style="padding:5px;">
 <!-- <iframe id="main" name="main" src="subject/dataInit.jsp" ></iframe> -->		
     	<div id="myTab" class="easyui-tabs">
@@ -627,7 +562,6 @@ $(document).ready(function() {
 			</div>
 
     	</div>	
->>>>>>> a9a7daa43d122a6be51646bd6304dc01693ebec2
     </div>
 <!---------------------------主体面板--------------------------->
 </body>
