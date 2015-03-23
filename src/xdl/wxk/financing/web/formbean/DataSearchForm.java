@@ -142,7 +142,8 @@ public class DataSearchForm {
 				return flag;
 			}
 		}
-		if((this.startDate==null||"".equals(this.startDate))&&(this.endDate==null||"".equals(this.endDate))&&((this.groupid==this.accountid)||this.groupid==null||"".equals(this.groupid))){
+//		if((this.startDate==null||"".equals(this.startDate))&&(this.endDate==null||"".equals(this.endDate))&&((this.groupid==this.accountid)||this.groupid==null||"".equals(this.groupid))){
+		if((this.groupid==this.accountid)||this.groupid==null||"".equals(this.groupid)){
 			flag = 6;
 			this.error = "没有错误，这种情况是查询当前月份所属年度整个账户";
 			return flag;

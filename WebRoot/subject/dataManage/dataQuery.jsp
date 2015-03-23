@@ -38,6 +38,7 @@ $(function(){
 		url:'${pageContext.request.contextPath }/servlet/JsonDataAccountDetail',
 		fit: false,
 		fitColumns: false,
+		singleSelect: true,
 		title:'<center>单位：水阁村委会</center>',
 		width:1050,
 		height:700,
@@ -56,20 +57,39 @@ $(function(){
 		         [
 					 {field:'month',title:'月',halign:'center',width:30,align:'center'},
 					 {field:'day',title:'日',halign:'center',width:30,align:'center'}
-		         ]]
-		
+		         ]],
+		         queryParams:{
+		        	 accountid:'${info.accountid}',
+		        	 startDate:"",
+		        	 endDate:"",
+		        	 groupid:""
+		        }
 	});
-	
 	//-----------所属单位组合框树--------------------------
+	var g_selectd_groupid = "";
 	$('#comboTree').combotree({
 		url:'${pageContext.request.contextPath }/servlet/JsonDataAccountTree',
 		method:'post',
 		animate:true,
 		lines:true,
 		queryParams:{accountTree:'${accountTree}'},
-		required:false
+		required:false,
+		onSelect:function(node){
+			g_selectd_groupid = node.id;
+		}
 	}); 
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	$('#searchBtn').bind('click',function(){
+		var startdate = $('#startDate').datebox('getValue');
+		var enddate = $('#endDate').datebox('getValue');
+		var groupid = g_selectd_groupid;
+		$('#dg').datagrid('load',{
+			accountid:'${info.accountid}',
+	       	startDate:startdate,
+	       	endDate:enddate,
+	       	groupid:groupid
+		});
+	});
 });
 
 </script>
@@ -78,10 +98,10 @@ $(function(){
 <body>
    	<table id="dg"></table>
    	<div id="tb" style="padding:2px 5px;">
-        开始日期: <input class="easyui-datebox" style="width:110px">
-        结束日期: <input class="easyui-datebox" style="width:110px">
+        开始日期: <input id="startDate" class="easyui-datebox" style="width:110px">
+        结束日期: <input id="endDate" class="easyui-datebox" style="width:110px">
         单位:	 <input id="comboTree" name="groupid" value='${form.groupid}' style="width:170px;">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+        <a href="javascript:void(0)" id="searchBtn" class="easyui-linkbutton" iconCls="icon-search">查询</a>
     </div>
     <div id="ft" style="padding:2px 5px;">
         <span>操作员：王旭昆</span>

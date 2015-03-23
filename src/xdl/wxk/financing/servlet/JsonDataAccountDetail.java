@@ -17,6 +17,7 @@ import xdl.wxk.financing.dao.factory.DAOFactory;
 import xdl.wxk.financing.json.factory.JsonDAOFactory;
 import xdl.wxk.financing.service.IGetFullData;
 import xdl.wxk.financing.service.impl.GetFullDataImpl;
+import xdl.wxk.financing.tools.WebUtils;
 import xdl.wxk.financing.vo.DataInfo;
 import xdl.wxk.financing.vo.InitAccount;
 import xdl.wxk.financing.web.formbean.DataSearchForm;
@@ -37,23 +38,15 @@ public class JsonDataAccountDetail extends HttpServlet {
 		response.setCharacterEncoding("utf-8");
 		request.setCharacterEncoding("utf-8");
 		
-//		int accountid = Integer.parseInt(request.getParameter("accountid"));
 		PrintWriter out = response.getWriter();
 		
-		/*try {
-			List<AccountDetail> details = DAOFactory.getAccountManageDAOInstance().findAccountDetailsByAccountid(accountid);
-			JSONArray jsonAccountDetail = JsonDAOFactory.getJsonAccountManageDAOInstance().getAccountDetail(details);
-			out.println(jsonAccountDetail);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		
-		String startDate = "";
+		/*String startDate = "";
 		String endDate = "";
 		String accountid = "1";
 		String groupid = "1";
-		DataSearchForm form = new DataSearchForm(accountid,groupid,startDate,endDate);
+		DataSearchForm form = new DataSearchForm(accountid,groupid,startDate,endDate);*/
+		DataSearchForm form = WebUtils.requestToBean(request, DataSearchForm.class);
+		System.out.println(form);
 		System.out.println("验证结果编码："+form.validate()+"\n反馈信息："+form.getError());
 		
 		List<DataInfo> listData;
