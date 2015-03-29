@@ -10,7 +10,7 @@ public class InsertBillImpl implements IInsertBill {
 	@Override
 	public boolean insertBill(AccountDetail detail) throws SQLException {
 		boolean flag = false;
-		flag = DAOFactory.getBusinessProcessDAOInstance().isInit(detail.getGroupid());
+		flag = DAOFactory.getBusinessProcessDAOInstance().isInit(detail.getGroupid(),detail.getOccurdate());
 		if(flag){
 			flag = DAOFactory.getBusinessProcessDAOInstance().insertAccountDetail(detail);
 		}

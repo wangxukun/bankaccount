@@ -357,13 +357,55 @@ $(document).ready(function() {
 		this.dataQuery = function(){
 			if($("#myTab").tabs('getTab','数据查询') == null){
 				$("#myTab").tabs('add',{
-					id:'three',
+					id:'four',
 					title:'数据查询',
 					closable:true,
 					content:'<iframe id=\"main\" name=\"main\" src=\"subject/dataManage/dataQuery.jsp\" ></iframe>'
 				});
 			}else{
 				$("#myTab").tabs('select','数据查询');
+			}
+		};
+		
+		//增加删除账户
+		this.addDelAccount = function(){
+			if($("#myTab").tabs('getTab','账户管理') == null){
+				$("#myTab").tabs('add',{
+					id:'five',
+					title:'账户管理',
+					closable:true,
+					content:'<iframe id=\"main\" name=\"main\" src=\"subject/accountManage/addDelAccount.jsp\" ></iframe>'
+				});
+			}else{
+				$("#myTab").tabs('select','账户管理');
+			}
+		};
+		
+		//操作员管理
+		this.manageOperator = function(){
+			if($("#myTab").tabs('getTab','操作员管理') == null){
+				$("#myTab").tabs('add',{
+					id:'six',
+					title:'操作员管理',
+					closable:true,
+					content:'<iframe id=\"main\" name=\"main\" src=\"subject/operatorManage/operatorManage.jsp\" ></iframe>'
+				});
+			}else{
+				$("#myTab").tabs('select','操作员管理');
+			}
+		};
+		
+		//数据修改或删除
+		this.dataRevise = function(){
+			if($("#myTab").tabs('getTab','数据修改') == null){
+				$("#myTab").tabs('add',{
+					id:'six',
+					title:'数据修改',
+					closable:true,
+					content:'<iframe id=\"main\" name=\"main\" src=\"subject/dataManage/dataRevise.jsp\" ></iframe>'
+				});
+			}else{
+				$("#myTab").tabs('select','数据修改');
 			}
 		};
 	};	
@@ -376,7 +418,14 @@ $(document).ready(function() {
 		tabPosition:'top',
 		fit:true
 	});
-
+	//账户管理
+	$("#addDelAccount").click(function(){
+		DataManager.addDelAccount();
+	});
+	//操作员管理
+	$("#manageOperator").click(function(){
+		DataManager.manageOperator();
+	});
 	//数据初始化
 	$("#dataInit").click(function(){
 		DataManager.dataInitialization();
@@ -385,7 +434,6 @@ $(document).ready(function() {
 		event.preventDefault();	//禁止超链接的默认事件
 		DataManager.dataInitialization();
 	});
-	
 	//数据录入
 	$("#dataInput").click(function(){
 		DataManager.dataInput();
@@ -394,7 +442,14 @@ $(document).ready(function() {
 		event.preventDefault();	//禁止超链接的默认事件
 		DataManager.dataInput();
 	});
-	
+	//数据修改
+	$("#dataRevise").click(function(){
+		DataManager.dataRevise();
+	});
+	$(".link-three a").click(function(event){
+		event.preventDefault();	//禁止超链接的默认事件
+		DataManager.dataRevise();
+	});
 	//数据查询
 	$("#dataQuery").click(function(){
 		DataManager.dataQuery();
@@ -431,7 +486,7 @@ $(document).ready(function() {
     
     
 <!--+++++++++++++++++++++++++脚面板+++++++++++++++++++++++++-->    
-    <div data-options="region:'south',title:'系统信息',split:true" style="height:100px;">
+    <div data-options="region:'south',title:null,split:true,collapsible:false" style="height:40px;">
     </div>
 <!---------------------------脚面板--------------------------->  
     
@@ -490,7 +545,7 @@ $(document).ready(function() {
 			    <div title="账户管理" data-options="iconCls:'icon-man'" style="padding:10px;">
 			        <div id="accordionLeft-2">
 						<ul>
-							<li id="addAccount"><a href="${pageContext.request.contextPath }/subject/accountManage/addDelAccount.jsp" target="main">增删帐户</a>
+							<li id="addDelAccount"><span>账户管理</span></li>
 						</ul>
 					</div>
 			    </div>
@@ -502,7 +557,7 @@ $(document).ready(function() {
 						<c:if test="${isManager }">
 							<li id="dataInit"><span>数据初始化</span></li>
 							<li id="dataInput"><span>数据录入</span></li>
-							<li id="dataModify">数据修改
+							<li id="dataRevise"><span>数据修改</span></li>
 						</c:if>
 						<li id="dataQuery"><span>数据查询</span></li>
 						<li>数据汇总
@@ -514,7 +569,7 @@ $(document).ready(function() {
 			    <div title="用户管理" data-options="iconCls:'icon-man'" style="padding:10px;">
 			        <div id="accordion-4">
 						<ul>
-							<li id="deleteOperator"><a href="${pageContext.request.contextPath }/subject/operatorManage/operatorManage.jsp" target="main">操作员管理</a>
+							<li id="manageOperator"><span>操作员管理</span>
 						</ul>
 					</div>
 			    </div>

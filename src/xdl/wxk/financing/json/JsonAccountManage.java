@@ -25,13 +25,6 @@ public interface JsonAccountManage {
 	public List<Account> getChildrenAccount(List<Account> accounts,Account account);
 	
 	/**
-	 * 获取帐户详情json对象.
-	 * @param accountDetail 帐户详情对象列表
-	 * @return 匹配JeasyUI的JSON对象
-	 */
-//	public JSONArray getAccountDetail(List<AccountDetail> accountDetail);
-	
-	/**
 	 * 获取账户期初初始化数据组成的JSON对象.
 	 * @param init	初始化数据列表
 	 * @return	匹配JeasyUI的JSON对象

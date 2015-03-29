@@ -7,7 +7,6 @@ import java.util.List;
 
 import xdl.wxk.financing.service.IGetFullData;
 import xdl.wxk.financing.tools.Calculator;
-import xdl.wxk.financing.tools.WebUtils;
 import xdl.wxk.financing.vo.DataInfo;
 import xdl.wxk.financing.vo.InitAccount;
 

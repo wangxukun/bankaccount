@@ -1,6 +1,8 @@
 package xdl.wxk.financing;
 
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -10,12 +12,13 @@ import xdl.wxk.financing.dao.factory.DAOFactory;
 import xdl.wxk.financing.json.factory.JsonDAOFactory;
 import xdl.wxk.financing.service.IGetFullData;
 import xdl.wxk.financing.service.impl.GetFullDataImpl;
+import xdl.wxk.financing.tools.DateUtils;
 import xdl.wxk.financing.vo.DataInfo;
 import xdl.wxk.financing.vo.InitAccount;
 import xdl.wxk.financing.web.formbean.DataSearchForm;
 public class PatternDemo {
 	public static void main(String[] args) throws SQLException {
-		String startDate = "";
+		/*String startDate = "";
 		String endDate = "";
 		String accountid = "1";
 		String groupid = "1";
@@ -32,5 +35,24 @@ public class PatternDemo {
 		List<DataInfo> full = getFullData.GetFullData(initAccount, listData);
 		JSONArray data = JsonDAOFactory.getJsonAccountManageDAOInstance().getFullDataForEasyGrid(full);
 		System.out.println(full);
+		SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
+		try {
+			date = sd.parse("2014-5-1");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String b = DAOFactory.getBusinessProcessDAOInstance().getBalanceBeforeStartDate(1, date);
+		System.out.println(b);
+		
+		Date day = DateUtils.getYearFirstDayOfDate(new Date());
+		System.out.println(day);*/
+		
+//		String beforeStartBalance = DAOFactory.getBusinessProcessDAOInstance().getBalanceBeforeStartDate("1","21",DateUtils.getYearFirstDayOfDate(new Date()));
+		
+		boolean f = DAOFactory.getBusinessProcessDAOInstance().isInit(2, DateUtils.getYearFirstDayOfDate(new Date()));
+		System.out.println(DateUtils.getYearFirstDayOfDate(new Date()));
+		System.out.println(f);
 	}
 }

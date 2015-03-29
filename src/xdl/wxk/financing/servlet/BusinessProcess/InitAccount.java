@@ -44,7 +44,7 @@ public class InitAccount extends HttpServlet {
 		xdl.wxk.financing.vo.InitAccount initAccount = new xdl.wxk.financing.vo.InitAccount(Integer.parseInt(accountid),myDate,Integer.parseInt(direction),amount,summary);
 		BusinessProcessDAO dao = DAOFactory.getBusinessProcessDAOInstance();
 		try {
-			if(!dao.isInit(initAccount.getAccountid())){
+			if(!dao.isInit(initAccount.getAccountid(),initAccount.getInitdate())){
 				if(dao.insertInitAccount(initAccount)){
 					System.out.println("初始化成功！");
 					response.setStatus(HttpServletResponse.SC_CREATED);

@@ -10,7 +10,7 @@ import java.util.Map;
 import xdl.wxk.financing.dao.BusinessProcessDAO;
 import xdl.wxk.financing.jdbc.JdbcUtils;
 import xdl.wxk.financing.tools.Calculator;
-import xdl.wxk.financing.tools.DataUtils;
+import xdl.wxk.financing.tools.DateUtils;
 import xdl.wxk.financing.vo.AccountDetail;
 import xdl.wxk.financing.vo.DataInfo;
 import xdl.wxk.financing.vo.InitAccount;
@@ -52,11 +52,12 @@ public class BusinessProcessDAOImpl implements BusinessProcessDAO {
 		return flag;
 	}
 
-	public boolean isInit(int accountId) throws SQLException {
+	public boolean isInit(int accountId,Date date) throws SQLException {
 		boolean flag = false;
-		String sql = "select accountid from initaccount where accountid=?";
+		String sql = "select accountid from initaccount where accountid=? and initdate<=?";
 		List<Object> params = new ArrayList<Object>();
 		params.add(accountId);
+		params.add(date);
 		Map<String, Object> map = this.jdbc.findSingleByPreparedStatement(sql,
 				params);
 		flag = !map.isEmpty();
@@ -101,7 +102,7 @@ public class BusinessProcessDAOImpl implements BusinessProcessDAO {
 				String amount = map.get("amount").toString();
 				init.setAmount(amount);
 			} else {
-				init.setAmount("0.0000");
+				init.setAmount("0.00");
 			}
 			{
 				String summary = map.get("summary").toString();
@@ -148,7 +149,7 @@ public class BusinessProcessDAOImpl implements BusinessProcessDAO {
 		InitAccount initdata = new InitAccount();
 		initdata.setAccountid(initAccounts.get(0).getAccountid());
 		initdata.setAccountname(initAccounts.get(0).getAccountname());
-		initdata.setAmount("0.0000");
+		initdata.setAmount("0.00");
 		initdata.setDirection(0);
 		initdata.setInitdate(initAccounts.get(0).getInitdate());
 		initdata.setParentid(initAccounts.get(0).getParentid());
@@ -161,13 +162,13 @@ public class BusinessProcessDAOImpl implements BusinessProcessDAO {
 			if (initdata.getDirection() == temp.getDirection()) {
 				initdata.setAmount(Calculator.add(initdata.getAmount(),
 						temp.getAmount()).toString());
-				System.out.println("加->" + initdata.getAmount() + "方向->"
-						+ initdata.getDirection());
+				/*System.out.println("加->" + initdata.getAmount() + "方向->"
+						+ initdata.getDirection());*/
 			} else {
 				initdata.setAmount(Calculator.subtract(initdata.getAmount(),
 						temp.getAmount()).toString());
-				System.out.println("减->" + initdata.getAmount() + "方向->"
-						+ initdata.getDirection());
+				/*System.out.println("减->" + initdata.getAmount() + "方向->"
+						+ initdata.getDirection());*/
 			}
 			if (Double.valueOf(initdata.getAmount()) < 0) {
 				if (initdata.getDirection() == 0) {
@@ -177,8 +178,8 @@ public class BusinessProcessDAOImpl implements BusinessProcessDAO {
 				}
 				initdata.setAmount(Calculator.abs(initdata.getAmount())
 						.toString());
-				System.out.println("反->" + initdata.getAmount() + "方向->"
-						+ initdata.getDirection());
+				/*System.out.println("反->" + initdata.getAmount() + "方向->"
+						+ initdata.getDirection());*/
 			}
 		}
 		return initdata;
@@ -199,17 +200,17 @@ public class BusinessProcessDAOImpl implements BusinessProcessDAO {
 		return flag;
 	}
 
-	/*
-	 * 验证查询的九种情况 
+	/**
+	 * 验证查询的九种情况
 	 * 1、开始日期为空，结束日期不为空，不能查询
-	 * 2、开始日期不为空，结束日期为空，不能查询 
+	 * 2、开始日期不为空，结束日期为空，不能查询
 	 * 3、日期格式不对，不能查询
 	 * 4、开始日期后于结束日期不能查询
 	 * 5、开始日期与结束日期跨年度不能查询
-	 * 6、开始日期、结束日期、所属单位全为空或所属单位ID等于账户ID：显示当前月份所属年度整个账户明细
-	 * 7、开始日期、结束日期为空，所属单位ID不等于账户ID：显示当前月份所属年度特定账户明细
-	 * 8、开始日期、结束日期不为空，所属单位全为空或所属单位ID等于账户ID：显示指定月份整个账户明细 
-	 * 9、完整查询
+	 * 6、开始日期、结束日期、所属单位全为空或所属单位ID等于账户ID或所属单位ID为空：显示当前月份所对应年度整个账户明细
+	 * 7、查询指定月份期间的整个账户数据
+	 * 8、开始日期、结束日期为空，所属单位ID不等于账户ID并且所属单位ID不为空：显示当前月份特定账户明细
+	 * 9、查询指定账户指定日期间的明细
 	 */
 	@Override
 	public List<DataInfo> getAccountDetails(DataSearchForm formDate)
@@ -223,21 +224,21 @@ public class BusinessProcessDAOImpl implements BusinessProcessDAO {
 			String t6 = " and d.accountid=? and d.occurdate like ?";
 			buffer.append(t6);
 			params.add(formDate.getAccountid());
-			params.add(DataUtils.getYear(new Date())+"%");
+			params.add(DateUtils.getYear(new Date())+"%");
 			break;
 		case 7:
-			String t7 = " and d.accountid=? and d.groupid=? and d.occurdate like ?";
+			String t7 = " and d.accountid=? and d.occurdate between ? and ?";
 			buffer.append(t7);
-			params.add(formDate.getAccountid());
-			params.add(formDate.getGroupid());
-			params.add(DataUtils.getYear(new Date())+"%");
-			break;
-		case 8:
-			String t8 = " and d.accountid=? and d.occurdate between ? and ?";
-			buffer.append(t8);
 			params.add(formDate.getAccountid());
 			params.add(formDate.getStartDate());
 			params.add(formDate.getEndDate());
+			break;
+		case 8:
+			String t8 = " and d.accountid=? and d.groupid=? and d.occurdate like ?";
+			buffer.append(t8);
+			params.add(formDate.getAccountid());
+			params.add(formDate.getGroupid());
+			params.add(DateUtils.getYear(new Date())+"%");
 			break;
 		case 9:
 			String t9 = " and d.accountid=? and d.groupid=? and d.occurdate between ? and ?";
@@ -270,5 +271,76 @@ public class BusinessProcessDAOImpl implements BusinessProcessDAO {
 			dataInfoList.add(temp);
 		}
 		return dataInfoList;
+	}
+
+	@Override
+	public InitAccount getInitAccount(int accountId) throws SQLException {
+		InitAccount initInfo = new InitAccount();
+		String sql = "select accountid,initdate,direction,amount,summary from initaccount where accountid=?";
+		List<Object> params = new ArrayList<Object>();
+		params.add(accountId);
+		Map<String,Object> result = this.jdbc.findSingleByPreparedStatement(sql, params);
+		if(!result.isEmpty()){
+			initInfo.setAccountid(Integer.valueOf(result.get("accountid").toString()));
+			initInfo.setAmount(result.get("amount").toString());
+			initInfo.setDirection(Integer.valueOf(result.get("direction").toString()));
+			initInfo.setSummary(result.get("summary").toString());
+			initInfo.setInitdate((Date)result.get("initdate"));
+		}
+		return initInfo;
+	}
+
+	@Override
+	public String getBalanceBeforeStartDate(String accountid,String groupid, Date date)
+			throws SQLException {
+		String balance=null;
+		String strJie=null;
+		String strDai=null;
+		List<Object> params = new ArrayList<Object>();
+		params.add(accountid);
+		params.add(date);
+		String sqlJie = "select sum(amount) as jiefang from accountdetail where direction=0 and accountid=? and occurdate<?";
+		String sqlDai = "select sum(amount) as daifang from accountdetail where direction=1 and accountid=? and occurdate<?";
+		StringBuffer bufferj = new StringBuffer(sqlJie);
+		StringBuffer bufferd = new StringBuffer(sqlDai);
+		if(groupid!=null&&!"".equals(groupid)){
+			bufferj.append(" and groupid=?");
+			bufferd.append(" and groupid=?");
+			params.add(groupid);
+		}
+		Map<String,Object> jie = this.jdbc.findSingleByPreparedStatement(bufferj.toString(), params);
+		if(!jie.isEmpty()){
+			strJie = jie.get("jiefang").toString();
+			strJie = "".equals(strJie)?"0.00": strJie; //如果为空，则初始为0.00
+		}
+		
+		Map<String,Object> dai = this.jdbc.findSingleByPreparedStatement(bufferd.toString(), params);
+		if(!dai.isEmpty()){
+			strDai = dai.get("daifang").toString();
+			strDai = "".equals(strDai)?"0.00": strDai; //如果为空，则初始为0.00
+		}
+		if(strJie!=null && strDai!=null)
+			balance = Calculator.subtract(strJie, strDai).toString();
+		return balance;
+	}
+
+	@Override
+	public InitAccount getCurrentInitaccount(InitAccount origin,
+			String beforeStartBalance) {
+		InitAccount init = new InitAccount() ;
+		String orig = origin.getAmount();
+		String sum = Calculator.add(orig, beforeStartBalance).toString();
+		init.setAccountid(origin.getAccountid());
+		init.setAccountname("");
+		init.setAmount(sum);
+		init.setDirection(origin.getDirection());
+		init.setInitdate(null);
+		init.setParentid(origin.getParentid());
+		if("0.00".equals(beforeStartBalance)){
+			init.setSummary(origin.getSummary());
+		}else{
+			init.setSummary("上期结余");
+		}
+		return init;
 	}
 }

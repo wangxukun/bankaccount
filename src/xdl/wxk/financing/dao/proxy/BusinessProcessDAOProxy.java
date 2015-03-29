@@ -48,11 +48,11 @@ public class BusinessProcessDAOProxy implements BusinessProcessDAO {
 		return flag;
 	}
 
-	public boolean isInit(int accountId) throws SQLException {
+	public boolean isInit(int accountId,Date date) throws SQLException {
 		boolean flag = false;
 		try {
 			this.jdbc.getConnection();
-			flag = this.dao.isInit(accountId);
+			flag = this.dao.isInit(accountId,date);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally{
@@ -113,5 +113,40 @@ public class BusinessProcessDAOProxy implements BusinessProcessDAO {
 			this.jdbc.releaseConnection();
 		}
 		return list;
+	}
+
+	@Override
+	public InitAccount getInitAccount(int accountId) throws SQLException {
+		InitAccount initInfo = null;
+		try {
+			this.jdbc.getConnection();
+			initInfo = this.dao.getInitAccount(accountId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			this.jdbc.releaseConnection();
+		}
+		return initInfo;
+	}
+
+	@Override
+	public String getBalanceBeforeStartDate(String accountid,String groupid, Date date)
+			throws SQLException {
+		String balance="";
+		try {
+			this.jdbc.getConnection();
+			balance = this.dao.getBalanceBeforeStartDate(accountid,groupid,date);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			this.jdbc.releaseConnection();
+		}
+		return balance;
+	}
+
+	@Override
+	public InitAccount getCurrentInitaccount(InitAccount origin,
+			String beforeStartBalance) {
+		return this.dao.getCurrentInitaccount(origin, beforeStartBalance);
 	}
 }

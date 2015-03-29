@@ -44,9 +44,14 @@ public interface BusinessProcessDAO {
 	 * @return　账户已初始化返回true，否则返回false
 	 * @throws SQLException
 	 */
-	public boolean isInit(int accountId) throws SQLException;
-	
-	//取得所有帐户的初始化情况
+	public boolean isInit(int accountId,Date date) throws SQLException;
+	/**
+	 * 取得指定帐户的初始化信息
+	 * @param accountId	指定帐户ID
+	 * @return	初始化信息
+	 * @throws SQLException
+	 */
+	public InitAccount getInitAccount(int accountId) throws SQLException;
 	/**
 	 * 取得所有账户的初始化数据
 	 * @see #getAllInitaccount(List, int)
@@ -68,10 +73,10 @@ public interface BusinessProcessDAO {
 	/**
 	 * 根据各子账户合并为一条Root账户初始余额，root在这里指子账户和子账户所属的父账户的合并
 	 * @param initAccounts 初始化数据列表，不一定是所有的账户，参数数据使用{@link #getAllInitaccount(List, int)}函数获得
-	 * @date 截止日期
+	 * @enddate 截止日期
 	 * @return 合并的Root账户初始化数据
 	 */
-	public InitAccount getRootInitaccount(List<InitAccount> initAccounts,Date date);
+	public InitAccount getRootInitaccount(List<InitAccount> initAccounts,Date enddate);
 	
 	/**
 	 * 根据提交的表单数据，查询账户详细数据
@@ -80,4 +85,22 @@ public interface BusinessProcessDAO {
 	 * @throws SQLException
 	 */
 	public List<DataInfo> getAccountDetails(DataSearchForm formDate) throws SQLException;
+	
+	/**
+	 * 获取总帐户或子帐户截止到查询的开始日期前发生额的借贷结余
+	 * @param accountid 总帐户ID
+	 * @param groupid	子帐户ID（当此参数为空时，查询总帐户）
+	 * @param date	查询的开始日期
+	 * @return	截止到查询的开始日期前发生额的借贷结余
+	 * @throws SQLException
+	 */
+	public String getBalanceBeforeStartDate(String accountid,String groupid, Date date) throws SQLException;
+	
+	/**
+	 * 获取特定日期查询时，当前的期初余额.还未处理出负数情况
+	 * @param origin 建帐时的初始化余额
+	 * @param beforeStartBalance 建帐后到查询前发生额的借贷结余
+	 * @return 查询时的期初余额
+	 */
+	public InitAccount getCurrentInitaccount(InitAccount origin,String beforeStartBalance);
 }

@@ -6,7 +6,6 @@ import net.sf.json.JSONArray;
 import xdl.wxk.financing.json.JsonAccountManage;
 import xdl.wxk.financing.json.impl.JsonAccountManageImpl;
 import xdl.wxk.financing.vo.Account;
-import xdl.wxk.financing.vo.AccountDetail;
 import xdl.wxk.financing.vo.DataInfo;
 import xdl.wxk.financing.vo.InitAccount;
 
@@ -33,13 +32,6 @@ public class JsonAccountManageProxy implements JsonAccountManage {
 			Account account) {
 		return this.dao.getChildrenAccount(accounts, account);
 	}
-
-	/*
-	@Override
-	public JSONArray getAccountDetail(List<AccountDetail> accountDetail) {
-		// TODO Auto-generated method stub
-		return this.dao.getAccountDetail(accountDetail);
-	}*/
 
 	@Override
 	public JSONArray getJsonOfInitdata(List<InitAccount> init) {

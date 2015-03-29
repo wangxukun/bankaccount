@@ -95,10 +95,10 @@ public class DataEntryForm {
 			isOK = false;
 			this.errors.put("summary", "摘要不能为空");
 		}else{
-			String pattern = "[\\d+||\\W+]{1,30}";
+			String pattern = "[\\w+||\\S+]{1,30}";
 			if(!this.summary.trim().matches(pattern)){
 				isOK = false;
-				this.errors.put("summary", "摘要只能是中文、数字并且少于30个字符");
+				this.errors.put("summary", "摘要只能少于30个字符");
 			}
 		}
 		//借贷方向不能为空

@@ -10,7 +10,7 @@ public class UpdateInitBill implements IUpdateInitBill {
 	
 	public boolean updateInitBill(InitAccount initAccount) throws SQLException{
 		boolean flag = false;
-		flag = DAOFactory.getBusinessProcessDAOInstance().isInit(initAccount.getAccountid());
+		flag = DAOFactory.getBusinessProcessDAOInstance().isInit(initAccount.getAccountid(),initAccount.getInitdate());
 		if(flag){
 			flag = DAOFactory.getBusinessProcessDAOInstance().updateInitAccount(initAccount);
 		}
