@@ -35,8 +35,9 @@ public class InsertAccountDetail extends HttpServlet {
 		private int direction;	//借贷方向
 		private double amount;	//金额
 		private Date occurdate;	//发生日期
+		private Date updatetime; //录入日期
 		private String summary;	//摘要
-		private double balance;	//余额，数据库中没有这个字段
+		private String balance;	//余额，数据库中没有这个字段
 		private int groupid;	//分类账户ID
 		private int freeze;	//是否已冻结(0表示未冻结，1表示冻结)
 		*/AccountDetail detail = WebUtils.requestToBean(request, AccountDetail.class);

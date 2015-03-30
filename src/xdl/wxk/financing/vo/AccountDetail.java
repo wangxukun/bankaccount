@@ -10,6 +10,7 @@ public class AccountDetail {
 	private int direction;	//借贷方向
 	private String amount;	//金额
 	private Date occurdate;	//发生日期
+	private Date enterdate; //录入时间
 	private String summary;	//摘要
 	private String balance;	//余额，数据库中没有这个字段
 	private int groupid;	//分类账户ID
@@ -66,6 +67,12 @@ public class AccountDetail {
 	public void setOccurdate(Date occurdate) {
 		this.occurdate = occurdate;
 	}
+	public Date getEnterdate(){
+		return enterdate;
+	}
+	public void setEnterdate(Date enterdate){
+		this.enterdate = enterdate;
+	}
 	public String getSummary() {
 		return summary;
 	}
@@ -83,8 +90,8 @@ public class AccountDetail {
 		return "AccountDetail [accountdetailid=" + accountdetailid
 				+ ", accountid=" + accountid + ", number=" + number
 				+ ", direction=" + direction + ", amount=" + amount
-				+ ", occurdate=" + occurdate + ", summary=" + summary
-				+ ", balance=" + balance + ", groupid=" + groupid + ", freeze="
-				+ freeze + "]";
+				+ ", occurdate=" + occurdate + ", enterdate=" + enterdate
+				+ ", summary=" + summary + ", balance=" + balance 
+				+ ", groupid=" + groupid + ", freeze=" + freeze + "]";
 	}
 }

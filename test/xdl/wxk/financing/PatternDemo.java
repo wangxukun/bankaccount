@@ -11,7 +11,9 @@ import net.sf.json.JSONArray;
 import xdl.wxk.financing.dao.factory.DAOFactory;
 import xdl.wxk.financing.json.factory.JsonDAOFactory;
 import xdl.wxk.financing.service.IGetFullData;
+import xdl.wxk.financing.service.IGetReviseData;
 import xdl.wxk.financing.service.impl.GetFullDataImpl;
+import xdl.wxk.financing.service.impl.GetReviseDataImpl;
 import xdl.wxk.financing.tools.DateUtils;
 import xdl.wxk.financing.vo.DataInfo;
 import xdl.wxk.financing.vo.InitAccount;
@@ -51,8 +53,29 @@ public class PatternDemo {
 		
 //		String beforeStartBalance = DAOFactory.getBusinessProcessDAOInstance().getBalanceBeforeStartDate("1","21",DateUtils.getYearFirstDayOfDate(new Date()));
 		
-		boolean f = DAOFactory.getBusinessProcessDAOInstance().isInit(2, DateUtils.getYearFirstDayOfDate(new Date()));
+		/*boolean f = DAOFactory.getBusinessProcessDAOInstance().isInit(2, DateUtils.getYearFirstDayOfDate(new Date()));
 		System.out.println(DateUtils.getYearFirstDayOfDate(new Date()));
-		System.out.println(f);
+		System.out.println(f);*/
+		//[accountid=1, groupid=, startDate=2015-03-01, endDate=2015-03-30, error=0]
+		String startDate = "2015-03-01";
+		String endDate = "2015-03-30";
+		String accountid = "1";
+		String groupid = "";
+		String error = "0";
+		DataSearchForm form = new DataSearchForm(accountid,groupid,startDate,endDate,error);
+		
+		IGetReviseData revisedata = new GetReviseDataImpl();
+		
+		/*System.out.println("验证结果编码："+form.validate()+"\n反馈信息："+form.getError());
+		System.out.println("============================================================================");
+		List<DataInfo> list1 = DAOFactory.getBusinessProcessDAOInstance().getAccountDetails(form);
+		System.out.println("按发生日期"+list1);
+		System.out.println("============================================================================");
+		List<DataInfo> list2 = DAOFactory.getBusinessProcessDAOInstance().getDateDetailsByEnterdate(form);
+		System.out.println("按录入日期"+list2);
+		System.out.println("============================================================================");
+		JSONArray jarray = JsonDAOFactory.getJsonAccountManageDAOInstance().getReviseDataForEasyGrid(list2);
+		System.out.println("JSON数据"+jarray);*/
+		System.out.println(revisedata.GetReviseData(form));
 	}
 }

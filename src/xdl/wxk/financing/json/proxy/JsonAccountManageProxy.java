@@ -35,13 +35,17 @@ public class JsonAccountManageProxy implements JsonAccountManage {
 
 	@Override
 	public JSONArray getJsonOfInitdata(List<InitAccount> init) {
-		// TODO Auto-generated method stub
 		return this.dao.getJsonOfInitdata(init);
 	}
 
 	@Override
 	public JSONArray getFullDataForEasyGrid(List<DataInfo> data) {
 		return this.dao.getFullDataForEasyGrid(data);
+	}
+
+	@Override
+	public JSONArray getReviseDataForEasyGrid(List<DataInfo> data) {
+		return this.dao.getReviseDataForEasyGrid(data);
 	}
 
 }

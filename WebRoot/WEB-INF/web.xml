@@ -80,6 +80,13 @@
     <servlet-name>ModifyInitData</servlet-name>
     <servlet-class>xdl.wxk.financing.servlet.BusinessProcess.ModifyInitData</servlet-class>
   </servlet>
+  <servlet>
+    <description>生成查询修改JSON数据</description>
+    <display-name>JsonServlet</display-name>
+    <servlet-name>JsonDataAccountDetailRevise</servlet-name>
+    <servlet-class>xdl.wxk.financing.servlet.JsonDataAccountDetailRevise</servlet-class>
+  </servlet>
+
 
 
 
@@ -168,6 +175,10 @@
   <servlet-mapping>
     <servlet-name>ModifyInitData</servlet-name>
     <url-pattern>/servlet/ModifyInitData</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>JsonDataAccountDetailRevise</servlet-name>
+    <url-pattern>/servlet/JsonDataAccountDetailRevise</url-pattern>
   </servlet-mapping>
 
 </web-app>

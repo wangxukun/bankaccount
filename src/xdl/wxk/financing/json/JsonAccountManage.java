@@ -37,4 +37,11 @@ public interface JsonAccountManage {
 	 * @return	匹配JeasyUI的JSON对象
 	 */
 	public JSONArray getFullDataForEasyGrid(List<DataInfo> data);
+	
+	/**
+	 * 获取查询修改或删除发生额数据组成的JSON对象
+	 * @param data 查询修改或删除发生额数据组成DataInfo对象List
+	 * @return 匹配JeasyUI的JSON对象
+	 */
+	public JSONArray getReviseDataForEasyGrid(List<DataInfo> data);
 }

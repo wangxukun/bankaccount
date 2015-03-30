@@ -216,7 +216,7 @@ public class BusinessProcessDAOImpl implements BusinessProcessDAO {
 	public List<DataInfo> getAccountDetails(DataSearchForm formDate)
 			throws SQLException {
 		List<DataInfo> dataInfoList = new ArrayList<DataInfo>();
-		String sql = "select d.accountdetailid,d.occurdate,d.number,d.summary,d.direction,d.amount,d.accountid,d.groupid,d.freeze,a.accountname from accountdetail as d,account as a where d.groupid=a.accountid";
+		String sql = "select d.accountdetailid,d.occurdate,d.updatetime,d.number,d.summary,d.direction,d.amount,d.accountid,d.groupid,d.freeze,a.accountname from accountdetail as d,account as a where d.groupid=a.accountid";
 		StringBuffer buffer = new StringBuffer(sql);
 		List<Object> params = new ArrayList<Object>();
 		switch(formDate.validate()){
@@ -260,6 +260,7 @@ public class BusinessProcessDAOImpl implements BusinessProcessDAO {
 			Map<String,Object> map = iter.next();
 			temp.setAccountdetailid(Integer.valueOf(map.get("accountdetailid").toString()));
 			temp.setOccurdate((Date)map.get("occurdate"));
+			temp.setEnterdate((Date)map.get("updatetime"));
 			temp.setNumber(Integer.valueOf(map.get("number").toString()));
 			temp.setSummary(map.get("summary").toString());
 			temp.setDirection(Integer.valueOf(map.get("direction").toString()));
@@ -342,5 +343,77 @@ public class BusinessProcessDAOImpl implements BusinessProcessDAO {
 			init.setSummary("上期结余");
 		}
 		return init;
+	}
+	/**
+	 * 验证查询的九种情况
+	 * 1、开始日期为空，结束日期不为空，不能查询
+	 * 2、开始日期不为空，结束日期为空，不能查询
+	 * 3、日期格式不对，不能查询
+	 * 4、开始日期后于结束日期不能查询
+	 * 5、开始日期与结束日期跨年度不能查询
+	 * 6、开始日期、结束日期、所属单位全为空或所属单位ID等于账户ID或所属单位ID为空：显示当前月份所对应年度录入的整个账户明细
+	 * 7、查询指定月份期间录入的整个账户数据
+	 * 8、开始日期、结束日期为空，所属单位ID不等于账户ID并且所属单位ID不为空：显示当前月份特定账户录入的明细
+	 * 9、查询指定账户指定日期间录入的明细
+	 */
+	@Override
+	public List<DataInfo> getDateDetailsByEnterdate(DataSearchForm formDate) throws SQLException{
+		List<DataInfo> dataInfoList = new ArrayList<DataInfo>();
+		String sql = "select d.accountdetailid,d.occurdate,d.updatetime,d.number,d.summary,d.direction,d.amount,d.accountid,d.groupid,d.freeze,a.accountname from accountdetail as d,account as a where d.groupid=a.accountid";
+		StringBuffer buffer = new StringBuffer(sql);
+		List<Object> params = new ArrayList<Object>();
+		switch(formDate.validate()){
+		case 6:
+			String t6 = " and d.accountid=? and d.updatetime like ?";
+			buffer.append(t6);
+			params.add(formDate.getAccountid());
+			params.add(DateUtils.getYear(new Date())+"%");
+			break;
+		case 7:
+			String t7 = " and d.accountid=? and d.updatetime between ? and ?";
+			buffer.append(t7);
+			params.add(formDate.getAccountid());
+			params.add(formDate.getStartDate());
+			params.add(formDate.getEndDate());
+			break;
+		case 8:
+			String t8 = " and d.accountid=? and d.groupid=? and d.updatetime like ?";
+			buffer.append(t8);
+			params.add(formDate.getAccountid());
+			params.add(formDate.getGroupid());
+			params.add(DateUtils.getYear(new Date())+"%");
+			break;
+		case 9:
+			String t9 = " and d.accountid=? and d.groupid=? and d.updatetime between ? and ?";
+			buffer.append(t9);
+			params.add(formDate.getAccountid());
+			params.add(formDate.getGroupid());
+			params.add(formDate.getStartDate());
+			params.add(formDate.getEndDate());
+			break;
+		default:
+			dataInfoList = null;
+			return dataInfoList;
+		}
+		buffer.append(" order by updatetime ASC");
+		List<Map<String, Object>> list = this.jdbc.findMoreByPreparedStatement(buffer.toString(), params);
+		Iterator<Map<String,Object>> iter = list.iterator();
+		while(iter.hasNext()){
+			DataInfo temp = new DataInfo();
+			Map<String,Object> map = iter.next();
+			temp.setAccountdetailid(Integer.valueOf(map.get("accountdetailid").toString()));
+			temp.setOccurdate((Date)map.get("occurdate"));
+			temp.setEnterdate((Date)map.get("updatetime"));
+			temp.setNumber(Integer.valueOf(map.get("number").toString()));
+			temp.setSummary(map.get("summary").toString());
+			temp.setDirection(Integer.valueOf(map.get("direction").toString()));
+			temp.setAmount(map.get("amount").toString());
+			temp.setAccountid(Integer.valueOf(map.get("accountid").toString()));
+			temp.setGroupid(Integer.valueOf(map.get("groupid").toString()));
+			temp.setFreeze(Integer.valueOf(map.get("freeze").toString()));
+			temp.setAccountname(map.get("accountname").toString());
+			dataInfoList.add(temp);
+		}
+		return dataInfoList;
 	}
 }
