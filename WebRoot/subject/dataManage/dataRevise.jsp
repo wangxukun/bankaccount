@@ -9,22 +9,22 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<script type="text/javascript" src="/financing/js/jquery-2.1.1.js"></script>
-<script type="text/javascript" src="/financing/js/jquery-ui.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-ui.js"></script>
 <script type="text/javascript"
-	src="/financing/easyui/jquery.easyui.min.js"></script>
+	src="${pageContext.request.contextPath }/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript"
-	src="/financing/easyui/locale/easyui-lang-zh_CN.js"></script>
+	src="${pageContext.request.contextPath }/easyui/locale/easyui-lang-zh_CN.js"></script>
 <link rel="stylesheet" type="text/css"
-	href="/financing/css/smoothness/jquery-ui.min.css">
+	href="${pageContext.request.contextPath }/css/smoothness/jquery-ui.min.css">
 <link rel="stylesheet" type="text/css"
-	href="/financing/css/smoothness/theme.css">
+	href="${pageContext.request.contextPath }/css/smoothness/theme.css">
 <link rel="stylesheet" type="text/css"
-	href="/financing/easyui/themes/metro/easyui.css">
+	href="${pageContext.request.contextPath }/easyui/themes/metro/easyui.css">
 <link rel="stylesheet" type="text/css"
-	href="/financing/easyui/themes/icon.css">
+	href="${pageContext.request.contextPath }/easyui/themes/icon.css">
 <link rel="stylesheet" type="text/css"
-	href="/financing/easyui/themes/metro/datagrid.css">
+	href="${pageContext.request.contextPath }/easyui/themes/metro/datagrid.css">
 <style type="text/css">
 html {
 	font-family: "微软雅黑", Arial, Helvetica, sans-serif;

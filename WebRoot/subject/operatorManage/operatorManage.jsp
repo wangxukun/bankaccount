@@ -1,20 +1,13 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
-			+ request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-%>
 
 <!DOCTYPE HTML>
 <html>
 <head>
-<base href="<%=basePath%>">
-<link rel="stylesheet" type="text/css" href="/financing/css/smoothness/jquery-ui.min.css">
-<link rel="stylesheet" type="text/css" href="/financing/css/smoothness/theme.css">
-<link rel="stylesheet" type="text/css" href="/financing/jpgrid/css/ui.jqgrid.css">
-<link rel="stylesheet" type="text/css" href="/financing/easyui/themes/icon.css">
-<link rel="stylesheet" type="text/css" href="/financing/easyui/themes/metro/easyui.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/smoothness/jquery-ui.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/smoothness/theme.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/jpgrid/css/ui.jqgrid.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/easyui/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/easyui/themes/metro/easyui.css">
 <style type="text/css">
 html,body{
 	padding: 0;
@@ -25,13 +18,13 @@ html,body{
 	border-bottom-right-radius: 5px;
 }
 </style>
-<script type="text/javascript" src="/financing/js/jquery-2.1.1.js"></script>
-<script type="text/javascript" src="/financing/js/jquery-ui.js"></script>
-<script type="text/javascript" src="/financing/jpgrid/js/i18n/grid.locale-cn.js"></script>
-<script type="text/javascript" src="/financing/jpgrid/js/jquery.jqGrid.src.js"></script>
-<script type="text/javascript" src="/financing/easyui/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="/financing/easyui/locale/easyui-lang-zh_CN.js"></script>
-<script type="text/javascript" src="/financing/js/util.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-ui.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/jpgrid/js/i18n/grid.locale-cn.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/jpgrid/js/jquery.jqGrid.src.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/util.js"></script>
 <script type="text/javascript">
 //初始化当前行信息---------start-----------------------------------------------
 var currentRowInfo = {
@@ -48,7 +41,7 @@ var currentRowInfo = {
 $(function(){
 	//操作员管理表格---------------start-----------------------------------------------
 	jQuery("#grid").jqGrid({
-	      url:"servlet/OperatorManage?action_flag=operatorManage",
+	      url:"${pageContext.request.contextPath }/servlet/OperatorManage?action_flag=operatorManage",
 	      datatype: "json",
 	      mtype: 'GET',
 	      colNames:['操作员ID', '操作员姓名','密码','注册时间', '更新时间','确认密码'],
@@ -91,7 +84,7 @@ $(function(){
 	      viewrecords: true,
 	      sortorder: "asc",
 	      caption:"操作员管理",
-	      editurl:"servlet/OperatorManage?action_flag=editing",
+	      editurl:"${pageContext.request.contextPath }/servlet/OperatorManage?action_flag=editing",
 	      onSelectRow:function(rowid,status,e){
 	    	  currentRowInfo.rowid = rowid;
 	    	  currentRowInfo.status = status;
@@ -222,7 +215,7 @@ function privilege(){
 //当执行ShowAccounts函数，显示所有帐户
 function ShowAccounts(){
 	$('#tt_account').tree({
-		url : 'servlet/JsonDataAccountTree',
+		url : '${pageContext.request.contextPath }/servlet/JsonDataAccountTree',
 		checkbox:true,
 		method : 'POST',
 		animate : true,
@@ -230,7 +223,7 @@ function ShowAccounts(){
 			//绑定权限  
             $.ajax(  
             	{
-            		url: 'servlet/ExistingPermissions?oid='+currentRowInfo.data.operatorid+'&oname='+currentRowInfo.data.operatorname,
+            		url: '${pageContext.request.contextPath }/servlet/ExistingPermissions?oid='+currentRowInfo.data.operatorid+'&oname='+currentRowInfo.data.operatorname,
 	            	cache:false,  
 	                dataType:'text',
 	                contentType:'text/plain; charset=utf-8',
@@ -279,7 +272,7 @@ function privilegeConfig(){
 	//保存所要设置权限的操作员id
 	var operatorid = currentRowInfo.data.operatorid;
 	$.ajax(
-		'servlet/OperatorManage',
+		'${pageContext.request.contextPath }/servlet/OperatorManage',
 		{
 			//发送前调用
 			beforeSend:function(jqXHR,settings){
