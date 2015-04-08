@@ -27,9 +27,10 @@ public interface JsonAccountManage {
 	/**
 	 * 获取账户期初初始化数据组成的JSON对象.
 	 * @param init	初始化数据列表
+	 * @param contextPath 网站的上下文路径，用于a标签使用
 	 * @return	匹配JeasyUI的JSON对象
 	 */
-	public JSONArray getJsonOfInitdata(List<InitAccount> init);
+	public JSONArray getJsonOfInitdata(List<InitAccount> init,String contextPath);
 	
 	/**
 	 * 获取期初余额及本期发生额组成的JSON对象。

@@ -37,11 +37,19 @@ table#dg{
 $(function(){
 	//---------------------------处理日期---------------------------
 	var date = new Date();	//取得当前日期
-	var year = date.getFullYear()+"年";
+	var y = date.getFullYear();
+	var year = y+"年";
 	var theYear = year;	//用于保存查询开始日期
-	/* var m = date.getMonth()+1;
+	var m = date.getMonth()+1;
 	var d = date.getDate();
-	var today = m+'/'+d+'/'+y; */
+	var today = m+'/'+d+'/'+y;
+	
+		/* 设置当前年的第一天 */
+	var firstday = new Date(y,1,1);
+	var firstday_y = firstday.getFullYear();
+	var firstday_m = firstday.getMonth();
+	var firstday_d = firstday.getDate();
+	var thatDay = firstday_y+'-'+firstday_m+'-'+firstday_d;
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//---------------------------查询结果表格-----------------------------
 	$('#dg').datagrid({
@@ -84,8 +92,8 @@ $(function(){
 	$('#dg').datagrid({
 		onLoadSuccess:function(data){
 			$('#dg').datagrid('getPanel').panel('setTitle','<center>'+g_selectd_accountname+'</center>');
-			var o = $('#dg').datagrid('getColumnOption','year');
-			o.title = '2015年';			
+			/* var o = $('#dg').datagrid('getColumnOption','year');
+			o.title = '2015年';	 */		
 			if(g_selectd_groupid!="" && '${info.accountid}'!=g_selectd_groupid){
 				$('#dg').datagrid('hideColumn','village');
 			}else{
@@ -126,6 +134,9 @@ $(function(){
 			g_selectd_accountname = node.text;
 		}
 	}); 
+	/* var t = $('#comboTree').combotree('tree');
+	var n = t.tree('getRoot');
+	t.tree('select',n); */
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	$('#searchBtn').bind('click',function(){
 		
@@ -141,6 +152,12 @@ $(function(){
 	       	groupid:groupid
 		});
 	});
+	
+	//----------------------------开始日期&结束日期-------------------------------
+	$('#startDate').datebox('setValue',thatDay);
+	$('#endDate').datebox('setValue',today);
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
 	
 	//扩展datagrid列标题设置方法
 	$.extend($.fn.datagrid.methods, {  
@@ -159,7 +176,6 @@ $(function(){
 		}  
 	}); 
 });
-
 </script>
 
 </head>

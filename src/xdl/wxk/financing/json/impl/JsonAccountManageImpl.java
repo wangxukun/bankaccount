@@ -27,7 +27,6 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 	private String creditAccumulative ;//初始化贷方累计
 //	private String balance;//初始化结余
 	private int number ;//初始化每月的凭证编号
-	
 	public JsonAccountManageImpl() {
 		this.initMonth = -1;//记录初始化后账户的初始月份
 		this.debitTotal = "0.00";//初始化借方本月合计
@@ -111,7 +110,7 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 	}
 	
 	@Override
-	public JSONArray getJsonOfInitdata(List<InitAccount> init) {
+	public JSONArray getJsonOfInitdata(List<InitAccount> init,String contextPath) {
 		String rootSummary = "汇总各单位数据";
 		double rootAmount = 0.0;
 		String rootDirection = null;
@@ -148,7 +147,7 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 						jObject.accumulate("direction","贷");
 					}
 					jObject.accumulate("amount",tempInit.getAmount());
-					jObject.accumulate("modify","<a href='servlet/ModifyInitDataUI?accountid="+tempInit.getAccountid()+
+					jObject.accumulate("modify","<a href='"+contextPath+"/servlet/ModifyInitDataUI?accountid="+tempInit.getAccountid()+
 																					"&parentid="+tempInit.getParentid()+
 																					"&accountname="+tempInit.getAccountname()+
 																					"&initdate="+tempInit.getInitdate()+

@@ -34,8 +34,8 @@ public class JsonAccountManageProxy implements JsonAccountManage {
 	}
 
 	@Override
-	public JSONArray getJsonOfInitdata(List<InitAccount> init) {
-		return this.dao.getJsonOfInitdata(init);
+	public JSONArray getJsonOfInitdata(List<InitAccount> init,String contextPath) {
+		return this.dao.getJsonOfInitdata(init,contextPath);
 	}
 
 	@Override
