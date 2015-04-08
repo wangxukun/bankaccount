@@ -224,6 +224,7 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 			DataInfo detail = iter.next();
 			Calendar calendar = Calendar.getInstance(Locale.CHINA);
 			Date date = detail.getOccurdate();
+			
 			if(date == null){
 				jObject.accumulate("month","");
 				jObject.accumulate("day", "");
@@ -242,7 +243,9 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 			}else{
 				calendar.setTime(detail.getOccurdate());
 				int month = calendar.get(Calendar.MONTH);
-				
+				if(this.initMonth != month && !"".equals(month)){
+					summarizing(jArray,month);
+				}
 				jObject.accumulate("month",month+1);
 				jObject.accumulate("day", calendar.get(Calendar.DATE));
 				jObject.accumulate("voucherNum",++this.number);
@@ -267,9 +270,9 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 				}
 				jObject.accumulate("balance",detail.getBalance());
 				jArray.add(jObject);
-				if(this.initMonth != month && !"".equals(month)){
+			/*	if(this.initMonth != month && !"".equals(month)){
 					summarizing(jArray,month);
-				}
+				}*/
 			}
 		}
 		summarizing(jArray,this.initMonth);
