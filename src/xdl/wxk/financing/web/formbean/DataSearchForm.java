@@ -38,12 +38,12 @@ public class DataSearchForm {
 	}
 	
 	public DataSearchForm(String accountid, String groupid, String startDate,
-			String endDate) {
+			String endDate,String error) {
 		this.accountid = accountid;
 		this.groupid = groupid;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.error = "";
+		this.error = error; //用于存放附加信息
 	}
 
 	public String getAccountid() {

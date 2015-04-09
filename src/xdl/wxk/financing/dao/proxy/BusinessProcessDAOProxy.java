@@ -149,4 +149,19 @@ public class BusinessProcessDAOProxy implements BusinessProcessDAO {
 			String beforeStartBalance) {
 		return this.dao.getCurrentInitaccount(origin, beforeStartBalance);
 	}
+
+	@Override
+	public List<DataInfo> getDateDetailsByEnterdate(DataSearchForm formDate)
+			throws SQLException {
+		List<DataInfo> dataInfo = null;
+		try {
+			this.jdbc.getConnection();
+			dataInfo = this.dao.getDateDetailsByEnterdate(formDate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			this.jdbc.releaseConnection();
+		}
+		return dataInfo;
+	}
 }

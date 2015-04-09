@@ -1,20 +1,13 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="/WEB-INF/c.tld"%>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
-			+ request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-%>
 
 <!DOCTYPE HTML>
 <html>
 <head>
-<base href="<%=basePath%>">
-<link rel="stylesheet" type="text/css" href="/financing/css/smoothness/jquery-ui.min.css">
-<link rel="stylesheet" type="text/css" href="/financing/css/smoothness/theme.css">
-<link rel="stylesheet" type="text/css" href="/financing/easyui/themes/icon.css">
-<link rel="stylesheet" type="text/css" href="/financing/easyui/themes/metro/easyui.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/smoothness/jquery-ui.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/smoothness/theme.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/easyui/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/easyui/themes/metro/easyui.css">
 <style type="text/css">
 html,body{
 	font-family: "微软雅黑",Arial,Helvetica,sans-serif;
@@ -87,18 +80,18 @@ div#dlg input#amount{
 	height: 20px;
 }
 </style>
-<script type="text/javascript" src="/financing/js/jquery-2.1.1.js"></script>
-<script type="text/javascript" src="/financing/js/jquery-ui.js"></script>
-<script type="text/javascript" src="/financing/easyui/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="/financing/easyui/locale/easyui-lang-zh_CN.js"></script>
-<script type="text/javascript" src="/financing/js/util.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-ui.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/util.js"></script>
 <script type="text/javascript">
 	//保存选择的帐户名和帐户ID
 	var accountname,accountid;
 	//保存初始化树函数
 	$(function() {
 		$('#tt_account').tree({
-			url : 'servlet/JsonDataAccountTree',
+			url : '${pageContext.request.contextPath }/servlet/JsonDataAccountTree',
 			method : 'POST',
 			animate : true,
 			formatter:function(node){
@@ -139,7 +132,7 @@ div#dlg input#amount{
 	//				var element = $("<div id='init'></div>");
 					console.log("init div created");
 					$('#init').datagrid({
-						url:"servlet/SearchInitAccount?accountid="+node.id,
+						url:"${pageContext.request.contextPath }/servlet/SearchInitAccount?accountid="+node.id,
 						fit:true,
 						rownumbers:true,
 						cache: false,
@@ -242,7 +235,7 @@ div#dlg input#amount{
 	//初始化帐户
 	function initAccount(){
 		$.ajax(
-			'servlet/InitAccount',
+			'${pageContext.request.contextPath }/servlet/InitAccount',
 			{
 				//发送前调用
 				beforeSend:function(jqXHR,settings){
@@ -309,7 +302,7 @@ div#dlg input#amount{
 		$.messager.confirm('提示','请确认是否要删除<span style="color:red">'+accountname+'</span>帐户？',function(r){
 		    if (r){
 		    	$.ajax(
-						'servlet/AccountManage',
+						'${pageContext.request.contextPath }/servlet/AccountManage',
 						{
 							//发送完成后
 							complete:function(jqXHR,textStatus){

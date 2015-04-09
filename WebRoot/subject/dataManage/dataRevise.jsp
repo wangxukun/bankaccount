@@ -9,22 +9,22 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<script type="text/javascript" src="/financing/js/jquery-2.1.1.js"></script>
-<script type="text/javascript" src="/financing/js/jquery-ui.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-ui.js"></script>
 <script type="text/javascript"
-	src="/financing/easyui/jquery.easyui.min.js"></script>
+	src="${pageContext.request.contextPath }/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript"
-	src="/financing/easyui/locale/easyui-lang-zh_CN.js"></script>
+	src="${pageContext.request.contextPath }/easyui/locale/easyui-lang-zh_CN.js"></script>
 <link rel="stylesheet" type="text/css"
-	href="/financing/css/smoothness/jquery-ui.min.css">
+	href="${pageContext.request.contextPath }/css/smoothness/jquery-ui.min.css">
 <link rel="stylesheet" type="text/css"
-	href="/financing/css/smoothness/theme.css">
+	href="${pageContext.request.contextPath }/css/smoothness/theme.css">
 <link rel="stylesheet" type="text/css"
-	href="/financing/easyui/themes/metro/easyui.css">
+	href="${pageContext.request.contextPath }/easyui/themes/metro/easyui.css">
 <link rel="stylesheet" type="text/css"
-	href="/financing/easyui/themes/icon.css">
+	href="${pageContext.request.contextPath }/easyui/themes/icon.css">
 <link rel="stylesheet" type="text/css"
-	href="/financing/easyui/themes/metro/datagrid.css">
+	href="${pageContext.request.contextPath }/easyui/themes/metro/datagrid.css">
 <style type="text/css">
 html {
 	font-family: "微软雅黑", Arial, Helvetica, sans-serif;
@@ -47,7 +47,7 @@ table#dg {
 		$('#dg')
 				.datagrid(
 						{
-							url : '${pageContext.request.contextPath }/servlet/JsonDataAccountDetail',
+							url : '${pageContext.request.contextPath }/servlet/JsonDataAccountDetailRevise',
 							fit : false,
 							fitColumns : false,
 							singleSelect : true,
@@ -59,22 +59,6 @@ table#dg {
 							columns : [
 									[
 											{
-												field : 'year',
-												title : '2014年',
-												halign : 'center',
-												colspan : 2,
-												width : 60,
-												align : 'center'
-											},
-											{
-												field : 'voucherNum',
-												title : '编号',
-												halign : 'center',
-												rowspan : 2,
-												width : 50,
-												align : 'center'
-											},
-											{
 												field : 'village',
 												title : '单位名称',
 												halign : 'center',
@@ -82,18 +66,27 @@ table#dg {
 												width : 140
 											},
 											{
+												field : 'enterDate',
+												title : '录入日期',
+												halign : 'center',
+												rowspan : 2,
+												width : 100,
+												align : 'center'
+											},
+											{
+												field : 'occurDate',
+												title : '发生日期',
+												halign : 'center',
+												rowspan : 2,
+												width : 100,				
+												align : 'center'
+											},
+											{
 												field : 'summary',
 												title : '摘要',
 												halign : 'center',
 												rowspan : 2,
-												width : 300,
-												styler : function(value, row,
-														index) {
-													if (value == '本月合计'
-															|| value == '累计') {
-														return 'text-align:center;color:#f00;font-weight:bold;';
-													}
-												}
+												width : 300
 											}, {
 												field : 'debit',
 												title : '借方',
@@ -107,37 +100,12 @@ table#dg {
 												rowspan : 2,
 												width : 130
 											}, {
-												field : 'balanceCredit',
-												title : '借\\贷',
-												halign : 'center',
-												rowspan : 2,
-												width : 50,
-												align : 'center'
-											}, {
-												field : 'balance',
-												title : '余额',
-												halign : 'center',
-												rowspan : 2,
-												width : 130
-											}, {
 												field : 'operate',
 												title : '操作',
 												halign : 'center',
 												colspan : 2,
 												width : 100
-											} ], [ {
-										field : 'month',
-										title : '月',
-										halign : 'center',
-										width : 30,
-										align : 'center'
-									}, {
-										field : 'day',
-										title : '日',
-										halign : 'center',
-										width : 30,
-										align : 'center'
-									}, {
+											} ], [{
 										field : 'modify',
 										title : '修改',
 										halign : 'center',
@@ -164,8 +132,6 @@ table#dg {
 								'setTitle',
 								'<center>' + g_selectd_accountname
 										+ '</center>');
-						var o = $('#dg').datagrid('getColumnOption', 'year');
-						o.title = '2015年';
 					},
 					onLoadError : function() {
 						$.messager.show({
@@ -211,11 +177,13 @@ table#dg {
 			var startdate = $('#startDate').datebox('getValue');
 			var enddate = $('#endDate').datebox('getValue');
 			var groupid = g_selectd_groupid;
+			var error = $('#cc').combobox('getValue');	//取得查询方法（按发生日期还是录入日期）
 			$('#dg').datagrid('load', {
 				accountid : '${info.accountid}',
 				startDate : startdate,
 				endDate : enddate,
-				groupid : groupid
+				groupid : groupid,
+				error : error
 			});
 		});
 	});
@@ -226,9 +194,9 @@ table#dg {
 	<table id="dg"></table>
 	<div id="tb" style="padding:2px 5px;">
 		单位: <input id="comboTree" name="groupid" value='${form.groupid}' style="width:190px;"> 
-		查询条件：<select id="cc" class="easyui-combobox" name="dept" style="width:120px;">
-			<option value="aa">业务发生日期</option>
-			<option>数据录入日期</option>
+		查询条件：<select id="cc" class="easyui-combobox" name="dept" style="width:120px;" data-options="editable:false">
+			<option value="0">数据录入日期</option>
+			<option value="1">业务发生日期</option>
 		</select> 
 		开始日期: <input id="startDate" class="easyui-datebox" style="width:110px"> 
 		结束日期: <input id="endDate" class="easyui-datebox" style="width:110px"> 

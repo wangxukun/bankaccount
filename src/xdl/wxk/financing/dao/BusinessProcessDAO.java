@@ -79,7 +79,7 @@ public interface BusinessProcessDAO {
 	public InitAccount getRootInitaccount(List<InitAccount> initAccounts,Date enddate);
 	
 	/**
-	 * 根据提交的表单数据，查询账户详细数据
+	 * 根据提交的表单数据，查询账户详细数据，根据业务发生日期
 	 * @param formDate	表单数据对象，对象中的属性可设置零个多处或全部
 	 * @return 返回账户详细数据列表
 	 * @throws SQLException
@@ -103,4 +103,12 @@ public interface BusinessProcessDAO {
 	 * @return 查询时的期初余额
 	 */
 	public InitAccount getCurrentInitaccount(InitAccount origin,String beforeStartBalance);
+	
+	/**
+	 * 根据提交的表单数据，查询账户详细数据，根据业务录入日期
+	 * @param formDate	提交的查询表单，其中formDate.error用于保存查询条件（按发生时间还是按录入时间查询）
+	 * @return 由发生额详细数据组成的List集合
+	 * @throws SQLException
+	 */
+	public List<DataInfo> getDateDetailsByEnterdate(DataSearchForm formDate) throws SQLException;
 }

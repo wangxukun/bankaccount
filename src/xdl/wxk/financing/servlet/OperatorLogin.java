@@ -240,9 +240,11 @@ public class OperatorLogin extends HttpServlet {
 				this.path = "../subject/main.jsp";
 			} else {
 				System.out.println("【12】");
+				this.path = "../login.jsp";
 				if (this.name != null) {
 					request.setAttribute("fail", "操作员名称或密码不正确");
 					this.path = "../login.jsp";
+					System.out.println("【17】");
 				}else if(request.getSession().getAttribute("info") != null){//已经登陆
 					{
 						System.out.println("【13】");
@@ -252,6 +254,9 @@ public class OperatorLogin extends HttpServlet {
 						request.getSession().setAttribute("operatorTree", operatorTree);
 					}
 					this.path = "../subject/main.jsp";
+					System.out.println("【17】");
+				}else{
+					System.out.println("【18】");
 				}
 			}
 		} catch (Exception e) {

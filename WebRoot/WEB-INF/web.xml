@@ -80,6 +80,13 @@
     <servlet-name>ModifyInitData</servlet-name>
     <servlet-class>xdl.wxk.financing.servlet.BusinessProcess.ModifyInitData</servlet-class>
   </servlet>
+  <servlet>
+    <description>生成查询修改JSON数据</description>
+    <display-name>JsonServlet</display-name>
+    <servlet-name>JsonDataAccountDetailRevise</servlet-name>
+    <servlet-class>xdl.wxk.financing.servlet.JsonDataAccountDetailRevise</servlet-class>
+  </servlet>
+
 
 
 
@@ -169,6 +176,18 @@
     <servlet-name>ModifyInitData</servlet-name>
     <url-pattern>/servlet/ModifyInitData</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>JsonDataAccountDetailRevise</servlet-name>
+    <url-pattern>/servlet/JsonDataAccountDetailRevise</url-pattern>
+  </servlet-mapping>
 
+<welcome-file-list>
+	<welcome-file>login.jsp</welcome-file>
+</welcome-file-list>
+
+<error-page>
+	<error-code>404</error-code>
+	<location>/WEB-INF/errorPages/NotFound.jsp</location>
+</error-page>
 </web-app>
 

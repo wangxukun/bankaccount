@@ -1,29 +1,21 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="/WEB-INF/c.tld"%>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
-			+ request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-%>
-
 <!DOCTYPE HTML>
 <html>
 <head>
 <title>银行存款日记帐-登陆</title>
-<base href="<%=basePath%>">
-<script type="text/javascript" src="/financing/js/jquery-2.1.1.js"></script>
-<script type="text/javascript" src="/financing/js/jquery-ui.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-ui.js"></script>
 <script type="text/javascript"
-	src="/financing/easyui/jquery.easyui.min.js"></script>
+	src="${pageContext.request.contextPath }/easyui/jquery.easyui.min.js"></script>
 <link rel="stylesheet" type="text/css"
-	href="/financing/css/smoothness/jquery-ui.min.css">
+	href="${pageContext.request.contextPath }/css/smoothness/jquery-ui.min.css">
 <link rel="stylesheet" type="text/css"
-	href="/financing/css/smoothness/theme.css">
+	href="${pageContext.request.contextPath }/css/smoothness/theme.css">
 <link rel="stylesheet" type="text/css"
-	href="/financing/easyui/themes/icon.css">
+	href="${pageContext.request.contextPath }/easyui/themes/icon.css">
 <link rel="stylesheet" type="text/css"
-	href="/financing/easyui/themes/metro/easyui.css">
+	href="${pageContext.request.contextPath }/easyui/themes/metro/easyui.css">
 <style type="text/css">
 body{
 	margin: 0 ;
@@ -70,7 +62,7 @@ div#form1{
 
 <!-- 如果已经登陆，则跳转到主页 -->
 <c:if test="${!empty info}">
-	<c:redirect url="servlet/OperatorLogin"></c:redirect>
+	<c:redirect url="${pageContext.request.contextPath }/servlet/OperatorLogin"></c:redirect>
 </c:if>
 </head>
 
@@ -81,7 +73,7 @@ div#form1{
 <div id="form1">
 	<div class="easyui-panel" title="系统登陆"
 		style="width:400px;padding:30px 70px 20px 70px" id="login-panel">
-		<form id="form_login" action="servlet/OperatorLogin" method="post">
+		<form id="form_login" action="${pageContext.request.contextPath }/servlet/OperatorLogin" method="post">
 			<div style="margin-bottom:10px">
 				<input class="easyui-textbox"
 					style="width:100%;height:40px;padding:12px"

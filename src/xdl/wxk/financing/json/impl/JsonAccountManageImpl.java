@@ -2,6 +2,7 @@ package xdl.wxk.financing.json.impl;
 
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -252,7 +253,7 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 				jObject.accumulate("village", detail.getAccountname());
 				jObject.accumulate("summary",detail.getSummary());
 				String amount;
-				if(detail.getDirection()==0){
+				if(detail.getDirection()==0){	//本期发生额方向
 					amount = detail.getAmount();
 					jObject.accumulate("debit",amount);
 					jObject.accumulate("credit","");
@@ -263,16 +264,20 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 					jObject.accumulate("debit","");
 					this.creditTotal =  Calculator.add(this.creditTotal, amount).toString();
 				}
-				if(detail.getNumber() == 0){
+				if(detail.getNumber() == 0){	//余额方向
 					jObject.accumulate("balanceCredit", "借");
 				}else{
 					jObject.accumulate("balanceCredit", "贷");
 				}
 				jObject.accumulate("balance",detail.getBalance());
 				jArray.add(jObject);
+<<<<<<< HEAD
 			/*	if(this.initMonth != month && !"".equals(month)){
 					summarizing(jArray,month);
 				}*/
+=======
+				
+>>>>>>> 41128603a63dfd49a87442318ef0e1956db3a42a
 			}
 		}
 		summarizing(jArray,this.initMonth);
@@ -320,5 +325,57 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 		this.creditTotal = "0.00";
 		this.debitTotal = "0.00";
 		this.number = 0;
+	}
+	@Override
+	public JSONArray getReviseDataForEasyGrid(List<DataInfo> data) {
+		/*
+		 * village enterDate occurDate summary debit credit modify delete
+		 */
+		JSONArray jArray = new JSONArray();
+		Iterator<DataInfo> iter = data.iterator();
+		while(iter.hasNext()){
+			JSONObject jObject = new JSONObject();
+			DataInfo detail = iter.next();
+			jObject.accumulate("village", detail.getAccountname());
+			SimpleDateFormat dfenter = new SimpleDateFormat("yyyy-MM-dd");
+			String enterday = dfenter.format(detail.getEnterdate());
+			jObject.accumulate("enterDate", enterday);
+			SimpleDateFormat dfoccur = new SimpleDateFormat("yyyy-MM-dd");
+			String occurday = dfoccur.format(detail.getOccurdate());
+			jObject.accumulate("occurDate", occurday);
+			jObject.accumulate("summary", detail.getSummary());
+			String amount;
+			if(detail.getDirection()==0){	//本期发生额方向
+				amount = detail.getAmount();
+				jObject.accumulate("debit",amount);
+				jObject.accumulate("credit","");
+			}else{
+				amount = detail.getAmount();
+				jObject.accumulate("credit",amount);
+				jObject.accumulate("debit","");
+			}
+			/*private int accountdetailid;	//帐户祥情ID
+			private int accountid;	//帐户ID
+			private int number;	//凭证编号
+			private int direction;	//借贷方向
+			private double amount;	//金额
+			private Date occurdate;	//发生日期
+			private Date updatetime; //录入日期
+			private String summary;	//摘要
+			private String balance;	//余额，数据库中没有这个字段
+			private int groupid;	//分类账户ID
+			private int freeze;	//是否已冻结(0表示未冻结，1表示冻结)
+			*/
+			jObject.accumulate("modify","<a href='servlet/ModifyDetailUI?accountdetailid="+detail.getAccountdetailid()+
+					"&occurdate="+detail.getOccurdate()+
+					"&groupid="+detail.getGroupid()+
+					"&summary="+detail.getSummary()+
+					"&direction="+detail.getDirection()+
+					"&amount="+detail.getAmount()+"'>修改</a>");
+			jObject.accumulate("delete","<a href='"+detail.getAccountdetailid()+"'>删除</a>");
+			jArray.add(jObject);
+		}
+		
+		return jArray;
 	}
 }
