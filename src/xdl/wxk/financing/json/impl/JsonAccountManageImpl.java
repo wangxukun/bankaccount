@@ -271,13 +271,6 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 				}
 				jObject.accumulate("balance",detail.getBalance());
 				jArray.add(jObject);
-<<<<<<< HEAD
-			/*	if(this.initMonth != month && !"".equals(month)){
-					summarizing(jArray,month);
-				}*/
-=======
-				
->>>>>>> 41128603a63dfd49a87442318ef0e1956db3a42a
 			}
 		}
 		summarizing(jArray,this.initMonth);
