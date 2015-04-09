@@ -43,6 +43,24 @@ table#dg {
 </style>
 <script type="text/javascript">
 	$(function() {
+		
+		//---------------------------处理日期---------------------------
+		var date = new Date();	//取得当前日期
+		var y = date.getFullYear();
+		var year = y+"年";
+		var theYear = year;	//用于保存查询开始日期
+		var m = date.getMonth()+1;
+		var d = date.getDate();
+		var today = m+'/'+d+'/'+y;
+		
+			/* 设置当前年的第一天 */
+		var firstday = new Date(y,1,1);
+		var firstday_y = firstday.getFullYear();
+		var firstday_m = firstday.getMonth();
+		var firstday_d = firstday.getDate();
+		var thatDay = firstday_y+'-'+firstday_m+'-'+firstday_d;
+		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
 		//---------------------------查询结果表格-----------------------------
 		$('#dg')
 				.datagrid(
@@ -120,9 +138,10 @@ table#dg {
 									} ] ],
 							queryParams : {
 								accountid : '${info.accountid}',
-								startDate : "",
-								endDate : "",
-								groupid : ""
+								startDate : thatDay,
+								endDate : thatDay,
+								groupid : '1',
+								error:'0'
 							}
 						});
 		$('#dg').datagrid(
@@ -152,6 +171,13 @@ table#dg {
 					}
 				});
 		//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
+	
+	//----------------------------开始日期&结束日期-------------------------------
+	$('#startDate').datebox('setValue',today);
+	$('#endDate').datebox('setValue',today);
+	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
 		//-----------所属单位组合框树--------------------------
 		var g_selectd_groupid = "";
 		var g_selectd_accountname = "三岔河镇农业综合服务中心";

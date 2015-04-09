@@ -28,12 +28,13 @@ public class SearchInitAccount extends HttpServlet {
 		String strId = request.getParameter("accountid");
 		List<xdl.wxk.financing.vo.InitAccount> list = null; 
 		List<xdl.wxk.financing.vo.InitAccount> accounts = null;
+		String contextPath = request.getContextPath();
 		JSONArray json = null;
 		int accountid = Integer.parseInt(strId);
 		try {
 			list = DAOFactory.getBusinessProcessDAOInstance().getAllInitaccount();
 			accounts = DAOFactory.getBusinessProcessDAOInstance().getAllInitaccount(list, accountid);
-			json = JsonDAOFactory.getJsonAccountManageDAOInstance().getJsonOfInitdata(accounts);
+			json = JsonDAOFactory.getJsonAccountManageDAOInstance().getJsonOfInitdata(accounts,contextPath);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -27,7 +27,6 @@ public class InitAccount extends HttpServlet {
 
 		response.setContentType("text/html;");
 		response.setCharacterEncoding("utf-8");
-		
 		String initdate = request.getParameter("initdate");
 		String summary = request.getParameter("summary");
 		String direction = request.getParameter("direction");
