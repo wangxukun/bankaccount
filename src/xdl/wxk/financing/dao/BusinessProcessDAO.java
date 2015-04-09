@@ -111,4 +111,12 @@ public interface BusinessProcessDAO {
 	 * @throws SQLException
 	 */
 	public List<DataInfo> getDateDetailsByEnterdate(DataSearchForm formDate) throws SQLException;
+	
+	/**
+	 * 修改一条帐户发生额数据
+	 * @param detailDate	由表单提交过来的发生额数据
+	 * @return	成功返回true，否则返回false
+	 * @throws SQLException
+	 */
+	public boolean updateAccountDetail(AccountDetail detailData) throws SQLException;
 }

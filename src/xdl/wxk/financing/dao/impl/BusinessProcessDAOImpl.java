@@ -416,4 +416,21 @@ public class BusinessProcessDAOImpl implements BusinessProcessDAO {
 		}
 		return dataInfoList;
 	}
+
+	@Override
+	public boolean updateAccountDetail(AccountDetail detailData)
+			throws SQLException {
+		boolean flag = false;
+		String sql = "update accountdetail set occurdate=?,summary=?,direction=?,amount=?,accountid=?,groupid=? where accountdetailid=?";
+		List<Object> params = new ArrayList<Object>();
+		params.add(detailData.getOccurdate());
+		params.add(detailData.getSummary());
+		params.add(detailData.getDirection());
+		params.add(detailData.getAmount());
+		params.add(detailData.getAccountid());
+		params.add(detailData.getGroupid());
+		params.add(detailData.getAccountdetailid());
+		flag = this.jdbc.updateByPreparedStatement(sql, params);
+		return flag;
+	}
 }

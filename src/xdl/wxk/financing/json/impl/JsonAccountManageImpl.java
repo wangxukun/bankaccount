@@ -319,7 +319,7 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 		this.number = 0;
 	}
 	@Override
-	public JSONArray getReviseDataForEasyGrid(List<DataInfo> data) {
+	public JSONArray getReviseDataForEasyGrid(List<DataInfo> data,String contextPath) {
 		/*
 		 * village enterDate occurDate summary debit credit modify delete
 		 */
@@ -358,7 +358,7 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 			private int groupid;	//分类账户ID
 			private int freeze;	//是否已冻结(0表示未冻结，1表示冻结)
 			*/
-			jObject.accumulate("modify","<a href='servlet/ModifyDetailUI?accountdetailid="+detail.getAccountdetailid()+
+			jObject.accumulate("modify","<a href='"+contextPath+"/servlet/ModifyDetailUI?accountdetailid="+detail.getAccountdetailid()+
 					"&occurdate="+detail.getOccurdate()+
 					"&groupid="+detail.getGroupid()+
 					"&summary="+detail.getSummary()+

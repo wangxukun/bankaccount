@@ -86,6 +86,20 @@
     <servlet-name>JsonDataAccountDetailRevise</servlet-name>
     <servlet-class>xdl.wxk.financing.servlet.JsonDataAccountDetailRevise</servlet-class>
   </servlet>
+  <servlet>
+  	<description>处理修改发生额数据UI</description>
+  	<display-name>ModifyDetailUI</display-name>
+    <servlet-name>ModifyDetailUI</servlet-name>
+    <servlet-class>xdl.wxk.financing.servlet.BusinessProcess.ModifyDetailUI</servlet-class>
+  </servlet>
+  <servlet>
+  	<description>修改发生额数据</description>
+    <display-name>UpdateAccountDetail</display-name>
+    <servlet-name>UpdateAccountDetail</servlet-name>
+    <servlet-class>xdl.wxk.financing.servlet.BusinessProcess.UpdateAccountDetail</servlet-class>
+  </servlet>
+
+
 
 
 
@@ -179,6 +193,14 @@
   <servlet-mapping>
     <servlet-name>JsonDataAccountDetailRevise</servlet-name>
     <url-pattern>/servlet/JsonDataAccountDetailRevise</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ModifyDetailUI</servlet-name>
+    <url-pattern>/servlet/ModifyDetailUI</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>UpdateAccountDetail</servlet-name>
+    <url-pattern>/servlet/UpdateAccountDetail</url-pattern>
   </servlet-mapping>
 
 <welcome-file-list>

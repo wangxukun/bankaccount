@@ -70,7 +70,8 @@ public class JsonDataAccountDetailRevise extends HttpServlet {
 		IGetReviseData getrevisedate = new GetReviseDataImpl();
 		listData = getrevisedate.GetReviseData(form);
 		System.out.println(listData);
-		JSONArray data = JsonDAOFactory.getJsonAccountManageDAOInstance().getReviseDataForEasyGrid(listData);
+		String contextPath = request.getContextPath();
+		JSONArray data = JsonDAOFactory.getJsonAccountManageDAOInstance().getReviseDataForEasyGrid(listData,contextPath);
 		out.println(data);
 		
 		

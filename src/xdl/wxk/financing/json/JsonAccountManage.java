@@ -42,7 +42,8 @@ public interface JsonAccountManage {
 	/**
 	 * 获取查询修改或删除发生额数据组成的JSON对象
 	 * @param data 查询修改或删除发生额数据组成DataInfo对象List
+	 * @param contextPath 网站的上下文路径，用于a标签使用
 	 * @return 匹配JeasyUI的JSON对象
 	 */
-	public JSONArray getReviseDataForEasyGrid(List<DataInfo> data);
+	public JSONArray getReviseDataForEasyGrid(List<DataInfo> data,String contextPath);
 }

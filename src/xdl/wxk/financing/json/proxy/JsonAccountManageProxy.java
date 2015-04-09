@@ -44,8 +44,8 @@ public class JsonAccountManageProxy implements JsonAccountManage {
 	}
 
 	@Override
-	public JSONArray getReviseDataForEasyGrid(List<DataInfo> data) {
-		return this.dao.getReviseDataForEasyGrid(data);
+	public JSONArray getReviseDataForEasyGrid(List<DataInfo> data,String contextPath) {
+		return this.dao.getReviseDataForEasyGrid(data,contextPath);
 	}
 
 }

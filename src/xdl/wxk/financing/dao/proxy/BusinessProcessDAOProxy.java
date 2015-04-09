@@ -164,4 +164,19 @@ public class BusinessProcessDAOProxy implements BusinessProcessDAO {
 		}
 		return dataInfo;
 	}
+
+	@Override
+	public boolean updateAccountDetail(AccountDetail detailData)
+			throws SQLException {
+		boolean flag = false;
+		try {
+			this.jdbc.getConnection();
+			flag = this.dao.updateAccountDetail(detailData);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			this.jdbc.releaseConnection();
+		}
+		return flag;
+	}
 }
