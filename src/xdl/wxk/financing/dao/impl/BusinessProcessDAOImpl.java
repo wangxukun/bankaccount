@@ -433,4 +433,14 @@ public class BusinessProcessDAOImpl implements BusinessProcessDAO {
 		flag = this.jdbc.updateByPreparedStatement(sql, params);
 		return flag;
 	}
+
+	@Override
+	public boolean deleteAccountDetail(String detailid) throws SQLException {
+		boolean flag = false;
+		String sql = "delete from accountdetail where accountdetailid=?";
+		List<Object> params = new ArrayList<Object>();
+		params.add(detailid);
+		flag = this.jdbc.updateByPreparedStatement(sql, params);
+		return flag;
+	}
 }

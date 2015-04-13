@@ -179,4 +179,18 @@ public class BusinessProcessDAOProxy implements BusinessProcessDAO {
 		}
 		return flag;
 	}
+
+	@Override
+	public boolean deleteAccountDetail(String detailid) throws SQLException {
+		boolean flag = false;
+		try {
+			this.jdbc.getConnection();
+			flag = this.dao.deleteAccountDetail(detailid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			this.jdbc.releaseConnection();
+		}
+		return flag;
+	}
 }

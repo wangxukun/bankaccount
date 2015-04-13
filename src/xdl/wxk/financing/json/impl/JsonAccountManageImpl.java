@@ -161,61 +161,7 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 		}
 		return jArray;
 	}
-	/*
-	 * [
-		  	{month:10,day:5,voucherNum:1,village:'黄家圩村委会第十二组',summary:'收到补助金',debit:50000.00,credit:null,balanceCredit:'借',balance:50000.00},
-			{month:10,day:5,voucherNum:2,village:'水阁村委会',summary:'支付工程款',debit:null,credit:10000.00,balanceCredit:'借',balance:40000.00},
-			{month:10,day:5,voucherNum:3,village:'水阁村委会',summary:'收到补助金',debit:50000.00,credit:null,balanceCredit:'借',balance:90000.00},
-			{month:10,day:6,voucherNum:4,village:'水阁村委会',summary:'支付工程款',debit:null,credit:25000.00,balanceCredit:'借',balance:65000.00}
-		]
-	 */
 	@Override
-	/*public JSONArray getFullDataForEasyGrid(List<DataInfo> data) {
-		JSONArray jArray = new JSONArray();
-		Iterator<DataInfo> iter = data.iterator();
-		while(iter.hasNext()){
-			JSONObject jObject = new JSONObject();
-			DataInfo detail = iter.next();
-			Calendar calendar = Calendar.getInstance(Locale.CHINA);
-			Date date = detail.getOccurdate();
-			if(date!=null){
-				calendar.setTime(detail.getOccurdate());
-				int month = calendar.get(Calendar.MONTH);
-				if(this.initMonth != month && !"".equals(month)){
-					summarizing(jArray,month);
-				}
-				jObject.accumulate("month",month+1);
-				jObject.accumulate("day", calendar.get(Calendar.DATE));
-			}else{
-				jObject.accumulate("month","");
-				jObject.accumulate("day", "");
-			}
-			jObject.accumulate("voucherNum",++this.number);
-			jObject.accumulate("village", detail.getAccountname());
-			jObject.accumulate("summary",detail.getSummary());
-			String amount;
-			if(detail.getDirection()==0){
-				amount = detail.getAmount();
-				jObject.accumulate("debit",amount);
-				jObject.accumulate("credit","");
-				this.debitTotal =  Calculator.add(this.debitTotal, amount).toString();
-			}else{
-				amount = detail.getAmount();
-				jObject.accumulate("credit",amount);
-				jObject.accumulate("debit","");
-				this.creditTotal =  Calculator.add(this.creditTotal, amount).toString();
-			}
-			if(detail.getNumber() == 0){
-				jObject.accumulate("balanceCredit", "借");
-			}else{
-				jObject.accumulate("balanceCredit", "贷");
-			}
-			jObject.accumulate("balance",detail.getBalance());
-			jArray.add(jObject);
-		}
-		summarizing(jArray,this.initMonth);
-		return jArray;
-	}*/
 	public JSONArray getFullDataForEasyGrid(List<DataInfo> data) {
 		JSONArray jArray = new JSONArray();
 		Iterator<DataInfo> iter = data.iterator();
@@ -364,7 +310,7 @@ public class JsonAccountManageImpl implements JsonAccountManage {
 					"&summary="+detail.getSummary()+
 					"&direction="+detail.getDirection()+
 					"&amount="+detail.getAmount()+"'>修改</a>");
-			jObject.accumulate("delete","<a href='"+detail.getAccountdetailid()+"'>删除</a>");
+			jObject.accumulate("delete","<a href='"+contextPath+"/servlet/DeleteDetailData?accountdetailid="+detail.getAccountdetailid()+"'>删除</a>");
 			jArray.add(jObject);
 		}
 		

@@ -119,4 +119,12 @@ public interface BusinessProcessDAO {
 	 * @throws SQLException
 	 */
 	public boolean updateAccountDetail(AccountDetail detailData) throws SQLException;
+	
+	/**
+	 * 删除一条发生额数据
+	 * @param detailid 需要删除数据的记录ID
+	 * @return	成功返回true
+	 * @throws SQLException
+	 */
+	public boolean deleteAccountDetail(String detailid) throws SQLException;
 }
